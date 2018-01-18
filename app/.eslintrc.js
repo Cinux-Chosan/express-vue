@@ -33,5 +33,8 @@ module.exports = {
     'indent': 0,
     // 没有参数的方法括号前不需要空格
     "space-before-function-paren": ["error", "never"]
+  },
+  globals: {
+    '$': true
   }
 }

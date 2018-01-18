@@ -9,4 +9,21 @@ if (isDev) {
 
 Vue.prototype.axios = Vue.axios || axios;
 
-export default {}
+function check(fn, timeout = 15000) {
+  let time = 30;
+  return new Promise((resolve, reject) => {
+    let id = setInterval(() => {
+      if (fn()) {
+        resolve();
+        clearInterval(id);
+      } else if ((time += 30) > timeout) {
+        reject(new Error('超时'));
+        clearInterval(id);
+      }
+    }, time);
+  })
+}
+
+export {
+  check
+};

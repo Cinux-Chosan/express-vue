@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <common-header></common-header>
+    <!-- <common-header></common-header> -->
     <router-view/>
-    <common-footer></common-footer>
+    <!-- <common-footer></common-footer> -->
   </div>
 </template>
 
@@ -12,7 +12,7 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style lang="scss">
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
