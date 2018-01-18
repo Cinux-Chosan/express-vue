@@ -1,0 +1,21 @@
+<h1 style="color: red;">{{msg}}</h1>
+<table>
+  <thead>
+    <tr>
+      <th>用户名</th>
+      <th>密码</th>
+      <th>年龄</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each persons}}
+    {{#if this.name}}
+    <tr>
+      <td>{{name}}</td>
+      <td>{{pwd}}</td>
+      <td>{{age}}</td>
+    </tr>
+    {{/if}}
+    {{/each}}
+  </tbody>
+</table>
