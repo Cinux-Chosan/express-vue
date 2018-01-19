@@ -27,6 +27,7 @@
       return {
         title: '',
         content: '',
+        _id: ''
       };
     },
     async beforeRouteEnter(to, from, next) {
@@ -50,11 +51,9 @@
       submit() {
         let content = this.editor.html();
         let data = { ...this.$data, content};
-        debugger
-        this.axios.post('/api/post', {params: data}, {
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        }).then(r => {
-
+        let context = this;
+        this.axios.post('/api/post', data).then(r => {
+          context.$data._id = r.data.data.insertedId;
         });
       }
     }
