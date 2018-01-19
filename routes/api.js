@@ -41,5 +41,19 @@ router.get('/posts', function (req, res, next) {
   })
 })
 
+router.post('/post', function (req, res, next) {
+  var mg = new mongo('posts');
+  res.status(200).josn({}).end();
+  // mg.getDB().then(db => {
+  //   db.collection('posts').find().toArray((err, docs) => {
+  //     assert.equal(null, null);
+  //     res.status(200).json({
+  //       state: 1,
+  //       data: docs
+  //     }).end();
+  //   })
+  // })
+})
+
 
 module.exports = router;
