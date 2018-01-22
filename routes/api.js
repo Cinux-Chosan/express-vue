@@ -32,14 +32,29 @@ router.get('/submit', function (req, res, next) {
 router.get('/posts', function (req, res, next) {
   var mg = new mongo('posts');
   mg.getDB().then(db => {
-    db.collection('posts').find().toArray((err, docs) => {
+    db.collection('posts').find().project({ title: 1 }).toArray((err, docs) => {
       assert.equal(null, null);
       res.status(200).json({
         state: 1,
         data: docs
-      }).end();
+      });
     })
   })
+})
+
+
+router.get('/post', async function (req, res, next) {
+  var mg = new mongo('posts');
+
+  let db = await mg.getDB();
+  let col = db.collection('posts');
+  let _id = req.query.id;
+  if (_id) {
+    let doc = await col.findOne({ _id: mongodb.ObjectID(_id) });
+    res.json({ state: 1, data: doc });
+  } else {
+    res.json({ state: 0, data: 'id缺失' });
+  }
 })
 
 router.post('/post', function (req, res, next) {
@@ -49,16 +64,15 @@ router.post('/post', function (req, res, next) {
     let col = db.collection('posts');
     let _id = req.body._id;
     if (_id) {
-      // update
       delete req.body._id;
-      col.updateOne(
+      col.replaceOne(
         { _id: mongodb.ObjectID(_id) },
-        { $set: req.body }
+        req.body
       );
     } else {
       delete req.body._id;
       let r = await col.insertOne(req.body);
-      res.status(200).json({state:1, data: { insertedId: r.insertedId }}).end();
+      res.status(200).json({ state: 1, data: { insertedId: r.insertedId } });
       // res.status(500).json({state:0}).end();
 
     }
