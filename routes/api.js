@@ -44,8 +44,8 @@ router.get('/posts', function (req, res, next) {
 
 router.post('/post', function (req, res, next) {
   var mg = new mongo('posts');
- 
-  mg.getDB().then(async db => {
+
+  mg.getDB().then(async (db) => {
     let col = db.collection('posts');
     let _id = req.body._id;
     if (_id) {

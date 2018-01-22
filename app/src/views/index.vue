@@ -3,14 +3,14 @@
     <div class="col-sm-offset-1 col-sm-6">
       <h1>推荐文章</h1>
       <div>
-        salkdfsldf
+        推荐
       </div>
       <h1>
         最新文章
       </h1>
       <div>
         <ul>
-          <li v-for="item in posts" :key="item._id">
+          <li class="post-item" v-for="item in posts" :key="item._id">
             {{item.title}} {{item.content}} {{item.data}}
           </li>
         </ul>
@@ -44,6 +44,13 @@
   }
 </script>
 
-<style lang="sass">
-
+<style lang="scss">
+  .post-item{
+    &::before{
+      content: '《';
+    }
+    &::after{
+      content: '》';
+    }
+  }
 </style>
