@@ -3,15 +3,20 @@
     <div :class="[showSidebar ? 'show' : '', 'sidebar-main']">
       <span class="toggle-sidebar" @click="toggle"><i class="iconfont icon-zuoyoujiantou"></i></span>
       <ul class='nav'>
+        <li>
+          <router-link to="/" class="bg-fff">首页</router-link>
+        </li>
         <li v-for="nav in navs" :key="nav._id">
-
         </li>
       </ul>
+  
+      <me :class="['animated', showSidebar ? 'flipInX' : '']"></me>
     </div>
   </section>
 </template>
 
 <script>
+  import me from '@/components/me';
   export default {
     name: 'common-sidebar',
     data: function() {
@@ -19,6 +24,9 @@
         navs: [],
         showSidebar: true
       };
+    },
+    components: {
+      me
     },
     computed: {},
     methods: {
@@ -34,7 +42,7 @@
   .sidebar {
     z-index: 1;
   }
-
+  
   .sidebar-main {
     width: 250px;
     left: 0;
@@ -74,11 +82,19 @@
       }
     }
   }
-
+  
   .nav {
     margin-top: 30px;
     background: blanchedalmond;
-    li {}
+    font-size: 20px;
+    
+    li {
+      text-align: center;
+      transition: all .2s;
+      &:hover{
+        font-size: 1.2em;
+      }
+    }
   }
 </style>
 

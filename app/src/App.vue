@@ -52,16 +52,18 @@
     padding-bottom: 10px;
   }
 
-  .h100p {
-    height: 100%;
+  .sorry{
+    color: rgb(172, 108, 108);
+    &::before{
+      content: 'sorry，'
+    }
   }
 
-  .fr {
-    float: right;
-  }
-
-  .fl {
-    float: left;
+  .waiting{
+    color: rgb(228, 170, 170);
+    &::before{
+      content: 'waiting，'
+    }
   }
 
   // 让 prettify 所有行都显示行号
@@ -87,5 +89,85 @@
     &.with-sidebar {
       margin-left: 250px;
     }
+  }
+</style>
+
+
+<style>
+
+  .h100p {
+    height: 100%;
+  }
+
+  .fr {
+    float: right;
+  }
+
+  .fl {
+    float: left;
+  }
+
+  .f20{
+    font-size: 20px;
+  }
+
+  .f22{
+    font-size: 22px;
+  }
+
+  .f24{
+    font-size: 24px;
+  }
+
+  .f26{
+    font-size: 26px;
+  }
+
+  .f32{
+    font-size: 32px;
+  }
+
+  .f34{
+    font-size: 34px;
+  }
+
+  .f36{
+    font-size: 36px;
+  }
+  
+  .f40{
+    font-size: 40px;
+  }
+
+  .fb{
+    font-weight: bolder;
+  }
+
+  .mt30{
+    margin-top: 30px;
+  }
+
+  .ml10{
+    margin-left: 10px;
+  }
+
+  .mb0{
+    margin-bottom: 0 !important;
+  }
+
+  .bg-fff{
+    background: #fff;
+  }
+  .bg-000{
+    background: #000;
+  }
+  .inline{
+    display: inline;
+  }
+  .block{
+    display: block;
+  }
+  .inline-block{
+    display: inline-block;
   }
 </style>

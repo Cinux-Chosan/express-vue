@@ -57,5 +57,9 @@ router.post('/post', async(req, res, next) => {
   }
 })
 
+router.get('/categories', async (req, res, next) => {
+  // let 
+});
+
 
 module.exports = router;

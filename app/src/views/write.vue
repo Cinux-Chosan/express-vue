@@ -1,13 +1,9 @@
 <template>
   <div class="container-fluid">
     <div class="col-sm-offset-2 col-sm-8">
-
       <form>
         <div class="form-group clearfix">
-          <div class="btn-group fr">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          选择编辑器 <span class="caret"></span>
-          </button>
+          <bs-dropdown txt="选择编辑器" class="fr">
             <ul class="dropdown-menu">
               <li>
                 <router-link :to="{path: 'write', query: { md: 1}}"> markdown </router-link>
@@ -17,7 +13,7 @@
                 <router-link :to="{path: 'write', query: { md: ''}}"> kindEditor </router-link>
               </li>
             </ul>
-          </div>
+          </bs-dropdown>
         </div>
         <div class="form-group">
           <label for="title">文章标题</label>
@@ -37,6 +33,8 @@
 <script>
   import mavonEditor from "@/components/editor-md";
   import kindEditor from "@/components/kindeditor";
+  import bsDropdown from "@/components/bs-dropdown";
+  
   export default {
     name: "write",
     data: function() {
@@ -48,7 +46,8 @@
     },
     components: {
       mavonEditor,
-      kindEditor
+      kindEditor,
+      bsDropdown
     },
     computed: {
       editorContent() {
@@ -71,7 +70,9 @@
     methods: {
       submit() {
         let editorContent = this.editorContent;
-        let data = { ...this.$data, ...editorContent };
+        let data = { ...this.$data,
+          ...editorContent
+        };
         let context = this;
         this.axios.post("/api/post", data).then(r => {
           context.$data.post_id = r.data.data.id;
@@ -88,7 +89,7 @@
   form {
     /* min-width: 650px; */
   }
-
+  
   #content {
     min-height: 400px;
   }

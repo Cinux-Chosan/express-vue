@@ -1,17 +1,27 @@
 <template>
   <div class="container-fluid">
-    <div class="col-sm-10 col-sm-offset-1 page-main">
-      <h1 class="title">{{title}}</h1>
-      <article v-html="content">
-      </article>
+    <div class="col-sm-10 col-sm-offset-1">
+      <content-block class="page-main">
+        <h1 class="title">{{title}}</h1>
+        <article v-html="content">
+        </article>
+      </content-block>
+      <content-block class="comments">
+        
+      </content-block>
     </div>
   </div>
 </template>
 
 <script>
-  import { load, check } from "@/libs/util";
+  import {
+    load,
+    check
+  } from "@/libs/util";
+  import contentBlock from '@/components/content-block';
+  
   var MarkdownIt = require("markdown-it");
-
+  
   export default {
     name: "post",
     data: function() {
@@ -22,6 +32,9 @@
     },
     created() {
       this.getPost();
+    },
+    components: {
+      contentBlock
     },
     methods: {
       async getPost() {
@@ -47,18 +60,18 @@
 <style lang="scss" scoped>
   .page-main {
     min-height: 300px;
-    background: #e1edeb;
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5)!important;
   }
-
-  .title{
+  .comments{
+    min-height: 300px;
+    // box-shadow: 10px -10px 10px rgba(0, 0, 0, 0.5)!important;
+  }
+  .title {
     border-bottom: 1px solid #ccc;
   }
-
+  
   article {
-    margin: 10px;
-    margin-left: 60px;
+    margin: 10px 10px 30px 60px;
   }
-
 </style>
 
