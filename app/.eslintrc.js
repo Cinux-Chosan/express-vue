@@ -32,7 +32,15 @@ module.exports = {
     // 缩进检查
     'indent': 0,
     // 没有参数的方法括号前不需要空格
-    "space-before-function-paren": ["error", "never"]
+    "space-before-function-paren": ["error", "never"],
+    // 关闭多行空行报错检测
+    "no-multiple-empty-lines": 0,
+    // 单双引号
+    "quotes": 0,
+    // 关闭 promise 参数名必须是 resolve, reject 的检测
+    "promise/param-names": 0,
+    // 可以使用下划线的变量名, 如 _id
+    "vue/no-reservered-keys": 0
   },
   globals: {
     '$': true

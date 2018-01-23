@@ -12,6 +12,8 @@
     "watch": "vue build build/build.js --watch"
   },
   "dependencies": {
+    "markdown-it": "^8.4.0",
+    "mavon-editor": "^2.4.16",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },

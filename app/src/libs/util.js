@@ -10,20 +10,41 @@ if (isDev) {
 Vue.prototype.axios = Vue.axios || axios;
 
 function check(fn, timeout = 15000) {
-  let time = 30;
-  return new Promise((resolve, reject) => {
-    let id = setInterval(() => {
+  let interval = 30;
+  let wasted = interval;
+  return new Promise((res, rej) => {
+    let timer = setInterval(() => {
       if (fn()) {
-        resolve();
-        clearInterval(id);
-      } else if ((time += 30) > timeout) {
-        reject(new Error('超时'));
-        clearInterval(id);
+        clearInterval(timer);
+        res();
+      } else if ((wasted += interval) > timeout) {
+        clearInterval(timer);
+        rej(new Error('load超时'));
       }
-    }, time);
+    }, interval);
   })
 }
 
+function load(files) {
+  if (files instanceof Array) {
+    return Promise.all(files.map(el => load(el)));
+  } else if (typeof files === 'string') {
+    return new Promise((res, rej) => {
+      if (files.endsWith('.js')) {
+        return $.getScript(files).then(() => res());
+      }
+      if (files.endsWith('.css')) {
+        let link = document.createElement('link');
+        link.onload = () => res();
+        link.rel = 'stylesheet';
+        link.href = files;
+        document.head.appendChild(link);
+      }
+    });
+  }
+}
+
 export {
-  check
+  check,
+  load
 };

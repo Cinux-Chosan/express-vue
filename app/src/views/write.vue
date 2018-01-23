@@ -1,60 +1,84 @@
 <template>
   <div class="container-fluid">
     <div class="col-sm-offset-2 col-sm-8">
+
       <form>
+        <div class="form-group clearfix">
+          <div class="btn-group fr">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          选择编辑器 <span class="caret"></span>
+          </button>
+            <ul class="dropdown-menu">
+              <li>
+                <router-link :to="{path: 'write', query: { md: 1}}"> markdown </router-link>
+              </li>
+              <li role="separator" class="divider"></li>
+              <li>
+                <router-link :to="{path: 'write', query: { md: ''}}"> kindEditor </router-link>
+              </li>
+            </ul>
+          </div>
+        </div>
         <div class="form-group">
           <label for="title">文章标题</label>
           <input type="email" class="form-control" id="title" placeholder="title" v-model="title">
         </div>
         <div class="form-group">
           <label for="content"></label>
-          <textarea name="" id="content" class="form-control" cols="30" rows="10" v-model="content"></textarea>
+          <mavon-editor ref="mavonEditor" v-if="this.$route.query.md"></mavon-editor>
+          <kind-editor @editorCreated="kindEditorCreated" v-else></kind-editor>
         </div>
       </form>
-      <button class="btn btn-default" @click="submit"> 提交 </button>
+      <button class="btn btn-default fr" @click="submit"> 提交 </button>
     </div>
   </div>
 </template>
 
 <script>
-  import {
-    check
-  } from "@/libs/util";
-
+  import mavonEditor from "@/components/editor-md";
+  import kindEditor from "@/components/kindeditor";
   export default {
     name: "write",
     data: function() {
       return {
-        title: '',
-        content: '',
-        _id: ''
+        title: "",
+        content: "",
+        post_id: ""
       };
     },
-    async beforeRouteEnter(to, from, next) {
-      let editorScript = document.createElement("script");
-      let langScript = document.createElement("script");
-      editorScript.src = "/editor/kindeditor-all-min.js";
-      langScript.src = "/editor/lang/zh-CN.js";
-      document.body.appendChild(editorScript);
-      await check(() => window.KindEditor);
-      document.body.appendChild(langScript);
-      next();
+    components: {
+      mavonEditor,
+      kindEditor
     },
-    created() {
-      this.initEditor();
+    computed: {
+      editorContent() {
+        let content = "";
+        if (this.$route.query.md) {
+          content = this.$refs.mavonEditor.content;
+          return {
+            content,
+            type: "md"
+          };
+        } else {
+          content = this.editor.html();
+          return {
+            content,
+            type: "html"
+          };
+        }
+      }
     },
     methods: {
-      async initEditor() {
-        await check(() => window.KindEditor);
-        this.editor = window.KindEditor.create('#content');
-      },
       submit() {
-        let content = this.editor.html();
-        let data = { ...this.$data, content};
+        let editorContent = this.editorContent;
+        let data = { ...this.$data, ...editorContent };
         let context = this;
-        this.axios.post('/api/post', data).then(r => {
-          context.$data._id = r.data.data.insertedId;
+        this.axios.post("/api/post", data).then(r => {
+          context.$data.post_id = r.data.data.id;
         });
+      },
+      kindEditorCreated(editor) {
+        this.editor = editor;
       }
     }
   };
@@ -62,7 +86,7 @@
 
 <style>
   form {
-    min-width: 650px;
+    /* min-width: 650px; */
   }
 
   #content {

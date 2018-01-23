@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid">
-    <div class="col-sm-offset-1 col-sm-6">
+    <div class="col-sm-offset-1 col-sm-6 posts-list">
       <h1>推荐文章</h1>
       <div>
         推荐
@@ -44,9 +44,16 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+
+.posts-list{
+  box-shadow: 10px 10px 10px #ccc;
+  background: #e1edeb;
+}
+
 .post-item {
   .post-title {
+    font-size: 1.5em;
     &::before {
       content: "《";
     }
