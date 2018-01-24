@@ -6,7 +6,7 @@
         <article v-html="content">
         </article>
       </content-block>
-      <content-block class="comments">
+      <content-block class="comments" >
 
       </content-block>
     </div>
