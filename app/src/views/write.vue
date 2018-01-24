@@ -6,11 +6,11 @@
           <bs-dropdown txt="选择编辑器" class="fr">
             <ul class="dropdown-menu">
               <li>
-                <router-link :to="{path: 'write', query: { md: 1}}"> markdown </router-link>
+                <router-link :to="{path: 'write', query: { md: 1, id: $route.query.id}}"> markdown </router-link>
               </li>
               <li role="separator" class="divider"></li>
               <li>
-                <router-link :to="{path: 'write', query: { md: ''}}"> kindEditor </router-link>
+                <router-link :to="{path: 'write', query: { md: '', id: $route.query.id}}"> kindEditor </router-link>
               </li>
             </ul>
           </bs-dropdown>
@@ -21,8 +21,8 @@
         </div>
         <div class="form-group">
           <label for="content"></label>
-          <mavon-editor ref="mavonEditor" v-if="this.$route.query.md"></mavon-editor>
-          <kind-editor @editorCreated="kindEditorCreated" v-else></kind-editor>
+          <mavon-editor ref="mavonEditor" v-if="this.$route.query.md" :value="content"></mavon-editor>
+          <kind-editor @editorCreated="kindEditorCreated" :value="content" v-else></kind-editor>
         </div>
       </form>
       <button class="btn btn-default fr" @click="submit"> 提交 </button>
@@ -34,14 +34,16 @@
   import mavonEditor from "@/components/editor-md";
   import kindEditor from "@/components/kindeditor";
   import bsDropdown from "@/components/bs-dropdown";
-  
+  import { tip } from "@/libs/util";
+
   export default {
     name: "write",
     data: function() {
       return {
         title: "",
         content: "",
-        post_id: ""
+        post_id: "",
+        type: ""
       };
     },
     components: {
@@ -49,25 +51,34 @@
       kindEditor,
       bsDropdown
     },
+    created() {
+      if (this.$route.query.id) {
+        this.getPost(this.$route.query.id);
+      }
+    },
     computed: {
       editorContent() {
         let content = "";
         if (this.$route.query.md) {
           content = this.$refs.mavonEditor.content;
-          return {
-            content,
-            type: "md"
-          };
+          return { content, type: "md" };
         } else {
-          content = this.editor.html();
-          return {
-            content,
-            type: "html"
-          };
+          content = this.kindEditor.html();
+          return { content, type: "html" };
         }
       }
     },
     methods: {
+      async getPost(id) {
+        let r = await this.axios.get(`/api/post?id=${id}`);
+        if (r.data.state) {
+          let data = r.data.data;
+          this.title = data.title;
+          this.content = data.content;
+          this.post_id = id;
+          this.$route.query.md = data.type === 'md' ? 1 : '';
+        }
+      },
       submit() {
         let editorContent = this.editorContent;
         let data = { ...this.$data,
@@ -76,10 +87,13 @@
         let context = this;
         this.axios.post("/api/post", data).then(r => {
           context.$data.post_id = r.data.data.id;
+          if (r.data.state) {
+            tip('保存成功!');
+          }
         });
       },
       kindEditorCreated(editor) {
-        this.editor = editor;
+        this.kindEditor = editor;
       }
     }
   };
@@ -89,7 +103,7 @@
   form {
     /* min-width: 650px; */
   }
-  
+
   #content {
     min-height: 400px;
   }

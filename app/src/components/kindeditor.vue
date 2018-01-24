@@ -1,12 +1,12 @@
 <template>
-  <textarea name="" id="content" class="form-control" cols="30" rows="10" v-model="content"></textarea>
+  <div>
+    <textarea name="" id="content" class="form-control" cols="30" rows="10"></textarea>
+  </div>
 </template>
 
 
 <script>
-  import {
-    check
-  } from "@/libs/util";
+  import { check } from "@/libs/util";
 
   export default {
     async beforeCreate() {
@@ -18,10 +18,9 @@
       await check(() => window.KindEditor);
       document.body.appendChild(langScript);
     },
-    data: () => {
-      return {
-        content: ''
-      }
+    props: ['value'],
+    data: function() {
+      return {}
     },
     created() {
       this.initEditor();
@@ -29,8 +28,10 @@
     methods: {
       async initEditor() {
         await check(() => window.KindEditor);
-        this.editor = window.KindEditor.create('#content');
+        this.editor = window.KindEditor.create('#content', {width: '100%'});
         this.$emit('editorCreated', this.editor);
+        await check(() => this.editor);
+        this.editor.html(this.value);
       }
     }
   }

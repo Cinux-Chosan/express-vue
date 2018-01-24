@@ -10,10 +10,9 @@
   var mavonEditor = require('mavon-editor')
   export default {
     name: 'editor-md',
+    props: ['value'],
     data: () => {
-      return {
-        value: ''
-      }
+      return {}
     },
     computed: {
       content() {

@@ -44,7 +44,15 @@ function load(files) {
   }
 }
 
+function tip(msg, type = 'info') {
+  let opts = {
+    extraClasses: 'messenger-on-top messenger-on-right messenger-fixed',
+    type
+  }
+  Messenger(opts).post(msg).update(opts);
+}
 export {
   check,
-  load
+  load,
+  tip
 };

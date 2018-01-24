@@ -1,13 +1,13 @@
 <template>
   <div class="container-fluid">
     <div class="col-sm-10 col-sm-offset-1">
-      <content-block class="page-main">
-        <h1 class="title">{{title}}</h1>
+      <content-block class="page-main" :title="title">
+          <router-link slot="rightHeader" :to="{path: '/write', query: { id: this.$route.params.id }}" class="self-flex-start"><i class="iconfont icon-edit"></i></router-link>
         <article v-html="content">
         </article>
       </content-block>
       <content-block class="comments">
-        
+
       </content-block>
     </div>
   </div>
@@ -18,10 +18,10 @@
     load,
     check
   } from "@/libs/util";
-  import contentBlock from '@/components/content-block';
-  
+  import contentBlock from "@/components/content-block";
+
   var MarkdownIt = require("markdown-it");
-  
+
   export default {
     name: "post",
     data: function() {
@@ -60,16 +60,31 @@
 <style lang="scss" scoped>
   .page-main {
     min-height: 300px;
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5)!important;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5) !important;
   }
-  .comments{
+
+  .comments {
     min-height: 300px;
     // box-shadow: 10px -10px 10px rgba(0, 0, 0, 0.5)!important;
   }
+
   .title {
-    border-bottom: 1px solid #ccc;
+    flex: 1;
   }
-  
+
+  .post-header {
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+  }
+
+  .operations {
+    align-self: flex-start;
+    &>i {
+      cursor: pointer;
+    }
+  }
+
   article {
     margin: 10px 10px 30px 60px;
   }

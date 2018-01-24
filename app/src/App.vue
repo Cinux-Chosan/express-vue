@@ -49,7 +49,6 @@
 
   h1 {
     font-size: 3em;
-    padding-bottom: 10px;
   }
 
   .sorry{
@@ -134,7 +133,7 @@
   .f36{
     font-size: 36px;
   }
-  
+
   .f40{
     font-size: 40px;
   }
@@ -169,5 +168,13 @@
   }
   .inline-block{
     display: inline-block;
+  }
+
+  .self-flex-start{
+    align-self: flex-start;
+  }
+
+  .self-flex-end{
+    align-self: flex-end;
   }
 </style>
