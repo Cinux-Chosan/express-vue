@@ -4,15 +4,13 @@
       <form>
         <div class="form-group clearfix">
           <bs-dropdown txt="选择编辑器" class="fr">
-            <ul class="dropdown-menu">
-              <li>
-                <router-link :to="{path: 'write', query: { md: 1, id: $route.query.id}}"> markdown </router-link>
-              </li>
-              <li role="separator" class="divider"></li>
-              <li>
-                <router-link :to="{path: 'write', query: { md: '', id: $route.query.id}}"> kindEditor </router-link>
-              </li>
-            </ul>
+            <li>
+              <router-link :to="{path: 'write', query: { md: 1, id: $route.query.id}}"> markdown </router-link>
+            </li>
+            <li role="separator" class="divider"></li>
+            <li>
+              <router-link :to="{path: 'write', query: { md: '', id: $route.query.id}}"> kindEditor </router-link>
+            </li>
           </bs-dropdown>
         </div>
         <div class="form-group">
@@ -25,7 +23,19 @@
           <kind-editor @editorCreated="kindEditorCreated" :value="content" v-else></kind-editor>
         </div>
       </form>
-      <button class="btn btn-default fr" @click="submit"> 提交 </button>
+      <div class="form-group">
+        <bs-dropdown txt="选择编辑器" class="fl">
+          <template v-if="categories && categories.length">
+              <li v-for="cate in categories" :key="cate.id">
+                <a href="" ></a>
+              </li>
+          </template>
+          <li v-else> <a href=""> 暂时还没有分类 </a></li>
+          <li role="separator" class="divider"></li>
+          <li @click="addCategory">添加分类</li>
+        </bs-dropdown>
+        <button class="btn btn-default fr" @click="submit"> 提交 </button>
+      </div>
     </div>
   </div>
 </template>
@@ -34,7 +44,9 @@
   import mavonEditor from "@/components/editor-md";
   import kindEditor from "@/components/kindeditor";
   import bsDropdown from "@/components/bs-dropdown";
-  import { tip } from "@/libs/util";
+  import {
+    tip
+  } from "@/libs/util";
 
   export default {
     name: "write",
@@ -43,7 +55,8 @@
         title: "",
         content: "",
         post_id: "",
-        type: ""
+        type: "",
+        categories: []
       };
     },
     components: {
@@ -55,22 +68,29 @@
       if (this.$route.query.id) {
         this.getPost(this.$route.query.id);
       }
+      this.getCategories();
     },
     computed: {
       editorContent() {
         let content = "";
         if (this.$route.query.md) {
           content = this.$refs.mavonEditor.content;
-          return { content, type: "md" };
+          return {
+            content,
+            type: "md"
+          };
         } else {
           content = this.kindEditor.html();
-          return { content, type: "html" };
+          return {
+            content,
+            type: "html"
+          };
         }
       }
     },
     methods: {
       async getPost(id) {
-        let r = await this.axios.get(`/api/post?id=${id}`);
+        let r = await this.axios.get(`/post?id=${id}`);
         if (r.data.state) {
           let data = r.data.data;
           this.title = data.title;
@@ -79,18 +99,25 @@
           this.$route.query.md = data.type === 'md' ? 1 : '';
         }
       },
+      async getCategories() {
+        let r = await this.axios.get('/post');
+        if (r.state) {
+          this.data = r.data.data;
+        }
+      },
       submit() {
         let editorContent = this.editorContent;
-        let data = { ...this.$data,
-          ...editorContent
-        };
+        let data = { ...this.$data, ...editorContent };
         let context = this;
-        this.axios.post("/api/post", data).then(r => {
+        this.axios.post("/post", data).then(r => {
           context.$data.post_id = r.data.data.id;
           if (r.data.state) {
             tip('保存成功!');
           }
         });
+      },
+      addCategory() {
+
       },
       kindEditorCreated(editor) {
         this.kindEditor = editor;

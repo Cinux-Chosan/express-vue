@@ -37,6 +37,8 @@ module.exports = {
     "no-multiple-empty-lines": 0,
     // 单双引号
     "quotes": 0,
+    //
+    "no-trailing-spaces": 0,
     // 关闭 promise 参数名必须是 resolve, reject 的检测
     "promise/param-names": 0,
     // 可以使用下划线的变量名, 如 _id

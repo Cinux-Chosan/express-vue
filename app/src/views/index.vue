@@ -48,7 +48,7 @@
     },
     methods: {
       getPosts() {
-        this.axios.get("/api/posts").then(r => {
+        this.axios.get("/posts").then(r => {
           this.posts = r.data.data;
         });
       }

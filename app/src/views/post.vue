@@ -38,7 +38,7 @@
     },
     methods: {
       async getPost() {
-        let r = await this.axios.get(`/api/post?id=${this.$route.params.id}`);
+        let r = await this.axios.get(`/post?id=${this.$route.params.id}`);
         if (r.data.state) {
           let data = r.data.data;
           this.title = data.title;
@@ -46,8 +46,8 @@
           if (data.type === "md") {
             this.content = new MarkdownIt().render(this.content);
           }
-          load("//cdn.bootcss.com/prettify/r298/prettify.min.css");
-          load("//cdn.bootcss.com/prettify/r298/prettify.min.js");
+          new load("//cdn.bootcss.com/prettify/r298/prettify.min.css");
+          new load("//cdn.bootcss.com/prettify/r298/prettify.min.js");
           await check(() => window.prettyPrint);
           $("article pre").addClass("prettyprint linenums");
           window.prettyPrint();

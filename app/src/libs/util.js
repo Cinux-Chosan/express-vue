@@ -4,7 +4,9 @@ import axios from 'axios';
 let isDev = ~location.href.indexOf('localhost');
 
 if (isDev) {
-  axios.defaults.baseURL = '//localhost:3000'
+  axios.defaults.baseURL = '//localhost:3000/api/'
+} else {
+  axios.defaults.baseURL = '/api/';
 }
 
 Vue.prototype.axios = Vue.axios || axios;
@@ -25,17 +27,20 @@ function check(fn, timeout = 15000) {
   })
 }
 
+var _file_loaded = {};
+
 function load(files) {
   if (files instanceof Array) {
     return Promise.all(files.map(el => load(el)));
   } else if (typeof files === 'string') {
     return new Promise((res, rej) => {
+      if (_file_loaded[files]) return res();
       if (files.endsWith('.js')) {
-        return $.getScript(files).then(() => res());
+        return $.getScript(files).then(() => res(_file_loaded[files] = true));
       }
       if (files.endsWith('.css')) {
         let link = document.createElement('link');
-        link.onload = () => res();
+        link.onload = () => res(_file_loaded[files] = true);
         link.rel = 'stylesheet';
         link.href = files;
         document.head.appendChild(link);
@@ -44,12 +49,14 @@ function load(files) {
   }
 }
 
+load.prototype.loaded = {};
+
 function tip(msg, type = 'info') {
   let opts = {
     extraClasses: 'messenger-on-top messenger-on-right messenger-fixed',
     type
   }
-  Messenger(opts).post(msg).update(opts);
+  window.Messenger(opts).post(msg).update(opts);
 }
 export {
   check,
