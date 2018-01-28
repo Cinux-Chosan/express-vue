@@ -24,7 +24,7 @@
       </content-block>
     </div>
     <div class="col-sm-4 ">
-      right
+      <!-- right -->
     </div>
   </div>
 </template>

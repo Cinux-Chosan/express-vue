@@ -177,4 +177,8 @@
   .self-flex-end{
     align-self: flex-end;
   }
+
+  .pointer{
+    cursor: pointer;
+  }
 </style>

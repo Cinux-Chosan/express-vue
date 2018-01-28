@@ -30,9 +30,9 @@
                 <a href="" ></a>
               </li>
           </template>
-          <li v-else> <a href=""> 暂时还没有分类 </a></li>
+          <li v-else> <a>暂时还没有分类</a> </li>
           <li role="separator" class="divider"></li>
-          <li @click="addCategory">添加分类</li>
+          <li @click="addCategory" class="pointer"><a>添加分类</a></li>
         </bs-dropdown>
         <button class="btn btn-default fr" @click="submit"> 提交 </button>
       </div>
