@@ -46,8 +46,8 @@
           if (data.type === "md") {
             this.content = new MarkdownIt().render(this.content);
           }
-          new load("//cdn.bootcss.com/prettify/r298/prettify.min.css");
-          new load("//cdn.bootcss.com/prettify/r298/prettify.min.js");
+          load("//cdn.bootcss.com/prettify/r298/prettify.min.css");
+          load("//cdn.bootcss.com/prettify/r298/prettify.min.js");
           await check(() => window.prettyPrint);
           $("article pre").addClass("prettyprint linenums");
           window.prettyPrint();
