@@ -4,6 +4,7 @@ import HelloWorld from '@/views/HelloWorld'
 import Index from '@/views/index'
 import Write from '@/views/write'
 import Post from '@/views/post'
+import Login from '@/views/login'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ const router = new Router({
       path: '/post/:id',
       name: 'post',
       component: Post
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
     }
   ]
 })

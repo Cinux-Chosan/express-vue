@@ -2,11 +2,12 @@ import Vue from 'vue';
 import axios from 'axios';
 
 let isDev = ~location.href.indexOf('localhost');
+var baseURL = '';
 
 if (isDev) {
-  axios.defaults.baseURL = '//localhost:3000/api/'
+  axios.defaults.baseURL = baseURL = '//localhost:3000/api/'
 } else {
-  axios.defaults.baseURL = '/api/';
+  axios.defaults.baseURL = baseURL = '/api/';
 }
 
 Vue.prototype.axios = Vue.axios || axios;
@@ -58,8 +59,29 @@ function tip(msg, type = 'info') {
   }
   window.Messenger(opts).post(msg).update(opts);
 }
+
+
+function getJson(url = '', data = {}, type = 'GET') {
+  url = (!url.match(/^((http)|(\/\/))/) && isDev) ? baseURL + url : url;
+  return new Promise((res, rej) => {
+    let promise = $.ajax({
+      url,
+      data,
+      type: type.toUpperCase()
+    });
+    promise
+    .then(data => {
+      data.state || tip(data.msg, 'error');
+      return data;
+    })
+    .done(res)
+    .fail(rej);
+  })
+}
+
 export {
   check,
   load,
-  tip
+  tip,
+  getJson
 };

@@ -1,9 +1,13 @@
-var express = require('express');
-var router = express.Router();
-var assert = require('assert');
-var mongodb = require('mongodb');
-var mongo = require('../lib/utils/mongo');
-var { bk } = require('../lib/utils/util');
+const express = require('express');
+const router = express.Router();
+const assert = require('assert');
+const crypto = require('crypto');
+const mongodb = require('mongodb');
+const redis = require("redis");
+const rdsClient = redis.createClient();
+const mongo = require('../lib/utils/mongo');
+const { bk, encrypt } = require('../lib/utils/util');
+
 
 new mongo('posts').getDB().then(db => {
 
@@ -60,22 +64,39 @@ new mongo('posts').getDB().then(db => {
     let r = await col.insertOne(req.body);
     res[bk](r, r.insertedCount === 1);
   });
+
+  router.post('/login', async (req, res) => {
+    let col = db.collection('user');
+    let pwd = encrypt(req.body.pwd);
+    let doc = {...req.body, pwd};
+    let r = await col.findOne(doc);
+    if(r) {
+      // rdsClient.hmset(pwd, pwd, redis.print); // 数据写入 redis
+      res.cookie('utoken', pwd, { httpOnly: true, expires: 0 });  // If not specified expires or set to 0, creates a session cookie.
+      res[bk](req.session);
+    }
+  })
 });
 
 router.get('/submit', async function (req, res, next) {
-  let db = await (new mongo).getDB();
+  let db = await (new mongo('posts')).getDB();
   let col = db.collection('user');
   let doc = await col.findOne({name: req.query.name});
   let msg = '';
   if (doc) {
     msg = '用户名已经存在!';
   } else {
-    let r = await col.insertOne(req.query);
+    let pwd = encrypt(req.query.pwd);
+
+    let r = await col.insertOne({...req.query, pwd});
     assert.equal(1, r.insertedCount);
     res.json({state: 1, data: '注册成功!'});
   }
 });
 
 
+rdsClient.on("error", function (err) {
+    console.log("Error " + err);
+});
 
 module.exports = router;
