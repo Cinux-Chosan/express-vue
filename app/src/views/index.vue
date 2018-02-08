@@ -30,6 +30,7 @@
 </template>
 
 <script>
+  import { getJson } from '@/libs/util';
   import contentBlock from '@/components/content-block';
   export default {
     name: "index",
@@ -48,8 +49,10 @@
     },
     methods: {
       getPosts() {
-        this.axios.get("/posts").then(r => {
-          this.posts = r.data.data;
+        getJson("/posts").then(r => {
+          if (r.state) {
+            this.posts = r.data;
+          }
         });
       }
     }

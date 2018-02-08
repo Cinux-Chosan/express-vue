@@ -67,7 +67,10 @@ function getJson(url = '', data = {}, type = 'GET') {
     let promise = $.ajax({
       url,
       data,
-      type: type.toUpperCase()
+      type: type.toUpperCase(),
+      xhrFields: {
+        withCredentials: true
+     }
     });
     promise
     .then(data => {

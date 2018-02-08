@@ -3,8 +3,8 @@ const router = express.Router();
 const assert = require('assert');
 const crypto = require('crypto');
 const mongodb = require('mongodb');
-const redis = require("redis");
-const rdsClient = redis.createClient();
+// const redis = require("redis");
+// const rdsClient = redis.createClient();
 const mongo = require('../lib/utils/mongo');
 const { bk, encrypt } = require('../lib/utils/util');
 
@@ -12,6 +12,7 @@ const { bk, encrypt } = require('../lib/utils/util');
 new mongo('posts').getDB().then(db => {
 
   router.get('/posts', async (req, res, next) => {
+    console.log('post-session: ', req.session.username);
     try {
       // let db = await new mongo('posts').getDB();
       let docs = await db.collection('posts').find().project({ title: 1 }).toArray();
@@ -57,7 +58,7 @@ new mongo('posts').getDB().then(db => {
     } catch (error) {
       res.status(500)[bk]('服务端错误', 0);
     }
-  });
+  }); 
 
   router.post('/category', async (req, res, next) => {
     let col = db.collection('category');
@@ -70,9 +71,11 @@ new mongo('posts').getDB().then(db => {
     let pwd = encrypt(req.body.pwd);
     let doc = {...req.body, pwd};
     let r = await col.findOne(doc);
+    
     if(r) {
       // rdsClient.hmset(pwd, pwd, redis.print); // 数据写入 redis
-      res.cookie('utoken', pwd, { httpOnly: true, expires: 0 });  // If not specified expires or set to 0, creates a session cookie.
+      // res.cookie('utoken', pwd, { httpOnly: true, expires: 0 });  // If not specified expires or set to 0, creates a session cookie.
+      req.session.username = req.body.name;
       res[bk](req.session);
     }
   })
@@ -87,7 +90,6 @@ router.get('/submit', async function (req, res, next) {
     msg = '用户名已经存在!';
   } else {
     let pwd = encrypt(req.query.pwd);
-
     let r = await col.insertOne({...req.query, pwd});
     assert.equal(1, r.insertedCount);
     res.json({state: 1, data: '注册成功!'});
@@ -95,8 +97,8 @@ router.get('/submit', async function (req, res, next) {
 });
 
 
-rdsClient.on("error", function (err) {
-    console.log("Error " + err);
-});
+// rdsClient.on("error", function (err) {
+//     console.log("Error " + err);
+// });
 
 module.exports = router;
