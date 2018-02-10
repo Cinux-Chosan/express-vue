@@ -64,7 +64,7 @@ function tip(msg, type = 'info') {
 
 
 function getJson(url = '', data = {}, type = 'GET') {
-  url = (!url.match(/^((http)|(\/\/))/) && isDev) ? baseURL + url : url;
+  url = !url.match(/^((http)|(\/\/))/) ? baseURL + url : url;
   return new Promise((res, rej) => {
     let promise = $.ajax({
       url,
