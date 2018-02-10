@@ -88,6 +88,11 @@
     &.with-sidebar {
       margin-left: 250px;
     }
+    @media screen and (max-width: 768px){
+      &.with-sidebar{
+        margin-left: 0;
+      }
+    }
   }
 </style>
 
