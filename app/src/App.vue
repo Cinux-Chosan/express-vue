@@ -84,6 +84,8 @@
     position: relative;
   }
 
+  $xs-screen: 768px;
+
   .post-main {
     flex: 1;
     transition: all .2s;
@@ -92,7 +94,7 @@
     &.with-sidebar {
       margin-left: 250px;
     }
-    @media screen and (max-width: 768px){
+    @media screen and (max-width: $xs-screen){
       &.with-sidebar{
         margin-left: 0;
       }
