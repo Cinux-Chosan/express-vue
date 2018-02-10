@@ -65,6 +65,10 @@
     }
   }
 
+  .iconfont {
+    line-height: 1;
+  }
+
   // 让 prettify 所有行都显示行号
   ol.linenums {
     li {
@@ -140,6 +144,10 @@
 
   .fb{
     font-weight: bolder;
+  }
+
+  .mt5{
+    margin-top: 5px;
   }
 
   .mt30{

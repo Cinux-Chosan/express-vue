@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="col-sm-10 col-sm-offset-1">
       <content-block class="page-main" :title="title">
-          <router-link slot="rightHeader" :to="{path: '/write', query: { id: this.$route.params.id }}" class="self-flex-start"><i class="iconfont icon-edit"></i></router-link>
+          <router-link v-if="isLogged" slot="rightHeader" :to="{path: '/write', query: { id: this.$route.params.id }}" class="self-flex-start"><i class="iconfont icon-edit"></i></router-link>
         <article v-html="content">
         </article>
       </content-block>
@@ -16,7 +16,8 @@
 <script>
   import {
     load,
-    check
+    check,
+    getJson
   } from "@/libs/util";
   import contentBlock from "@/components/content-block";
 
@@ -27,20 +28,22 @@
     data: function() {
       return {
         title: "",
-        content: ""
+        content: "",
+        isLogged: ""
       };
     },
     created() {
       this.getPost();
+      this.getPermission();
     },
     components: {
       contentBlock
     },
     methods: {
       async getPost() {
-        let r = await this.axios.get(`/post?id=${this.$route.params.id}`);
-        if (r.data.state) {
-          let data = r.data.data;
+        let r = await getJson(`/post?id=${this.$route.params.id}`);
+        if (r.state) {
+          let data = r.data;
           this.title = data.title;
           this.content = data.content;
           if (data.type === "md") {
@@ -51,6 +54,12 @@
           await check(() => window.prettyPrint);
           $("article pre").addClass("prettyprint linenums");
           window.prettyPrint();
+        }
+      },
+      async getPermission() {
+        let r = await getJson('/logged');
+        if (r.state) {
+          this.isLogged = r.data;
         }
       }
     }

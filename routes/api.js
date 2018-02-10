@@ -3,8 +3,6 @@ const router = express.Router();
 const assert = require('assert');
 const crypto = require('crypto');
 const mongodb = require('mongodb');
-// const redis = require("redis");
-// const rdsClient = redis.createClient();
 const mongo = require('../lib/utils/mongo');
 const { bk, encrypt } = require('../lib/utils/util');
 
@@ -12,9 +10,7 @@ const { bk, encrypt } = require('../lib/utils/util');
 new mongo('posts').getDB().then(db => {
 
   router.get('/posts', async (req, res, next) => {
-    console.log('post-session: ', req.session.username);
     try {
-      // let db = await new mongo('posts').getDB();
       let docs = await db.collection('posts').find().project({ title: 1 }).toArray();
       res[bk](docs);
     } catch(e) {
@@ -23,7 +19,6 @@ new mongo('posts').getDB().then(db => {
   })
 
   router.get('/post', async (req, res, next) => {
-    // let db = await new mongo('posts').getDB();
     let col = db.collection('posts');
     let _id = req.query.id;
     if (_id) {
@@ -35,7 +30,11 @@ new mongo('posts').getDB().then(db => {
   })
 
   router.post('/post', async(req, res, next) => {
-    // let db = await new mongo('posts').getDB();
+    console.log(req.session);
+
+    if (!req.session.username) {
+      return res[bk]('用户未登录!', false);
+    }
     let col = db.collection('posts');
     let post_id = req.body.post_id;
     if (post_id) {
@@ -50,15 +49,14 @@ new mongo('posts').getDB().then(db => {
   })
 
   router.get('/categories', async (req, res, next) => {
-    // let db = await new mongo('posts').getDB();
     let col = db.collection('category');
     try {
-      let r = await col.find().toArray();
-      res[bk](r);
+      let categories = await col.find().toArray();
+      res[bk]({categories, hasEditPermission: !!req.session.username});
     } catch (error) {
       res.status(500)[bk]('服务端错误', 0);
     }
-  }); 
+  });
 
   router.post('/category', async (req, res, next) => {
     let col = db.collection('category');
@@ -71,13 +69,18 @@ new mongo('posts').getDB().then(db => {
     let pwd = encrypt(req.body.pwd);
     let doc = {...req.body, pwd};
     let r = await col.findOne(doc);
-    
+
     if(r) {
-      // rdsClient.hmset(pwd, pwd, redis.print); // 数据写入 redis
-      // res.cookie('utoken', pwd, { httpOnly: true, expires: 0 });  // If not specified expires or set to 0, creates a session cookie.
       req.session.username = req.body.name;
+      req.session.uid = r._id;
       res[bk](req.session);
+      console.log(req.session.username);
     }
+  })
+
+  router.get('/logged', (req, res) => {
+    let isLogged = !!req.session.username;
+    res[bk](isLogged);
   })
 });
 
@@ -95,10 +98,5 @@ router.get('/submit', async function (req, res, next) {
     res.json({state: 1, data: '注册成功!'});
   }
 });
-
-
-// rdsClient.on("error", function (err) {
-//     console.log("Error " + err);
-// });
 
 module.exports = router;

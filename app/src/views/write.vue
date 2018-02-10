@@ -24,13 +24,11 @@
         </div>
       </form>
       <div class="form-group">
-        <bs-dropdown txt="选择编辑器" class="fl">
-          <template v-if="categories && categories.length">
-              <li v-for="cate in categories" :key="cate.id">
-                <a href="" ></a>
-              </li>
-          </template>
-          <li v-else> <a>暂时还没有分类</a> </li>
+        <bs-dropdown txt="选择分类" class="fl">
+            <li>
+              <categories-tree></categories-tree>
+            </li>
+          <!-- <li v-else> <a>暂时还没有分类</a> </li> -->
           <li role="separator" class="divider"></li>
           <li @click="addCategory" class="pointer"><a>添加分类</a></li>
         </bs-dropdown>
@@ -44,9 +42,8 @@
   import mavonEditor from "@/components/editor-md";
   import kindEditor from "@/components/kindeditor";
   import bsDropdown from "@/components/bs-dropdown";
-  import {
-    tip
-  } from "@/libs/util";
+  import categoriesTree from '@/components/categories-tree';
+  import { tip, getJson } from "@/libs/util";
 
   export default {
     name: "write",
@@ -62,13 +59,14 @@
     components: {
       mavonEditor,
       kindEditor,
-      bsDropdown
+      bsDropdown,
+      categoriesTree
     },
     created() {
       if (this.$route.query.id) {
         this.getPost(this.$route.query.id);
       }
-      this.getCategories();
+      // this.getCategories();
     },
     computed: {
       editorContent() {
@@ -90,9 +88,9 @@
     },
     methods: {
       async getPost(id) {
-        let r = await this.axios.get(`/post?id=${id}`);
-        if (r.data.state) {
-          let data = r.data.data;
+        let r = await getJson(`/post?id=${id}`);
+        if (r.state) {
+          let data = r.data;
           this.title = data.title;
           this.content = data.content;
           this.post_id = id;
@@ -100,18 +98,18 @@
         }
       },
       async getCategories() {
-        let r = await this.axios.get('/post');
+        let r = await getJson('/categories');
         if (r.state) {
-          this.data = r.data.data;
+          this.categories = r.data;
         }
       },
       submit() {
         let editorContent = this.editorContent;
         let data = { ...this.$data, ...editorContent };
         let context = this;
-        this.axios.post("/post", data).then(r => {
-          context.$data.post_id = r.data.data.id;
-          if (r.data.state) {
+        getJson("/post", data, 'post').then(r => {
+          context.$data.post_id = r.data.id;
+          if (r.state) {
             tip('保存成功!');
           }
         });
