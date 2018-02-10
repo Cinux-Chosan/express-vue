@@ -84,18 +84,21 @@ new mongo('posts').getDB().then(db => {
   })
 });
 
-router.get('/submit', async function (req, res, next) {
+router.post('/signup', async function (req, res, next) {
+  if (!process.env.ALLOW_SIGNUP) res[bk]('不允许注册!');
   let db = await (new mongo('posts')).getDB();
   let col = db.collection('user');
-  let doc = await col.findOne({name: req.query.name});
+
+  let doc = await col.findOne({name: req.body.name});
   let msg = '';
   if (doc) {
     msg = '用户名已经存在!';
+    res[bk]('注册失败!', false);
   } else {
-    let pwd = encrypt(req.query.pwd);
-    let r = await col.insertOne({...req.query, pwd});
+    let pwd = encrypt(req.body.pwd);
+    let r = await col.insertOne({...req.body, pwd});
     assert.equal(1, r.insertedCount);
-    res.json({state: 1, data: '注册成功!'});
+    res[bk]('注册成功!', true);
   }
 });
 
