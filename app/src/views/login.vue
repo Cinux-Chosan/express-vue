@@ -29,7 +29,6 @@ export default {
   methods: {
     async login() {
       let data = await getJson('/login', this.$data, 'post');
-      debugger
     }
   }
 }

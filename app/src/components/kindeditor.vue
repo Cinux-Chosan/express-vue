@@ -4,7 +4,6 @@
   </div>
 </template>
 
-
 <script>
   import { check } from "@/libs/util";
 
@@ -36,7 +35,3 @@
     }
   }
 </script>
-
-<style>
-
-</style>

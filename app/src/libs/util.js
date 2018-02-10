@@ -1,16 +1,18 @@
 import Vue from 'vue';
-import axios from 'axios';
+// import axios from 'axios';
 
 let isDev = ~location.href.indexOf('localhost');
 var baseURL = '';
 
 if (isDev) {
-  axios.defaults.baseURL = baseURL = '//localhost:3000/api/'
+  // axios.defaults.baseURL =
+  baseURL = '//localhost:3000/api/'
 } else {
-  axios.defaults.baseURL = baseURL = '/api/';
+  // axios.defaults.baseURL =
+  baseURL = '/api/';
 }
 
-Vue.prototype.axios = Vue.axios || axios;
+// Vue.prototype.axios = Vue.axios || axios;
 
 function check(fn, timeout = 15000) {
   let interval = 30;
@@ -62,7 +64,7 @@ function tip(msg, type = 'info') {
 
 
 function getJson(url = '', data = {}, type = 'GET') {
-  url = (!url.match(/^((http)|(\/\/))/) && isDev) ? baseURL + url : url;
+  url = !url.match(/^((http)|(\/\/))/) ? baseURL + url : url;
   return new Promise((res, rej) => {
     let promise = $.ajax({
       url,
@@ -74,7 +76,7 @@ function getJson(url = '', data = {}, type = 'GET') {
     });
     promise
     .then(data => {
-      data.state || tip(data.msg, 'error');
+      data.state || tip(data.msg || data.data, 'error');
       return data;
     })
     .done(res)

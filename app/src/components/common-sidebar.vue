@@ -9,13 +9,16 @@
         <li v-for="nav in navs" :key="nav._id">
         </li>
       </ul>
-  
+
+      <categories-tree class="mt5"></categories-tree>
+
       <me :class="['animated', showSidebar ? 'flipInX' : '']"></me>
     </div>
   </section>
 </template>
 
 <script>
+  import categoriesTree from "@/components/categories-tree";
   import me from '@/components/me';
   export default {
     name: 'common-sidebar',
@@ -26,6 +29,7 @@
       };
     },
     components: {
+      categoriesTree,
       me
     },
     computed: {},
@@ -42,7 +46,7 @@
   .sidebar {
     z-index: 1;
   }
-  
+
   .sidebar-main {
     width: 250px;
     left: 0;
@@ -82,12 +86,12 @@
       }
     }
   }
-  
+
   .nav {
     margin-top: 30px;
     background: blanchedalmond;
     font-size: 20px;
-    
+
     li {
       text-align: center;
       transition: all .2s;
