@@ -1,4 +1,3 @@
-import Vue from 'vue';
 // import axios from 'axios';
 
 let isDev = ~location.href.indexOf('localhost');
@@ -30,20 +29,20 @@ function check(fn, timeout = 15000) {
   })
 }
 
-var _file_loaded = {};
+var fileLoaded = {};
 
 function load(files) {
   if (files instanceof Array) {
     return Promise.all(files.map(el => load(el)));
   } else if (typeof files === 'string') {
     return new Promise((res, rej) => {
-      if (_file_loaded[files]) return res();
+      if (fileLoaded[files]) return res();
       if (files.endsWith('.js')) {
-        return $.getScript(files).then(() => res(_file_loaded[files] = true));
+        return $.getScript(files).then(() => res(fileLoaded[files] = true));
       }
       if (files.endsWith('.css')) {
         let link = document.createElement('link');
-        link.onload = () => res(_file_loaded[files] = true);
+        link.onload = () => res(fileLoaded[files] = true);
         link.rel = 'stylesheet';
         link.href = files;
         document.head.appendChild(link);

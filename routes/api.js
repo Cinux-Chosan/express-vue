@@ -65,6 +65,9 @@ new mongo('posts').getDB().then(db => {
   });
 
   router.post('/login', async (req, res) => {
+    let loginTimes = req.session.loginTimes;
+    req.session.loginTimes = loginTimes ? ++loginTimes : 0;
+
     let col = db.collection('user');
     let pwd = encrypt(req.body.pwd);
     let doc = {...req.body, pwd};
@@ -75,6 +78,9 @@ new mongo('posts').getDB().then(db => {
       req.session.uid = r._id;
       res[bk](req.session);
       console.log(req.session.username);
+    } else {
+      let failTimes = res.session.failTimes;
+      res.session.failTimes = failTimes ? ++failTimes : 0;
     }
   })
 
