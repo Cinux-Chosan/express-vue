@@ -65,8 +65,13 @@ new mongo('posts').getDB().then(db => {
   });
 
   router.post('/login', async (req, res) => {
+
     let loginTimes = req.session.loginTimes;
     req.session.loginTimes = loginTimes ? ++loginTimes : 0;
+
+    if (req.session.failTimes > 5) {
+      return res[bk]('兄弟, 错 5 次了还不死心 ?', false);
+    }
 
     let col = db.collection('user');
     let pwd = encrypt(req.body.pwd);
