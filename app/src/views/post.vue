@@ -98,6 +98,8 @@
 
   article {
     margin: 10px 10px 30px 60px;
+    overflow: hidden;
+    overflow-wrap: break-word;
     @media screen and (max-width: $xs-screen){
       margin-left: 0;
     }
