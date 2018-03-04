@@ -49,7 +49,7 @@ new mongo('posts').getDB().then(db => {
   })
 
   router.get('/categories', async (req, res, next) => {
-    let col = db.collection('category');
+    let col = db.collection('categories');
     try {
       let categories = await col.find().toArray();
       res[bk]({categories, hasEditPermission: !!req.session.username});

@@ -1,10 +1,10 @@
 <template>
-  <ul class="tree-structure list-group" v-if="nodes.length">
+  <ul class="tree-structure list-group" v-if="nodes && nodes.length">
     <li class="tree-strucure__item list-group-item" v-for="node in nodes" :key="node._id">
       <ul class="tree-structure__operations">
-        <li @click="add(node)" v-if="hasPermission">添加</li>
-        <li @click="del(node)" v-if="hasPermission">删除</li>
-        <li @click="toggleFold(node)" :class="node.fold ? 'fold': ''"><i class="iconfont icon-circle-down"></i></li>
+        <li @click="add(node)" v-if="hasPermission"><i class="iconfont icon-add"></i></li>
+        <li @click="del(node)" v-if="hasPermission"><i class="iconfont icon-minus"></i> </li>
+        <li @click="toggleFold(node)" v-if="node.children && node.children.length" :class="node.fold ? 'fold': ''"><i class="iconfont icon-circle-down"></i></li>
       </ul>
       <span class="badge">{{node.num}}</span>
       <span :contenteditable="hasPermission">{{node.name}}</span>
@@ -25,8 +25,8 @@ export default {
   methods: {
     add(node) {
       // this.$emit('add', ...arguments);
-      node.fold = false;
-      node.children = node.children || [];
+      Vue.set(node, 'fold', false);
+      Vue.set(node, 'children', node.children || []);
       node.children.push({ name: "名称", fold: true, children: [] });
     },
     del(node) {
@@ -50,13 +50,14 @@ export default {
     list-style: none;
     li {
       float: left;
+      margin-right: 8px;
       cursor: pointer;
       &:hover {
         color: red;
       }
       & + li {
         &::before {
-          content: "|";
+          // content: "|";
           color: initial;
         }
       }

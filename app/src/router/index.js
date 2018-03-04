@@ -5,6 +5,7 @@ import Index from '@/views/index'
 import Write from '@/views/write'
 import Post from '@/views/post'
 import Login from '@/views/login'
+import Category from '@/views/category'
 
 Vue.use(Router)
 
@@ -34,6 +35,11 @@ const router = new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/category',
+      name: 'category',
+      component: Category
     }
   ]
 })

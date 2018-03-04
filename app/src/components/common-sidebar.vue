@@ -10,7 +10,7 @@
         </li>
       </ul>
 
-      <categories-tree class="mt5"></categories-tree>
+      <categories-tree class="mt5" :isShowOpts="false"></categories-tree>
 
       <me :class="['animated', showSidebar ? 'flipInX' : '']"></me>
     </div>

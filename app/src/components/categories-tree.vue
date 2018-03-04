@@ -5,7 +5,6 @@
   </div>
 </template>
 
-
 <script>
 import treeStructure from '@/components/tree-structure';
 import { getJson } from '@/libs/util';
@@ -15,6 +14,7 @@ export default {
   created() {
     this.getCategories();
   },
+  props: ['isShowOpts'],
   data: () => {
     return {
       categories: [],
@@ -29,7 +29,7 @@ export default {
       let rs = await getJson('/categories');
       if (rs.state) {
         this.categories = rs.data.categories;
-        this.hasPermission = rs.data.hasEditPermission;
+        this.hasPermission = this.isShowOpts === false ? false : rs.data.hasEditPermission;
       }
     },
     add(node) {
