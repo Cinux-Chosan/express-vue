@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { getJson } from '@/libs/util';
+import { getJson, tip } from '@/libs/util';
 
 export default {
   name: 'login',
@@ -29,6 +29,10 @@ export default {
   methods: {
     async login() {
       let data = await getJson('/login', this.$data, 'post');
+      if (data.state) {
+        tip('登陆成功!');
+        history.back();
+      }
     }
   }
 }

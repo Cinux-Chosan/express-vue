@@ -33,9 +33,10 @@ app.use((req, res, next) => {
 });
 
 app.use(session({
-  secret: 'keyboard cat',
+  secret: 'chosan',
   resave: false,
   saveUninitialized: true,
+  rolling: true,  // 每次请求更新登陆超时时间
   cookie: {
     maxAge: 3600000 // 60分钟有效
   }

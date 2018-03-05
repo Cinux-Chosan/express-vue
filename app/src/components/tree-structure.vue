@@ -1,19 +1,24 @@
 <template>
+  <div>
   <ul class="tree-structure list-group" v-if="nodes && nodes.length">
     <li class="tree-strucure__item list-group-item" v-for="node in nodes" :key="node._id">
       <ul class="tree-structure__operations">
+        <li @click="edit(node)" v-if="hasPermission"><i class="iconfont icon-bianji"></i></li>
         <li @click="add(node)" v-if="hasPermission"><i class="iconfont icon-add"></i></li>
         <li @click="del(node)" v-if="hasPermission"><i class="iconfont icon-minus"></i> </li>
         <li @click="toggleFold(node)" v-if="node.children && node.children.length" :class="node.fold ? 'fold': ''"><i class="iconfont icon-circle-down"></i></li>
       </ul>
       <span class="badge">{{node.num}}</span>
-      <span :contenteditable="hasPermission">{{node.name}}</span>
+      <span>{{node.name}}</span>
       <tree-structure v-show="!node.fold" :nodes="node.children" :hasPermission="hasPermission"></tree-structure>
     </li>
   </ul>
+  </div>
+
 </template>
 
 <script>
+
 export default {
   name: "tree-structure",
   props: ["nodes", "hasPermission"],
@@ -23,11 +28,16 @@ export default {
     };
   },
   methods: {
+    edit(node) {
+      this.$emit('edit', ...arguments);
+    },
     add(node) {
-      // this.$emit('add', ...arguments);
-      Vue.set(node, 'fold', false);
-      Vue.set(node, 'children', node.children || []);
-      node.children.push({ name: "名称", fold: true, children: [] });
+      let child = {};
+      child.parent = node;
+      this.$emit('add', child);
+      // Vue.set(node, 'fold', false);
+      // Vue.set(node, 'children', node.children || []);
+      // node.children.push({ name: "名称", fold: true, children: [] });
     },
     del(node) {
       this.nodes.splice(this.nodes.indexOf(node), 1);

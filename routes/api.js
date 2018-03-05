@@ -68,7 +68,6 @@ new mongo('posts').getDB().then(db => {
 
     let loginTimes = req.session.loginTimes;
     req.session.loginTimes = loginTimes ? ++loginTimes : 0;
-
     if (req.session.failTimes > 5) {
       return res[bk]('兄弟, 错 5 次了还不死心 ?', false);
     }
@@ -81,17 +80,24 @@ new mongo('posts').getDB().then(db => {
     if(r) {
       req.session.username = req.body.name;
       req.session.uid = r._id;
-      res[bk](req.session);
+      res[bk]('登陆成功');
       console.log(req.session.username);
     } else {
       let failTimes = res.session.failTimes;
       res.session.failTimes = failTimes ? ++failTimes : 0;
+      res[bk]('登陆失败!', false);
     }
   })
 
   router.get('/logged', (req, res) => {
     let isLogged = !!req.session.username;
     res[bk](isLogged);
+  })
+
+  router.post('/updateCategory',async (req, res) => {
+    let col = db.collection('categories');
+    let r = await col.updateOne({ _id: mongodb.ObjectID(req.body.id) }, { $set: { name: req.body.name }});
+    res[bk]('更新成功!', r.nModified);
   })
 });
 
