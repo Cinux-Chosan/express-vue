@@ -57,7 +57,10 @@
         }
       },
       async addCategory(node) {
-
+        let rs = await getJson('/addCate', { ...node }, 'post');
+        if (rs.state) {
+          tip('添加成功!');
+        }
       },
       async updateCategory(node) {
         let id = node._id;

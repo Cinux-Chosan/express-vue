@@ -94,6 +94,10 @@ new mongo('posts').getDB().then(db => {
     res[bk](isLogged);
   })
 
+  router.post('/addCate', async (req, res) => {
+
+  })
+
   router.post('/updateCategory',async (req, res) => {
     let col = db.collection('categories');
     let r = await col.updateOne({ _id: mongodb.ObjectID(req.body.id) }, { $set: { name: req.body.name }});
