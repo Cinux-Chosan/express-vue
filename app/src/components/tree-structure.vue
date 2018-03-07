@@ -54,9 +54,10 @@ export default {
       // Vue.set(node, 'children', node.children || []);
       // node.children.push({ name: "名称", fold: true, children: [] });
     },
-    del(node) {
+    del(node, event) {
+      this.getRootId(node, event);
       this.nodes.splice(this.nodes.indexOf(node), 1);
-      this.$emit("del", ...arguments);
+      this.$emit("del", node);
     },
     toggleFold(node) {
       Vue.set(node, 'fold', !node.fold);  //  由于根节点可能没有 fold 属性, 直接设置该属性不会更新 dom, 故需要使用 Vue.set

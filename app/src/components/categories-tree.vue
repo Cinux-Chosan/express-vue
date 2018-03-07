@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="clearfix mb10">
+    <div class="clearfix mb10" v-if="isShowOpts">
       <Button type="primary" icon="ios-color-wand-outline" class="fr" @click="createNewRoot"></Button>
     </div>
     <tree-structure :nodes="categories" :hasPermission="hasPermission" @edit="edit" @add="add" @del="del">
@@ -86,6 +86,7 @@
       del(node) {
         this.node = node;
         this.state = 2;
+        this.submit();
       },
       closeModal() {
         this.showModal = false;
