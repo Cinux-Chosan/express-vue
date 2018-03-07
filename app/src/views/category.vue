@@ -1,7 +1,8 @@
 
 <template>
   <div class="category">
-    <categroy-tree></categroy-tree>
+
+    <categroy-tree @createNewRoot="createNewRoot"></categroy-tree>
   </div>
 </template>
 
@@ -23,6 +24,9 @@ export default {
   methods: {
     async login() {
       let data = await getJson('/login', this.$data, 'post');
+    },
+    createNewRoot() {
+
     }
   }
 }

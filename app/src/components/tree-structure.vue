@@ -1,16 +1,16 @@
 <template>
   <div>
   <ul class="tree-structure list-group" v-if="nodes && nodes.length">
-    <li class="tree-strucure__item list-group-item" v-for="node in nodes" :key="node._id">
+    <li class="tree-strucure__item list-group-item" v-for="node in nodes" :key="node._id" :data-level="level" :data-id="node._id">
       <ul class="tree-structure__operations">
-        <li @click="edit(node)" v-if="hasPermission"><i class="iconfont icon-bianji"></i></li>
-        <li @click="add(node)" v-if="hasPermission"><i class="iconfont icon-add"></i></li>
-        <li @click="del(node)" v-if="hasPermission"><i class="iconfont icon-minus"></i> </li>
+        <li @click="edit(node, $event)" v-if="hasPermission"><i class="iconfont icon-bianji"></i></li>
+        <li @click="add(node, $event)" v-if="hasPermission"><i class="iconfont icon-add"></i></li>
+        <li @click="del(node, $event)" v-if="hasPermission"><i class="iconfont icon-minus"></i> </li>
         <li @click="toggleFold(node)" v-if="node.children && node.children.length" :class="node.fold ? 'fold': ''"><i class="iconfont icon-circle-down"></i></li>
       </ul>
       <span class="badge">{{node.num}}</span>
       <span>{{node.name}}</span>
-      <tree-structure v-show="!node.fold" :nodes="node.children" :hasPermission="hasPermission"></tree-structure>
+      <tree-structure v-show="!node.fold" :nodes="node.children" :hasPermission="hasPermission" :level="level+1"></tree-structure>
     </li>
   </ul>
   </div>
@@ -21,19 +21,34 @@
 
 export default {
   name: "tree-structure",
-  props: ["nodes", "hasPermission"],
+  props: {
+    nodes: {},
+    hasPermission: {},
+    level: {
+      default: 1
+    }
+  },
   data: function() {
     return {
       children: this.items
     };
   },
+
+
+
   methods: {
-    edit(node) {
-      this.$emit('edit', ...arguments);
+    getRootId(node, event) {
+      let $this = $(event.target);
+      node.rootId = $this.closest('li[data-level="1"]').data('id');
     },
-    add(node) {
+    edit(node, event) {
+      this.getRootId(...arguments);
+      this.$emit('edit', node);
+    },
+    add(node, event) {
       let child = {};
       child.parent = node;
+      this.getRootId(child, event);
       this.$emit('add', child);
       // Vue.set(node, 'fold', false);
       // Vue.set(node, 'children', node.children || []);

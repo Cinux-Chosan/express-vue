@@ -5,13 +5,17 @@ const crypto = require('crypto');
 const mongodb = require('mongodb');
 const mongo = require('../lib/utils/mongo');
 const { bk, encrypt } = require('../lib/utils/util');
-
+require('../lib/utils/mk-mongo-counter');
 
 new mongo('posts').getDB().then(db => {
 
+  let colPosts = db.collection('posts');
+  let colCategory = db.collection('category');
+  let colUser = db.collection('user');
+
   router.get('/posts', async (req, res, next) => {
     try {
-      let docs = await db.collection('posts').find().project({ title: 1 }).toArray();
+      let docs = await colPosts.find().project({ title: 1 }).toArray();
       res[bk](docs);
     } catch(e) {
       res.status(500)[bk]('服务端错误', false);
@@ -19,7 +23,7 @@ new mongo('posts').getDB().then(db => {
   })
 
   router.get('/post', async (req, res, next) => {
-    let col = db.collection('posts');
+    let col = colPosts;
     let _id = req.query.id;
     if (_id) {
       let doc = await col.findOne({ _id: mongodb.ObjectID(_id) });
@@ -35,7 +39,7 @@ new mongo('posts').getDB().then(db => {
     if (!req.session.username) {
       return res[bk]('用户未登录!', false);
     }
-    let col = db.collection('posts');
+    let col = colPosts;
     let post_id = req.body.post_id;
     if (post_id) {
       delete req.body.post_id;
@@ -49,7 +53,7 @@ new mongo('posts').getDB().then(db => {
   })
 
   router.get('/categories', async (req, res, next) => {
-    let col = db.collection('categories');
+    let col = colCategory;
     try {
       let categories = await col.find().toArray();
       res[bk]({categories, hasEditPermission: !!req.session.username});
@@ -59,7 +63,7 @@ new mongo('posts').getDB().then(db => {
   });
 
   router.post('/category', async (req, res, next) => {
-    let col = db.collection('category');
+    let col = colCategory;
     let r = await col.insertOne(req.body);
     res[bk](r, r.insertedCount === 1);
   });
@@ -72,7 +76,7 @@ new mongo('posts').getDB().then(db => {
       return res[bk]('兄弟, 错 5 次了还不死心 ?', false);
     }
 
-    let col = db.collection('user');
+    let col = colUser;
     let pwd = encrypt(req.body.pwd);
     let doc = {...req.body, pwd};
     let r = await col.findOne(doc);
@@ -95,11 +99,19 @@ new mongo('posts').getDB().then(db => {
   })
 
   router.post('/addCate', async (req, res) => {
+    if (!req.session.username) {
+      return res[bk]('用户未登录!', false);
+    }
+    if (req.body.parentId) {
 
+    } else {
+      let r = await colCategory.insertOne(req.body);
+      res[bk](`添加${r.insertedCount ? '成功' : '失败'}!`, r.insertedCount);
+    }
   })
 
   router.post('/updateCategory',async (req, res) => {
-    let col = db.collection('categories');
+    let col = colCategory;
     let r = await col.updateOne({ _id: mongodb.ObjectID(req.body.id) }, { $set: { name: req.body.name }});
     res[bk]('更新成功!', r.nModified);
   })
@@ -108,7 +120,7 @@ new mongo('posts').getDB().then(db => {
 router.post('/signup', async function (req, res, next) {
   if (!process.env.ALLOW_SIGNUP) res[bk]('不允许注册!');
   let db = await (new mongo('posts')).getDB();
-  let col = db.collection('user');
+  let col = colUser;
 
   let doc = await col.findOne({name: req.body.name});
   let msg = '';

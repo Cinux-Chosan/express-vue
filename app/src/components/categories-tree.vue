@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="clearfix mb10">
+      <Button type="primary" icon="ios-color-wand-outline" class="fr" @click="createNewRoot"></Button>
+    </div>
     <tree-structure :nodes="categories" :hasPermission="hasPermission" @edit="edit" @add="add" @del="del">
     </tree-structure>
     <modal :title="'编辑分类'" :showModal="showModal" @cacel="closeModal" @ok="submit" :loading="loading">
@@ -98,7 +101,7 @@
             {
               let newNode = {};
               newNode.name = node.name;
-              newNode.parentId = node.parent._id;
+              newNode.parentId = node.parent && node.parent._id;
               await this.addCategory(newNode);
             }
             break;
@@ -111,6 +114,11 @@
           this.loading = false;
           setTimeout(() => this.loading = true);
         }
+      },
+      createNewRoot() {
+        this.showModal = true;
+        this.state = 1;
+        this.node = {}
       }
     }
   }

@@ -169,6 +169,10 @@
     margin-bottom: 0 !important;
   }
 
+  .mb10{
+    margin-bottom: 10px;
+  }
+
   .bg-fff{
     background: #fff;
   }
