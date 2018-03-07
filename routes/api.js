@@ -4,7 +4,7 @@ const assert = require('assert');
 const crypto = require('crypto');
 const mongodb = require('mongodb');
 const mongo = require('../lib/utils/mongo');
-const { bk, encrypt } = require('../lib/utils/util');
+const { bk, encrypt, getMongoCounter } = require('../lib/utils/util');
 require('../lib/utils/mk-mongo-counter');
 
 new mongo('posts').getDB().then(db => {
@@ -103,7 +103,8 @@ new mongo('posts').getDB().then(db => {
       return res[bk]('用户未登录!', false);
     }
     if (req.body.parentId) {
-
+      req.body._id = getMongoCounter();
+      colCategory.updateOne();
     } else {
       let r = await colCategory.insertOne(req.body);
       res[bk](`添加${r.insertedCount ? '成功' : '失败'}!`, r.insertedCount);
