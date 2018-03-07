@@ -96,7 +96,7 @@ new mongo('posts').getDB().then(db => {
     res[bk](isLogged);
   })
 
-  router.post('/addCate', async (req, res) => {
+  router.post('/addCategory', async (req, res) => {
     let col = db.collection('category');
     if (req.body._id) {
       
@@ -104,7 +104,7 @@ new mongo('posts').getDB().then(db => {
     let r = await col.insertOne({});
   })
 
-  router.post('/delCate', async (req, res) => {
+  router.post('/delCategory', async (req, res) => {
     let col = db.collection('category');
     let rootId = req.body.rootId;
     if (rootId) {
