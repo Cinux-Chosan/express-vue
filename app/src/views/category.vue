@@ -2,7 +2,7 @@
 <template>
   <div class="category">
 
-    <categroy-tree @createNewRoot="createNewRoot"></categroy-tree>
+    <categroy-tree @createNewRoot="createNewRoot" isShowOpts="true"></categroy-tree>
   </div>
 </template>
 

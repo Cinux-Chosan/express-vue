@@ -3,7 +3,7 @@
     <div class="clearfix mb10" v-if="isShowOpts">
       <Button type="primary" icon="ios-color-wand-outline" class="fr" @click="createNewRoot"></Button>
     </div>
-    <tree-structure :nodes="categories" :hasPermission="hasPermission" @edit="edit" @add="add" @del="del">
+    <tree-structure :nodes="categories" :hasPermission="hasPermission" :bus="bus">
     </tree-structure>
     <modal :title="'编辑分类'" :showModal="showModal" @cacel="closeModal" @ok="submit" :loading="loading">
       <Form :model="node">
@@ -18,14 +18,30 @@
 <script>
   import treeStructure from '@/components/tree-structure';
   import Modal from '@/components/modal';
-  import { getJson, tip } from '@/libs/util';
+  import {
+    getJson,
+    tip
+  } from '@/libs/util';
 
-  const STATE = [ 'edit', 'add', 'del' ];
+  const STATE = ['edit', 'add', 'del'];
 
   export default {
     name: 'cat-tree',
     created() {
+      let context = this;
       this.getCategories();
+      this.bus.$on('add', function() {
+        context.add(...arguments);
+      });
+      this.bus.$on('del', function() {
+        context.del(...arguments);
+      });
+      this.bus.$on('edit', function() {
+        context.edit(...arguments);
+      });
+      this.bus.$on('itemClick', function() {
+        context.itemClick(...arguments);
+      })
     },
     props: ['isShowOpts'],
     data: () => {
@@ -37,7 +53,8 @@
         loading: true,
         node: {
           name: ''
-        }
+        },
+        bus: new Vue()
       }
     },
     components: {
@@ -52,23 +69,38 @@
           this.hasPermission = this.isShowOpts === false ? false : rs.data.hasEditPermission;
         }
       },
-      async delCategory(id) {
+      async delCategory(node) {
         // 删除前需要确认!
-        let rs = await getJson('/delCate', { id }, 'post');
+        let {
+          _id,
+          rootId
+        } = node;
+        let rs = await getJson('/delCategory', {
+          _id,
+          rootId
+        }, 'post');
         if (rs.state) {
           tip('删除成功!');
         }
       },
       async addCategory(node) {
-        let rs = await getJson('/addCate', { ...node }, 'post');
+        let rs = await getJson('/addCategory', { ...node
+        }, 'post');
         if (rs.state) {
           tip('添加成功!');
         }
       },
       async updateCategory(node) {
-        let id = node._id;
-        let name = node.name;
-        let rs = await getJson('/updateCategory', { id, name }, 'post');
+        let {
+          _id,
+          name,
+          rootId
+        } = node;
+        let rs = await getJson('/updateCategory', {
+          _id,
+          name,
+          rootId
+        }, 'post');
         if (rs.state) {
           tip('更新成功!');
         }
@@ -88,27 +120,32 @@
         this.state = 2;
         this.submit();
       },
+      itemClick(node) {
+        console.log(node);
+      },
       closeModal() {
         this.showModal = false;
       },
       async submit(modalContext) {
         let node = this.node;
-        try{
-          switch(STATE[this.state]) {
-          case 'edit':
-            await this.updateCategory(node);
-            break;
-          case 'add':
-            {
-              let newNode = {};
-              newNode.name = node.name;
-              newNode.parentId = node.parent && node.parent._id;
-              await this.addCategory(newNode);
-            }
-            break;
-          case 'del':
-            await this.delCategory(node._id);
-          default: break;
+        try {
+          switch (STATE[this.state]) {
+            case 'edit':
+              await this.updateCategory(node);
+              break;
+            case 'add':
+              {
+                let newNode = {};
+                newNode.name = node.name;
+                newNode.rootId = node.rootId;
+                newNode.parentId = node.parent && node.parent._id;
+                await this.addCategory(newNode);
+              }
+              break;
+            case 'del':
+              await this.delCategory(node);
+            default:
+              break;
           }
           this.showModal = false;
         } finally {

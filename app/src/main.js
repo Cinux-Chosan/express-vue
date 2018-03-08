@@ -3,9 +3,9 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import './libs/util'
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
+import './libs/util'
 
 Vue.config.productionTip = false;
 

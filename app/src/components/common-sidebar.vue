@@ -1,7 +1,6 @@
 <template>
   <section class="sidebar">
     <div :class="[showSidebar ? 'show' : '', 'sidebar-main']">
-      <span class="toggle-sidebar" @click="toggle"><i class="iconfont icon-zuoyoujiantou"></i></span>
       <ul class='nav'>
         <li>
           <router-link to="/" class="bg-fff">首页</router-link>
@@ -11,6 +10,7 @@
       </ul>
 
       <categories-tree class="mt5" :isShowOpts="false"></categories-tree>
+      <span class="toggle-sidebar" @click="toggle"><i class="iconfont icon-zuoyoujiantou"></i></span>
 
       <me :class="['animated', showSidebar ? 'flipInX' : '']"></me>
     </div>
