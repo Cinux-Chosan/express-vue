@@ -46,6 +46,16 @@ export default {
     getParentId(node, event, level = false, propName = 'parentId') {
       this.getId(node, event, level, propName);
     },
+    getAllParent(node, event) {
+      let $this = $(event.currentTarget);
+      let parents = $this.parentsUntil('li[data-level="1"]').filter('[data-level]');
+      let level1 = $this.closest('li[data-level="1"]');
+      [].push.call(parents, $this);
+      $this.get(0) !== level1.get(0) && [].unshift.call(parents, level1);
+      let formatted = parents.map((i, el) => $(el).data('id'));
+      formatted = [].join.call(formatted, '-');
+      node.allParents = formatted;
+    },
     itemClick(node, event) {
       if (node.children && node.children.length) {
         return this.toggleFold(node);
@@ -53,6 +63,7 @@ export default {
       $('.list-group-item').removeClass('item-active');
       $(event.target).closest('li.list-group-item').addClass('item-active');
       this.getRootId(...arguments);
+      this.getAllParent(...arguments);
       this.bus.$emit('itemClick', ...arguments);
     },
     edit(node, event) {

@@ -45,15 +45,30 @@
       contentBlock
     },
     created() {
-      this.getPosts();
+      let cate = this.$route.query.cate;
+      if (cate) {
+        this.getCate(cate);
+      } else {
+        this.getPosts();
+      }
+    },
+    watch: {
+      "$route.query.cate"(curVal) {
+        curVal ? this.getCate(curVal) : this.getPosts();
+      } 
     },
     methods: {
-      getPosts() {
-        getJson("/posts").then(r => {
-          if (r.state) {
-            this.posts = r.data;
-          }
-        });
+      async getPosts() {
+        let r = await getJson("/posts")
+        if (r.state) {
+          this.posts = r.data;
+        }
+      },
+      async getCate(cate) {
+        let r = await getJson("/catePosts", { cate });
+        if (r.state) {
+          this.posts = r.data;
+        }
       }
     }
   };

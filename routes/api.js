@@ -108,7 +108,7 @@ new mongo('posts').getDB().then(db => {
     if (rootId) {
       let root = await col.findOne({_id: ObjectID(req.body.rootId)})
       if (!root) return res[bk]('rootId 无匹配项, 可能已经删除!', false);
-      let _id = await getMongoCounter();
+      let _id = await genId();
       if (rootId === parentId) {
         root.children = root.children || [];
         root.children.push({_id, name: req.body.name});
@@ -177,6 +177,17 @@ new mongo('posts').getDB().then(db => {
       res[bk]('缺少参数 rootId', false);
     }
   })
+
+  router.get('/catePosts', async (req, res) => {
+    let cate = req.query.cate;
+    let col = colPosts;
+    if (cate) {
+      let r = await col.find({cateNodes: { $regex: new RegExp(cate)}}).project({title: 1}).toArray();
+      res[bk](r, true);
+    } else {
+      res[bk]('缺少 cate 参数!', false);
+    }
+  })
 });
 
 router.post('/signup', async function (req, res, next) {
@@ -218,4 +229,8 @@ function findChild(node, _id, cb) {
 
 function isDev(req) {
   return ~req.hostname.indexOf('localhost');
+}
+
+async function genId() {
+  return 'time.' + Date.now() + '&counter.' + await getMongoCounter();
 }

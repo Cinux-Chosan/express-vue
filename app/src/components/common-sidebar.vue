@@ -9,7 +9,7 @@
         </li>
       </ul>
 
-      <categories-tree class="mt5" :isShowOpts="false"></categories-tree>
+      <categories-tree class="mt5" :isShowOpts="false" @itemClick="itemClick"></categories-tree>
       <span class="toggle-sidebar" @click="toggle"><i class="iconfont icon-zuoyoujiantou"></i></span>
 
       <me :class="['animated', showSidebar ? 'flipInX' : '']"></me>
@@ -37,6 +37,9 @@
       toggle() {
         this.showSidebar = !this.showSidebar;
         this.$emit('toggle', this.showSidebar);
+      },
+      itemClick() {
+        this.$emit('itemClick', ...arguments);
       }
     }
   }

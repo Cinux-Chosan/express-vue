@@ -121,7 +121,7 @@
         this.submit();
       },
       itemClick(node) {
-        console.log(node);
+        this.$emit('itemClick', ...arguments);
       },
       closeModal() {
         this.showModal = false;

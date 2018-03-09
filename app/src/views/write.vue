@@ -24,13 +24,13 @@
         </div>
       </form>
       <div class="form-group">
-        <bs-dropdown txt="选择分类" class="fl">
+        <bs-dropdown :txt="cateName || '选择分类'" class="fl cate-picker-dropdown">
             <li>
-              <categories-tree></categories-tree>
+              <categories-tree @itemClick="pickCategory"></categories-tree>
             </li>
           <!-- <li v-else> <a>暂时还没有分类</a> </li> -->
-          <li role="separator" class="divider"></li>
-          <li @click="addCategory" class="pointer"><a>添加分类</a></li>
+          <!-- <li role="separator" class="divider"></li> -->
+          <!-- <li @click="addCategory" class="pointer"><a>添加分类</a></li> -->
         </bs-dropdown>
         <button class="btn btn-default fr" @click="submit"> 提交 </button>
       </div>
@@ -53,7 +53,9 @@
         content: "",
         post_id: "",
         type: "",
-        categories: []
+        categories: [],
+        cateNodes: '',
+        cateName: ''
       };
     },
     components: {
@@ -119,6 +121,11 @@
       },
       kindEditorCreated(editor) {
         this.kindEditor = editor;
+      },
+      pickCategory(node) {
+        this.cateNodes = node.allParents;
+        this.cateName = node.name;
+        $('.cate-picker-dropdown').removeClass('open');
       }
     }
   };
