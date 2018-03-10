@@ -6,6 +6,7 @@ const mongodb = require('mongodb');
 const mongo = require('../lib/utils/mongo');
 const { bk, encrypt, getMongoCounter } = require('../lib/utils/util');
 const ObjectID = mongodb.ObjectID;
+require('../lib/utils/mk-mongo-counter');
 
 new mongo('posts').getDB().then(db => {
 
