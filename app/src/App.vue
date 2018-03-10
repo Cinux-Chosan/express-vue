@@ -2,7 +2,7 @@
   <div id="app" class="h100p">
     <!-- <common-header></common-header> -->
     <div class="app-main">
-      <common-sidebar class="hidden-xs" @toggle="toggleSidebar" @itemClick="pickCate"></common-sidebar>
+      <common-sidebar class="hidden-x" @toggle="toggleSidebar" @itemClick="pickCate"></common-sidebar>
       <router-view :class="['post-main', 'col-xs-12', isShowSidebar ? 'with-sidebar' : '']" />
     </div>
     <!-- <common-footer></common-footer> -->
