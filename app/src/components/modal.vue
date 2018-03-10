@@ -28,8 +28,8 @@
         this.$emit('ok');
       },
       cancel() {
-        this.$emit('cacel');
-        this.$Message.info('Clicked cancel');
+        this.$emit('cancel');
+        // this.$Message.info('Clicked cancel');
       }
     }
   }

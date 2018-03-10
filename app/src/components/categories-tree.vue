@@ -5,7 +5,7 @@
     </div>
     <tree-structure :nodes="categories" :hasPermission="hasPermission" :bus="bus">
     </tree-structure>
-    <modal :title="'编辑分类'" :showModal="showModal" @cacel="closeModal" @ok="submit" :loading="loading">
+    <modal :title="'编辑分类'" :showModal="showModal" @cancel="closeModal" @ok="submit" :loading="loading">
       <Form :model="node">
         <FormItem label="分类名">
           <Input v-model="node.name" placeholder="输入分类名..."> </Input>
