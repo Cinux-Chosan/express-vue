@@ -46,7 +46,7 @@
   html,
   body {
     height: 100%;
-    background: #f5f5d5;
+    background: #f5f5d5 !important;
     font-size: 12px;
   }
 
@@ -85,6 +85,7 @@
     display: flex;
     min-height: 100%;
     position: relative;
+    background:
   }
 
   $xs-screen: 768px;
