@@ -1,18 +1,19 @@
 <template>
   <section class="sidebar">
     <div :class="[showSidebar ? 'show' : '', 'sidebar-main']">
-      <ul class='nav'>
-        <li>
-          <router-link to="/" class="bg-fff">首页</router-link>
-        </li>
-        <li v-for="nav in navs" :key="nav._id">
-        </li>
-      </ul>
-
-      <categories-tree class="mt5" :isShowOpts="false" @itemClick="itemClick"></categories-tree>
+      <div class="sidebar-main__content">
+        <ul class='nav'>
+          <li>
+            <router-link to="/" class="bg-fff">首页</router-link>
+          </li>
+          <li v-for="nav in navs" :key="nav._id">
+          </li>
+        </ul>
+        <categories-tree class="mt5" :isShowOpts="false" @itemClick="itemClick"></categories-tree>
+        <me :class="['animated', showSidebar ? 'flipInX' : '']"></me>
+      </div>
       <span class="toggle-sidebar" @click="toggle"><i class="iconfont icon-zuoyoujiantou"></i></span>
 
-      <me :class="['animated', showSidebar ? 'flipInX' : '']"></me>
     </div>
   </section>
 </template>
@@ -64,6 +65,10 @@
     &.show {
       transform: translateX(0);
     }
+    &__content{
+      overflow: auto;
+      height: 100%;
+    }
     .toggle-sidebar {
       position: absolute;
       transition: all .2s;
@@ -94,11 +99,10 @@
     margin-top: 30px;
     background: blanchedalmond;
     font-size: 20px;
-
     li {
       text-align: center;
       transition: all .2s;
-      &:hover{
+      &:hover {
         font-size: 1.2em;
       }
     }
