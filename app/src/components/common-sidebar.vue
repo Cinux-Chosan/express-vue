@@ -12,7 +12,7 @@
         <categories-tree class="mt5" :isShowOpts="false" @itemClick="itemClick"></categories-tree>
         <me :class="['animated', showSidebar ? 'flipInX' : '']"></me>
       </div>
-      <span class="toggle-sidebar" @click="toggle"><i class="iconfont icon-zuoyoujiantou"></i></span>
+      <span class="toggle-sidebar" @click="toggle($event)"><i class="iconfont icon-zuoyoujiantou"></i></span>
 
     </div>
   </section>
@@ -35,9 +35,10 @@
     },
     computed: {},
     methods: {
-      toggle() {
+      toggle(event) {
         this.showSidebar = !this.showSidebar;
         this.$emit('toggle', this.showSidebar);
+        event.target.blur();
       },
       itemClick() {
         this.$emit('itemClick', ...arguments);
