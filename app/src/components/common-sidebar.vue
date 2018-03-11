@@ -1,5 +1,6 @@
 <template>
   <section class="sidebar">
+    <div class="sidebar-mask" v-show="showSidebar" @click="toggle"></div>
     <div :class="[showSidebar ? 'show' : '', 'sidebar-main']">
       <div class="sidebar-main__content">
         <ul class='nav'>
@@ -12,8 +13,7 @@
         <categories-tree class="mt5" :isShowOpts="false" @itemClick="itemClick"></categories-tree>
         <me :class="['animated', showSidebar ? 'flipInX' : '']"></me>
       </div>
-      <span class="toggle-sidebar" @click="toggle($event)"><i class="iconfont icon-zuoyoujiantou"></i></span>
-
+      <span class="toggle-sidebar" @click="toggle"><i class="iconfont icon-zuoyoujiantou"></i></span>
     </div>
   </section>
 </template>
@@ -38,7 +38,6 @@
       toggle(event) {
         this.showSidebar = !this.showSidebar;
         this.$emit('toggle', this.showSidebar);
-        event.target.blur();
       },
       itemClick() {
         this.$emit('itemClick', ...arguments);
@@ -48,6 +47,19 @@
 </script>
 
 <style lang="scss" scoped>
+  $xs-screen: 768px;
+  @media screen and (max-width: $xs-screen) {
+    .sidebar-mask {
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background: #000;
+      opacity: .6;
+    }
+  }
+
   .sidebar {
     z-index: 1;
   }
@@ -66,7 +78,7 @@
     &.show {
       transform: translateX(0);
     }
-    &__content{
+    &__content {
       overflow: auto;
       height: 100%;
     }
