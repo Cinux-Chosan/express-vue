@@ -100,7 +100,7 @@
     margin: 10px 10px 30px 60px;
     overflow: hidden;
     overflow-wrap: break-word;
-    img{
+    img {
       max-width: 100%;
     }
     @media screen and (max-width: $xs-screen){
