@@ -34,12 +34,8 @@ new mongo('posts').getDB().then(db => {
     }
   })
 
-  router.post('/post', async(req, res, next) => {
+  router.post('/post', checkLogin(async(req, res, next) => {
     console.log(req.session);
-
-    if (!req.session.username) {
-      return res[bk]('用户未登录!', false);
-    }
     let col = colPosts;
     let post_id = req.body.post_id;
     if (post_id) {
@@ -51,7 +47,7 @@ new mongo('posts').getDB().then(db => {
       let r = await col.insertOne(req.body);
       res[bk]({id: r.insertedId}, r.insertedCount === 1);
     }
-  })
+  }))
 
   router.get('/categories', async (req, res, next) => {
     let col = colCategory;
@@ -62,18 +58,6 @@ new mongo('posts').getDB().then(db => {
       res.status(500)[bk]('服务端错误', 0);
     }
   });
-
-  router.post('/category', async (req, res, next) => {
-    let col = colCategory;
-    if (req.session.username) {
-      let r = await col.insertOne(req.body);
-      res[bk](r, r.insertedCount === 1);
-    } else {
-      res[bk]('用户未登录!', false);
-    }
-  });
-
-
 
   router.post('/login', async (req, res) => {
 
@@ -105,7 +89,7 @@ new mongo('posts').getDB().then(db => {
     res[bk](isLogged);
   })
 
-  router.post('/addCategory', async (req, res) => {
+  router.post('/addCategory', checkLogin(async (req, res) => {
     let col = colCategory;
     let rootId = req.body.rootId;
     let parentId = req.body.parentId;
@@ -129,9 +113,9 @@ new mongo('posts').getDB().then(db => {
     }
     let isAddOk = !!(r.insertedCount || r.modifiedCount);
     res[bk](`添加${isAddOk ? '成功' : '失败'}!`, isAddOk);
-  })
+  }))
 
-  router.post('/delCategory', async (req, res) => {
+  router.post('/delCategory', checkLogin(async (req, res) => {
     let col = colCategory;
     let rootId = req.body.rootId;
     if (rootId) {
@@ -154,10 +138,10 @@ new mongo('posts').getDB().then(db => {
     } else {
       res[bk]('缺少参数 rootId', false);
     }
-  });
+  }));
 
 
-  router.post('/updateCategory',async (req, res) => {
+  router.post('/updateCategory', checkLogin(async (req, res) => {
     let col = colCategory;
     let rootId = req.body.rootId;
     if (rootId) {
@@ -181,7 +165,7 @@ new mongo('posts').getDB().then(db => {
     } else {
       res[bk]('缺少参数 rootId', false);
     }
-  })
+  }));
 
   router.get('/catePosts', async (req, res) => {
     let cate = req.query.cate;
@@ -240,4 +224,13 @@ function isDev(req) {
 
 async function genId() {
   return 'time.' + Date.now() + '&counter.' + await getMongoCounter();
+}
+
+function checkLogin(cb) {
+  return (req, res, next) => {
+    if (!req.session.username) {
+        res[bk]('用户未登录!', false);
+    }
+    return cb(req, res, next);
+  }
 }
