@@ -65,8 +65,12 @@ new mongo('posts').getDB().then(db => {
 
   router.post('/category', async (req, res, next) => {
     let col = colCategory;
-    let r = await col.insertOne(req.body);
-    res[bk](r, r.insertedCount === 1);
+    if (req.session.username) {
+      let r = await col.insertOne(req.body);
+      res[bk](r, r.insertedCount === 1);
+    } else {
+      res[bk]('用户未登录!', false);
+    }
   });
 
 
