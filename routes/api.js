@@ -229,7 +229,7 @@ async function genId() {
 function checkLogin(cb) {
   return (req, res, next) => {
     if (!req.session.username) {
-        res[bk]('用户未登录!', false);
+        return res[bk]('用户未登录!', false);
     }
     return cb(req, res, next);
   }
