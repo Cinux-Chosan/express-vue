@@ -99,6 +99,7 @@
     margin: 10px 10px 30px 60px;
     overflow-wrap: break-word;
     overflow: hidden;
+    line-height: 1.8;
     @media screen and (max-width: $xs-screen) {
       margin-left: 0;
     }
@@ -109,6 +110,9 @@
   article {
     img {
       max-width: 100%;
+    }
+    .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6{
+      line-height: 2;
     }
   }
 </style>

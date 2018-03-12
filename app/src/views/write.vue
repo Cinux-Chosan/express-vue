@@ -75,6 +75,7 @@
         let content = "";
         if (this.$route.query.md) {
           content = this.$refs.mavonEditor.content;
+          debugger
           return {
             content,
             type: "md"

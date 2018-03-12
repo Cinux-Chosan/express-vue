@@ -1,6 +1,6 @@
 <template>
   <div id="editor-md">
-    <mavon-editor style="height: 100%" v-model="value"></mavon-editor>
+    <mavon-editor style="height: 100%" v-model="content"></mavon-editor>
   </div>
 </template>
 
@@ -12,11 +12,16 @@
     name: 'editor-md',
     props: ['value'],
     data: () => {
-      return {}
+      return {
+        strContent: ''
+      }
     },
     computed: {
-      content() {
-        return this.value;
+      content:  {
+        get() {
+          return this.strContent || this.value;
+        },
+        set(value) { this.strContent = value; }
       }
     },
     components: {
