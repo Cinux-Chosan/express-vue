@@ -86,15 +86,16 @@
       height: 100%;
     }
     .toggle-sidebar {
+      $width: 40px;
       position: absolute;
       transition: all .2s;
       top: 0;
       bottom: 0;
       margin: auto;
       content: '';
-      width: 40px;
-      height: 40px;
-      left: 100%;
+      width: $width;
+      height: $width;
+      right: -$width/2;
       border-radius: 50%;
       border: 2px solid #fff;
       background: #ccc;
@@ -104,9 +105,9 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      transform: translateX(-50%) rotate(0);
+      transform: rotate(0);
       &:hover {
-        transform: translateX(-50%) rotate(180deg) scale(1.5);
+        transform: rotate(180deg) scale(1.5);
       }
     }
   }
