@@ -65,7 +65,8 @@
   }
 
   .sidebar-main {
-    width: 250px;
+    $width: 250px;
+    width: $width;
     left: 0;
     height: 100%;
     box-shadow: 10px 0 10px rgba(0, 0, 0, .3);
@@ -74,9 +75,11 @@
     position: fixed;
     bottom: 0;
     top: 0;
-    transform: translateX(-100%);
+    left: -$width;
+    // transform: translateX(-100%);
     &.show {
-      transform: translateX(0);
+      left: 0;
+      // transform: translateX(0);
     }
     &__content {
       overflow: auto;
