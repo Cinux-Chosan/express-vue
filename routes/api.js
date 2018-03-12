@@ -1,12 +1,12 @@
 const express = require('express');
-const router = express.Router();
 const assert = require('assert');
 const crypto = require('crypto');
 const mongodb = require('mongodb');
 const mongo = require('../lib/utils/mongo');
-const { bk, encrypt, getMongoCounter } = require('../lib/utils/util');
-const ObjectID = mongodb.ObjectID;
 require('../lib/utils/mk-mongo-counter');
+const router = express.Router();
+const ObjectID = mongodb.ObjectID;
+const { bk, encrypt, getMongoCounter } = require('../lib/utils/util');
 
 new mongo('posts').getDB().then(db => {
 
