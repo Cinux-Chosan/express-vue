@@ -119,6 +119,10 @@
     .linenums{
       padding-left: 40px;
     }
+    hr{ // 重新覆盖 ivew 对 bootstrap 的 markdown 样式的影响
+      margin: 20px 0;
+      border-top: 5px solid #eee;
+    }
   }
 </style>
 
