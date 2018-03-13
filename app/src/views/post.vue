@@ -21,7 +21,8 @@
   } from "@/libs/util";
   import contentBlock from "@/components/content-block";
 
-  var MarkdownIt = require("markdown-it");
+  // var MarkdownIt = require("markdown-it");
+  import { markdown } from 'markdown';
 
   export default {
     name: "post",
@@ -47,7 +48,8 @@
           this.title = data.title;
           this.content = data.content;
           if (data.type === "md") {
-            this.content = new MarkdownIt().render(this.content);
+            this.content = markdown.toHTML(this.content);
+            // this.content = new MarkdownIt().render(this.content);
           }
           load("//cdn.bootcss.com/prettify/r298/prettify.min.css");
           load("//cdn.bootcss.com/prettify/r298/prettify.min.js");
