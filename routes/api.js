@@ -79,7 +79,7 @@ new mongo('posts').getDB().then(db => {
       console.log(req.session.username);
     } else {
       let failTimes = req.session.failTimes;
-      req.session.failTimes = failTimes ? ++failTimes : 0;
+      req.session.failTimes = failTimes ? ++failTimes : 1;
       res[bk]('登陆失败!', false);
     }
   })
@@ -179,15 +179,15 @@ new mongo('posts').getDB().then(db => {
   })
 
   router.post('/signup', async function (req, res, next) {
-    if (!process.env.ALLOW_SIGNUP) res[bk]('不允许注册!');
+    if (!process.env.ALLOW_SIGNUP) return res[bk]('不允许注册!');
     let db = await (new mongo('posts')).getDB();
     let col = colUser;
 
     let doc = await col.findOne({name: req.body.name});
     let msg = '';
     if (doc) {
-      msg = '用户名已经存在!';
-      res[bk]('注册失败!', false);
+      msg = '注册失败, 用户名已经存在!';
+      res[bk](msg, false);
     } else {
       let pwd = encrypt(req.body.pwd);
       let r = await col.insertOne({...req.body, pwd});
