@@ -98,7 +98,7 @@
           this.title = data.title;
           this.content = data.content;
           this.cateNodes = data.cateNodes;
-          this.cateName = data.cateNodes;
+          this.cateName = data.cateName;
           this.$route.query.md = data.type === 'md' ? 1 : '';
         }
       },
@@ -125,7 +125,7 @@
       kindEditorCreated(editor) {
         this.kindEditor = editor;
       },
-      pickCategory(node) {
+      pickCategory(node) {debugger
         this.cateNodes = node.allParents;
         this.cateName = node.name;
         $('.cate-picker-dropdown').removeClass('open');
