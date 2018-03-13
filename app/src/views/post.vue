@@ -54,7 +54,7 @@
           load("//cdn.bootcss.com/prettify/r298/prettify.min.css");
           load("//cdn.bootcss.com/prettify/r298/prettify.min.js");
           await check(() => window.prettyPrint);
-          $("article pre").addClass("prettyprint linenums");
+          $("article pre, article code").addClass("prettyprint linenums");
           window.prettyPrint();
         }
       },
