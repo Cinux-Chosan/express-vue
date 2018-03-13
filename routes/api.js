@@ -78,7 +78,7 @@ new mongo('posts').getDB().then(db => {
       res[bk]('登陆成功');
       console.log(req.session.username);
     } else {
-      let failTimes = req.session.failTimes : 0;
+      let failTimes = req.session.failTimes;
       req.session.failTimes = failTimes ? ++failTimes : 0;
       res[bk]('登陆失败!', false);
     }
