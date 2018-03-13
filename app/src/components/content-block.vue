@@ -38,7 +38,9 @@
     align-items: center;
     justify-content: flex-end;
   }
-  .op-right{
-    // justify-self: flex-end;
+
+  h1.title{
+    font-size: 30px;
+    margin-bottom: 15px;
   }
 </style>

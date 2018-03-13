@@ -133,10 +133,6 @@
 </script>
 
 <style>
-  form {
-    /* min-width: 650px; */
-  }
-
   #content {
     min-height: 400px;
   }
