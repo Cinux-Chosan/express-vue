@@ -94,9 +94,11 @@
         let r = await getJson(`/post?id=${id}`);
         if (r.state) {
           let data = r.data;
+          this.post_id = id;
           this.title = data.title;
           this.content = data.content;
-          this.post_id = id;
+          this.cateNodes = data.cateNodes;
+          this.cateName = data.cateNodes;
           this.$route.query.md = data.type === 'md' ? 1 : '';
         }
       },
