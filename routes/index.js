@@ -5,7 +5,11 @@ var path = require('path');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   // res.render('index', { title: 'Express' });
-  res.sendFile(path.resolve('./app/dist/index.html'));
+  if (req.hostname.startsWith('vue.')) {
+    res.sendFile(path.resolve('./app-vue/dist/index.html'));
+  } else {
+    res.sendFile(path.resolve('./app-ember/dist/index.html'))
+  }
 });
 
 module.exports = router;
