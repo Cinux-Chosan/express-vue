@@ -8,8 +8,10 @@ module.exports = function(defaults) {
     sassOptions: {
       includePaths: ['node_modules/bootstrap/scss']
     },
-    bootstrapOptions: {
-      autoImport: false
+    basicDepsOptions: {
+      bootstrapOptions: {
+        autoImport: false
+      }
     }
   });
 
