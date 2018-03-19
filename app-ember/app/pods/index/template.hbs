@@ -1,0 +1,7 @@
+{{#content-block title="文章列表"}}
+<ul class="list-group list-group-flush">
+  {{#each model as |post|}}
+    {{link-to post.title "post" post.id tagName="li" class="list-group-item pointer"}}
+  {{/each}}
+</ul>
+{{/content-block}}
