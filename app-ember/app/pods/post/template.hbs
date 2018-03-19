@@ -1,5 +1,3 @@
-{{outlet}}
-
-{{#each model as |post|}}
-    {{post.title}} <hr>
-{{/each}}
+{{#content-block title=model.title}}
+    {{{render-type model}}}
+{{/content-block}}

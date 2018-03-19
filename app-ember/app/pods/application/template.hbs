@@ -1,12 +1,17 @@
-<div id="app-main" class="container-fluid">
-    <div class="row">
-    <div class="col col-sm-10"></div>
-    <div class="col col-sm-2">
-        <span class="{{local-class 'me' from='app-ember/styles/app'}}" local-class="red ">
-            zhangjianjun
-        </span>
-    </div>
-    </div>
-</div>
+<div id="app-main">
+    {{common-sidebar isShow=withSidebar}}
 
-{{outlet}}
+    <div local-class="appBody {{if withSidebar 'withSidebar'}}">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col col-12">
+                    {{liquid-outlet}}
+                </div>
+                <div class="col col-2">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div local-class="mask {{if withSidebar 'withSidebar'}}" {{action "toggleSidebar" false}}></div>
+</div>

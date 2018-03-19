@@ -2,7 +2,7 @@ import DS from 'ember-data';
 import { computed } from '@ember/object';
 import Inflector from 'ember-inflector';
 
-const inflector = Inflector.inflector;
+const { inflector } = Inflector;
 
 export default DS.JSONAPIAdapter.extend({
     namespace: 'api',
@@ -10,8 +10,14 @@ export default DS.JSONAPIAdapter.extend({
 
     buildURL(modelName, id, snapshot, requestType = '') {
         if (requestType.toLowerCase().includes('record')) { // 像 findRecord 这样查找单条记录的方法，就阻止 REST 将它转换成复数， 只是个人习惯
-            inflector.uncountable(modelName); 
+            inflector.uncountable(modelName);
+            setTimeout(() => {
+                debugger
+                inflector.pluralize(modelName)
+            }, 1000);
         }
-        return this._super(...arguments);
+        let url = this._super(...arguments);
+        debugger
+        return url
     }
 });

@@ -28,5 +28,10 @@ module.exports = function(defaults) {
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
 
+  // app.import('node_modules/markdown/lib/markdown.js', {
+  //   using: [
+  //     { transformation: 'es6', as: 'markdown' }
+  //   ]
+  // });
   return app.toTree();
 };
