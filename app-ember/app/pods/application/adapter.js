@@ -4,7 +4,7 @@ import Inflector from 'ember-inflector';
 
 const { inflector } = Inflector;
 
-export default DS.JSONAPIAdapter.extend({
+export default DS.RESTAdapter.extend({
     namespace: 'api',
     host: computed(() => location.hostname.includes('localhost') ? '//localhost:3000' : '/'),
 
@@ -13,7 +13,6 @@ export default DS.JSONAPIAdapter.extend({
             inflector.uncountable(modelName);
         }
         inflector.disableCache();
-        
         return this._super(...arguments);
     }
 });

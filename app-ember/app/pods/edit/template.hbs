@@ -1,1 +1,28 @@
-{{outlet}}
+<form class="p-1 mt-5">
+  <div class="form-row">
+    <div class="form-group col-12 clearfix">
+      <div class="btn-group">
+        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          选择编辑器
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#"> markdown </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#"> kindEditor </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-12">
+      <label for="{{_uid}}title">标题</label>
+      <input type="email" class="form-control" id="{{_uid}}title" placeholder="Title">
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-12">
+      {{#if markdown}} {{markdown-editor editor=editor content=model.content}} {{else}} {{kind-editor editor=editor}} {{/if}}
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">提 交</button>
+</form>

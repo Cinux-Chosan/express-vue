@@ -1761,6 +1761,13 @@ chosan-ember-basic-deps@0.0.01:
   dependencies:
     ember-cli-babel "^6.6.0"
 
+"chosan-ember-basic-deps@https://github.com/Cinux-Chosan/ember-basic-deps.git":
+  version "0.0.1"
+  resolved "https://github.com/Cinux-Chosan/ember-basic-deps.git#1e0891d68dccd92fc7fd1b93ce08ef2ba92bc741"
+  dependencies:
+    ember-cli-babel "^6.6.0"
+    ember-cli-htmlbars "^2.0.1"
+
 cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
   version "1.0.4"
   resolved "http://registry.npm.taobao.org/cipher-base/download/cipher-base-1.0.4.tgz#8760e4ecc272f4c363532f926d874aae2c1397de"
@@ -2477,12 +2484,6 @@ ember-cli-dependency-checker@^2.0.0:
     is-git-url "^1.0.0"
     resolve "^1.5.0"
     semver "^5.3.0"
-
-ember-cli-es6-transform@^0.0.3:
-  version "0.0.3"
-  resolved "http://registry.npm.taobao.org/ember-cli-es6-transform/download/ember-cli-es6-transform-0.0.3.tgz#99238305c72f533cc1cd3c85b15c6d7a842b8fdf"
-  dependencies:
-    ember-cli-babel "^6.6.0"
 
 ember-cli-eslint@^4.2.1:
   version "4.2.3"

@@ -4,6 +4,8 @@ import loadInitializers from 'ember-load-initializers';
 import config from './config/environment';
 import Component from '@ember/component';
 import Controller from '@ember/controller';
+import { computed } from '@ember/object';
+import { guidFor } from '@ember/object/internals';
 
 const App = Application.extend({
   modulePrefix: config.modulePrefix,
@@ -15,10 +17,10 @@ loadInitializers(App, config.modulePrefix);
 
 export default App;
 
-Component.reopen({
-  localClassNames: 'root'
-})
+let base = {
+  localClassNames: 'root',
+  _uid: computed(function() { return guidFor(this); })
+}
 
-Controller.reopen({
-  localClassNames: 'root'
-})
+Component.reopen(base)
+Controller.reopen(base);
