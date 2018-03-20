@@ -1,28 +1,28 @@
-<form class="p-1 mt-5">
+<form class="p-1 mt-5 px-3">
   <div class="form-row">
-    <div class="form-group col-12 clearfix">
-      <div class="btn-group">
-        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <div class="form-group col-11 clearfix">
+     <div class="btn-group float-right">
+        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           选择编辑器
         </button>
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="#"> markdown </a>
+          {{link-to "markdown" (query-params kindeditor="") class="dropdown-item"}}
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#"> kindEditor </a>
+          {{link-to "kindEditor" (query-params kindeditor="1") class="dropdown-item"}}
         </div>
       </div>
     </div>
   </div>
   <div class="form-row">
     <div class="form-group col-12">
-      <label for="{{_uid}}title">标题</label>
-      <input type="email" class="form-control" id="{{_uid}}title" placeholder="Title">
+      <label for="{{_uid}}_title">标题</label>
+      <input type="email" class="form-control" id="{{_uid}}_title" placeholder="Title">
     </div>
   </div>
   <div class="form-row">
     <div class="form-group col-12">
-      {{#if markdown}} {{markdown-editor editor=editor content=model.content}} {{else}} {{kind-editor editor=editor}} {{/if}}
+      {{#if kindeditor}} {{kind-editor editor=editor}} {{else}} {{markdown-editor editor=editor content=model.content}} {{/if}}
     </div>
   </div>
-  <button type="submit" class="btn btn-primary">提 交</button>
+  <button type="submit" class="btn btn-primary float-right">提 交</button>
 </form>
