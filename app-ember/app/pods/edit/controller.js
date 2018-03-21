@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 
 export default Controller.extend({
-  queryParams: ['markdown'],
-  markdown: '',
+  queryParams: ['kindeditor'],
+  kindeditor: '',
   editor: ''
 });

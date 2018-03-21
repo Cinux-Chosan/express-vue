@@ -33,5 +33,6 @@ module.exports = function(defaults) {
   //     { transformation: 'es6', as: 'markdown' }
   //   ]
   // });
+  app.import('node_modules/bootstrap/dist/js/bootstrap.bundle.min.js');
   return app.toTree();
 };

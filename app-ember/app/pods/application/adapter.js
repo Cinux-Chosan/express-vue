@@ -6,7 +6,7 @@ const { inflector } = Inflector;
 
 export default DS.RESTAdapter.extend({
     namespace: 'api',
-    host: computed(() => location.hostname.includes('localhost') ? '//localhost:3000' : '/'),
+    host: computed(() => location.hostname.match(/(localhost|172|192)/) ? '//localhost:3000' : '/'),
 
     buildURL(modelName, id, snapshot, requestType = '') {
         if (requestType.toLowerCase().includes('record')) { // 像 findRecord 这样查找单条记录的方法，就阻止 REST 将它转换成复数， 只是个人习惯
