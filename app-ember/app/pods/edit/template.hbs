@@ -6,23 +6,36 @@
           选择编辑器
         </button>
         <div class="dropdown-menu">
-          {{link-to "markdown" (query-params kindeditor="") class="dropdown-item"}}
+          {{link-to "markdown" (query-params edittype="1") class="dropdown-item"}}
           <div class="dropdown-divider"></div>
-          {{link-to "kindEditor" (query-params kindeditor="1") class="dropdown-item"}}
+          {{link-to "kindEditor" (query-params edittype="2") class="dropdown-item"}}
         </div>
       </div>
     </div>
   </div>
   <div class="form-row">
     <div class="form-group col-12">
-      <label for="{{_uid}}_title">标题</label>
-      <input type="email" class="form-control" id="{{_uid}}_title" placeholder="Title">
+      <label for="{{_uid}}_title" class="h4">标题 :</label>
+      {{input type="text" value=model.title class="form-control" id="{{_uid}}_title" placeholder="Title"}}
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-12">
-      {{#if kindeditor}} {{kind-editor editor=editor}} {{else}} {{markdown-editor editor=editor content=model.content}} {{/if}}
+    <div class="form-group col-12 h550">
+      {{#if edittype}}
+        {{#liquid-if (eq edittype 1) class="change-editor"}}
+          {{markdown-editor editor=editor content=model.content}}
+        {{else}}
+          {{kind-editor editor=editor content=model.content}}
+        {{/liquid-if}}
+      {{else}}
+        {{#liquid-if (eq model.type 'html')}}
+          {{kind-editor editor=editor content=model.content}}
+        {{else}}
+        {{!-- default --}}
+          {{markdown-editor editor=editor content=model.content}}
+        {{/liquid-if}}
+      {{/if}}
     </div>
   </div>
-  <button type="submit" class="btn btn-primary float-right">提 交</button>
+  <button class="btn btn-primary float-right" {{action "submit"}}>提 交</button>
 </form>

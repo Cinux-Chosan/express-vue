@@ -1,7 +1,17 @@
-{{#content-block title="文章列表"}}
-<ul class="list-group list-group-flush">
-  {{#each model as |post|}}
-    {{link-to post.title "post" post.id tagName="li" class="list-group-item pointer"}}
-  {{/each}}
-</ul>
+{{#content-block title="推荐文章" class="col-6 offset-1"}}
+  {{#if model.recomended}}
+  {{else}}
+    <div local-class="tip">sorry, 暂无推荐文章!!</div>
+  {{/if}}
+{{/content-block}}
+{{#content-block title="文章列表" class="col-6 offset-1 clearfix"}}
+  {{#if model.posts}}
+      {{#each model.posts as |post index|}}
+        {{#link-to "post" post.id local-class="post-item"}}
+          <span class="mr-3">{{add 1 index}}.</span> {{post.title}}
+        {{/link-to}}
+      {{/each}}
+  {{else}}
+    <div local-class="tip">sorry, 文章正在撰写中!!</div>
+  {{/if}}
 {{/content-block}}

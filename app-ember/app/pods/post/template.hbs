@@ -1,3 +1,12 @@
-{{#content-block title=model.title}}
-    {{{render-type model}}}
+
+{{#content-block title=model.title class="position-relative"}}
+    {{#prettify-content}}
+        {{{render-type model}}}
+    {{/prettify-content}}
+    <div class="position-absolute flex-all-center" local-class="opts">
+        {{#link-to "edit" model}}
+            <i class="iconfont icon-edit pointer"></i>
+        {{/link-to}}
+    </div>
 {{/content-block}}
+

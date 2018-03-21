@@ -2,7 +2,8 @@ import DS from 'ember-data';
 
 export default DS.JSONSerializer.extend({
     primaryKey: '_id',
-    serialize() {
+    serialize(snapshot, options) {
+        debugger
     },
     normalizeResponse(store, primaryModelClass, payload, id, requestType) {
         if (payload.state) {

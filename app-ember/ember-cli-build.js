@@ -5,6 +5,12 @@ const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 module.exports = function(defaults) {
   let app = new EmberApp(defaults, {
     // Add options here
+    babel: {
+      plugins: [
+        'transform-decorators-legacy', 'transform-object-rest-spread'
+      ],
+      presets: ["es2015", "stage-1"]
+    },
     sassOptions: {
       includePaths: ['node_modules/bootstrap/scss']
     },
