@@ -10,7 +10,8 @@ export default function(){
     this.transition(
       this.fromRoute('post'),
       this.toRoute('edit'),
-      this.use('scrollThen', 'crossFade', { duration: 0 }),
+      // this.use('scrollThen', 'crossFade', { duration: 0 }),
+      this.use('toLeft'),
       this.reverse('toRight')
     );
 

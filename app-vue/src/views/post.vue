@@ -59,9 +59,9 @@
         }
       },
       async getPermission() {
-        let r = await getJson('/logged');
+        let r = await getJson('/login');
         if (r.state) {
-          this.isLogged = r.data;
+          this.isLogged = r.data.isLogged;
         }
       }
     }

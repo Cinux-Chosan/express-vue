@@ -84,9 +84,9 @@ new mongo('posts').getDB().then(db => {
     }
   })
 
-  router.get('/logged', (req, res) => {
+  router.get('/login', (req, res) => {
     let isLogged = req.ip == '127.0.0.1' || !!req.session.username;
-    res[bk](isLogged);
+    res[bk]({ isLogged, _id: 1 });
   })
 
   router.post('/addCategory', checkLogin(async (req, res) => {

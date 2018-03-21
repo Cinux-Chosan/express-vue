@@ -4,13 +4,15 @@
     <div local-class="tip">sorry, 暂无推荐文章!!</div>
   {{/if}}
 {{/content-block}}
-{{#content-block title="文章列表" class="col-6 offset-1 clearfix"}}
+{{#content-block title="文章列表" class="col-6 offset-1"}}
   {{#if model.posts}}
+    <div class="clearfix"> 
       {{#each model.posts as |post index|}}
         {{#link-to "post" post.id local-class="post-item"}}
           <span class="mr-3">{{add 1 index}}.</span> {{post.title}}
         {{/link-to}}
       {{/each}}
+    </div>
   {{else}}
     <div local-class="tip">sorry, 文章正在撰写中!!</div>
   {{/if}}
