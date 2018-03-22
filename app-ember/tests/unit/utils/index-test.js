@@ -1,11 +1,11 @@
-import modelMap from 'app-ember/utils/model-map';
+import index from 'app-ember/utils/index';
 import { module, test } from 'qunit';
 
-module('Unit | Utility | model-map', function(hooks) {
+module('Unit | Utility | index', function(hooks) {
 
   // Replace this with your real tests.
   test('it works', function(assert) {
-    let result = modelMap();
+    let result = index();
     assert.ok(result);
   });
 });

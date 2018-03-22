@@ -7,7 +7,7 @@ module.exports = function(defaults) {
     // Add options here
     babel: {
       plugins: [
-        'transform-decorators-legacy','transform-decorators', 'transform-object-rest-spread'
+        'transform-decorators-legacy', 'transform-object-rest-spread'
       ],
       presets: ["es2015", "stage-0"]
     },

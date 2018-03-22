@@ -19,11 +19,10 @@
   "devDependencies": {
     "@ember-decorators/babel-transforms": "^2.0.0",
     "babel-eslint": "^8.2.2",
-    "babel-plugin-transform-decorators": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "bootstrap": "^4.0.0",
     "broccoli-asset-rev": "^2.4.5",
-    "chosan-ember-basic-deps": "*",
+    "chosan-ember-basic-deps": "^0.0.5",
     "ember-ajax": "^3.0.0",
     "ember-browserify": "^1.2.1",
     "ember-cli": "~3.0.0",

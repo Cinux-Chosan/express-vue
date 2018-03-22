@@ -1,0 +1,8 @@
+<div local-class="tree-item">
+  {{model.name}}
+</div>
+{{#if model.children}}
+  {{#each children as |child|}}
+    {{tree-view model=child}}
+  {{/each}}
+{{/if}}

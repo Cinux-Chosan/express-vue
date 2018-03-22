@@ -1,4 +1,6 @@
 import Controller from '@ember/controller';
+import $ from 'jquery';
+import { run } from '@ember/runloop';
 import { observes } from 'app-ember/utils/decorators';
 
 export default Controller.extend({
@@ -6,7 +8,9 @@ export default Controller.extend({
   @observes('withSidebar')
   withSidebarChanged() {
     $('.common-sidebar').one('transitionend webkitTransitionEnd mozTransitionEnd oTransitionEnd', () => {
-      $(window).resize();
+      run(() => {
+        $(window).resize();
+      })
     })
   },
   actions: {

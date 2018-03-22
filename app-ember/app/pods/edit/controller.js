@@ -3,7 +3,11 @@ import Controller from '@ember/controller';
 
 
 export default Controller.extend({
-  queryParams: ['edittype'],
+  queryParams: [{
+    edittype: {
+      scope: 'controller'
+    }
+  }],
   edittype: '',
   editor: '',
   actions: {
