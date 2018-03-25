@@ -11,15 +11,28 @@ const { bk, encrypt, getMongoCounter } = require('../lib/utils/util');
 new mongo('posts').getDB().then(db => {
 
   let colPosts = db.collection('posts'),
-    colCategory = db.collection('category'),
+    colCategory = db.collection('category'), 
     colUser = db.collection('user');
 
   router.get('/posts', async (req, res, next) => {
-    try {
-      let docs = await colPosts.find().project({ title: 1 }).toArray();
-      res[bk](docs);
-    } catch(e) {
-      res.status(500)[bk]('服务端错误', false);
+      try {
+        let docs = await colPosts.find().project({ title: 1 }).toArray();
+        docs.forEach(el => el.type = 'post');
+        res[bk](docs, true);
+      } catch(e) {
+        res.status(500)[bk]('服务端错误', false);
+      }
+  })
+
+  router.get('/posts/:post_id', async (req, res, next) => {
+    let col = colPosts;
+    let _id = req.params.post_id;
+    if (_id) {
+      let doc = await col.findOne({ _id: ObjectID(_id) });
+      doc.type = 'post';
+      res[bk](doc, true);
+    } else {
+      res.json({ state: 0, data: 'id缺失' });
     }
   })
 
