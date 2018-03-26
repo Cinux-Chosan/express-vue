@@ -20,7 +20,7 @@ new mongo('posts').getDB().then(db => {
         docs.forEach(el => el.type = 'post');
         res[bk](docs, true);
       } catch(e) {
-        res.status(500)[bk]('服务端错误', false);
+        res.status(500)[bk]('服务端错误', false); 
       }
   })
 
