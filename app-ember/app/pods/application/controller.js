@@ -17,5 +17,10 @@ export default Controller.extend({
     toggleSidebar(withSidebar) {
       this.set('withSidebar', withSidebar);
     }
+  },
+  pageData: {
+    limit: 20,
+    total: 2000,
+    page:30
   }
 });
