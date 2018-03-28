@@ -34,11 +34,11 @@ module.exports = function(defaults) {
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
 
-  // app.import('node_modules/markdown/lib/markdown.js', {
-  //   using: [
-  //     { transformation: 'es6', as: 'markdown' }
-  //   ]
-  // });
+  app.import('vendor/chosen-package/chosen.min.css');
+  app.import('vendor/chosen-package/chosen.jquery.min.js');
+  app.import('vendor/chosen-package/chosen-sprite.png', { destDir: 'assets' });
+  app.import('vendor/chosen-package/chosen-sprite@2x.png', { destDir: 'assets' });
   app.import('node_modules/bootstrap/dist/js/bootstrap.bundle.min.js');
+
   return app.toTree();
 };

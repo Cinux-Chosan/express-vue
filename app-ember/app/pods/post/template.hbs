@@ -1,7 +1,7 @@
 
 {{#content-block title=model.title class="position-relative"}}
     {{#prettify-content}}
-        {{{render-type model}}}
+        {{{render-type model.content model.type}}}
     {{/prettify-content}}
     <div class="position-absolute flex-all-center" local-class="opts">
         {{#link-to "edit" model}}

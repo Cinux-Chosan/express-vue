@@ -9,7 +9,7 @@ export default Controller.extend({
   withSidebarChanged() {
     $('.common-sidebar').one('transitionend webkitTransitionEnd mozTransitionEnd oTransitionEnd', () => {
       run(() => {
-        $(window).resize();
+        $(window).resize();  // 触发 editor.md 的自动适应布局
       })
     })
   },
@@ -17,10 +17,5 @@ export default Controller.extend({
     toggleSidebar(withSidebar) {
       this.set('withSidebar', withSidebar);
     }
-  },
-  pageData: {
-    limit: 20,
-    total: 2000,
-    page:30
   }
 });

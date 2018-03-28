@@ -6,9 +6,9 @@
           选择编辑器
         </button>
         <div class="dropdown-menu">
-          {{link-to "markdown" (query-params edittype="1") class="dropdown-item"}}
+          {{link-to "markdown" (query-params post_type="1") class="dropdown-item"}}
           <div class="dropdown-divider"></div>
-          {{link-to "kindEditor" (query-params edittype="2") class="dropdown-item"}}
+          {{link-to "kindEditor" (query-params post_type="2") class="dropdown-item"}}
         </div>
       </div>
     </div>
@@ -21,8 +21,8 @@
   </div>
   <div class="form-row">
     <div class="form-group col-12 h550">
-      {{#if edittype}}
-        {{#liquid-if (eq edittype 1) class="change-editor"}}
+      {{#if post_type}}
+        {{#liquid-if (eq post_type 1) class="change-editor"}}
           {{markdown-editor editor=editor content=model.content}}
         {{else}}
           {{kind-editor editor=editor content=model.content}}

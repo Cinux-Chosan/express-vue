@@ -1,4 +1,5 @@
 import DS from 'ember-data';
+import { camelize } from '@ember/string';
 
 export default DS.JSONAPISerializer.extend({
     primaryKey: '_id',
@@ -10,5 +11,8 @@ export default DS.JSONAPISerializer.extend({
     },
     normalizeResponse(store, primaryModelClass, payload, id, requestType) {
         return this._super(...arguments);
-    }
+    },
+    keyForAttribute(attr) {
+    return camelize(attr); // 所有属性名使用驼峰
+  }
 });

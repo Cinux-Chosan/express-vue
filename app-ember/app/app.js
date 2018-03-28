@@ -19,7 +19,8 @@ export default App;
 
 let base = {
   localClassNames: 'root',
-  _uid: computed(function() { return guidFor(this); })
+  _uid: computed(function() { return guidFor(this); }),
+  _subId: computed(function () { return this.get('_uid') + '_'; })
 }
 
 Component.reopen(base)

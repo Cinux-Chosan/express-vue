@@ -1,5 +1,3 @@
-{{!-- {{tree-view model=categ}} --}}
-
-{{#each model as |t|}}
-  {{t.name}} <hr>
+{{#each model as |root|}}
+  {{tree-view model=root}}
 {{/each}}

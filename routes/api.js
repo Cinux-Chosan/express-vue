@@ -11,7 +11,7 @@ const { bk, encrypt, getMongoCounter } = require('../lib/utils/util');
 new mongo('posts').getDB().then(db => {
 
   let colPosts = db.collection('posts'),
-    colCategory = db.collection('category'), 
+    colCategory = db.collection('category'),
     colUser = db.collection('user');
 
   router.get('/posts', async (req, res, next) => {
@@ -20,7 +20,7 @@ new mongo('posts').getDB().then(db => {
         docs.forEach(el => el.type = 'post');
         res[bk](docs, true);
       } catch(e) {
-        res.status(500)[bk]('服务端错误', false); 
+        res.status(500)[bk]('服务端错误', false);
       }
   })
 
@@ -36,29 +36,38 @@ new mongo('posts').getDB().then(db => {
     }
   })
 
-  router.get('/post', async (req, res, next) => {
-    let col = colPosts;
-    let _id = req.query.id;
-    if (_id) {
-      let doc = await col.findOne({ _id: ObjectID(_id) });
-      res.json({ state: 1, data: doc });
-    } else {
-      res.json({ state: 0, data: 'id缺失' });
-    }
-  })
+  // router.get('/post', async (req, res, next) => {
+  //   let col = colPosts;
+  //   let _id = req.query.id;
+  //   if (_id) {
+  //     let doc = await col.findOne({ _id: ObjectID(_id) });
+  //     res.json({ state: 1, data: doc });
+  //   } else {
+  //     res.json({ state: 0, data: 'id缺失' });
+  //   }
+  // })
 
-  router.post('/post', checkLogin(async(req, res, next) => {
-    console.log(req.session);
+  router.post('/posts', checkLogin(async (req, res) => {
     let col = colPosts;
-    let post_id = req.body.post_id;
+    let doc = getJSONAPIData(req.body);
+    let r = await col.insertOne(doc);
+    doc = await col.findOne({_id: ObjectID(r.insertedId)});
+    doc.type = 'post';
+    res[bk](doc, r.insertedCount === 1);
+  }))
+
+  router.patch('/posts/:post_id', checkLogin(async(req, res, next) => {
+    let col = colPosts;
+    let post_id = req.params.post_id;
+    let doc = getJSONAPIData(req.body);
     if (post_id) {
-      delete req.body.post_id;
-      let r = await col.replaceOne({ _id: ObjectID(post_id) }, req.body );
-      res[bk]({id: post_id}, r.modifiedCount === 1);
+      let _id = ObjectID(post_id);
+      let r = await col.replaceOne({ _id }, doc );
+      doc = await col.findOne({_id });
+      doc.type = 'post';
+      res[bk](doc, r.modifiedCount === 1);
     } else {
-      delete req.body.post_id;
-      let r = await col.insertOne(req.body);
-      res[bk]({id: r.insertedId}, r.insertedCount === 1);
+      // 缺失 id
     }
   }))
 
@@ -66,7 +75,16 @@ new mongo('posts').getDB().then(db => {
     let col = colCategory;
     try {
       let categories = await col.find().toArray();
-      res[bk]({categories, hasEditPermission: isDev(req) || !!req.session.username});
+      categories.forEach(el => {
+        mapTree(el, el => {
+          el.type = 'category';
+          if (!el.attributes) {
+            let { name, children } = el;
+            el.attributes = { name, children };
+          }
+        });
+      });
+      res[bk](categories);
     } catch (error) {
       res.status(500)[bk]('服务端错误', 0);
     }
@@ -214,6 +232,15 @@ new mongo('posts').getDB().then(db => {
 
 module.exports = router;
 
+function mapTree(treeRoot, cb) {
+  if (treeRoot) {
+    cb(treeRoot);
+    if (treeRoot.children) {
+      return treeRoot.children.forEach(child => mapTree(child, cb));
+    }
+  }
+}
+
 
 function findChild(node, _id, cb) {
   let it;
@@ -241,9 +268,13 @@ async function genId() {
 
 function checkLogin(cb) {
   return (req, res, next) => {
-    if (!req.session.username) {
+    if (!req.hostname.includes('localhost') && !req.session.username) {
         return res[bk]('用户未登录!', false);
     }
     return cb(req, res, next);
   }
+}
+
+function getJSONAPIData(body = {}) {
+  return body.data.attributes || {};
 }

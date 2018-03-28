@@ -4,10 +4,10 @@ import Markdown from 'npm:markdown';
 
 const { markdown } = Markdown;
 
-export function renderType([post = {}] /*, hash*/ ) {
-  let content = get(post, 'content');
-  switch (get(post, 'type')) {
+export function renderType([content = '', type] /*, hash*/ ) {
+  switch (type) {
     case 'md':
+    case 'markdown':
       content = markdown.toHTML(content);
       break;
     case 'html':
