@@ -10,6 +10,7 @@ export default DS.JSONAPISerializer.extend({
         return this._super(...arguments);
     },
     normalizeResponse(store, primaryModelClass, payload, id, requestType) {
+        debugger
         return this._super(...arguments);
     },
     keyForAttribute(attr) {

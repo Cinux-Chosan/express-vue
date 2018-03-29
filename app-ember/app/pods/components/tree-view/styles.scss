@@ -1,0 +1,17 @@
+.operations {
+  list-style-type: none;
+}
+
+.edit {
+  @include icon('\e6d6');
+}
+
+.del {
+  @include icon('\e66e');
+}
+
+.add {
+  @include icon('\e627');
+}
+
+.expand {}

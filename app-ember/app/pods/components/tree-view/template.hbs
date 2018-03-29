@@ -1,8 +1,17 @@
-<div local-class="tree-item">
+<div local-class="tree-item" style="text-indent: {{depth}}em;" data-depth={{depth}} data-id={{model._id}}>
   {{model.name}}
+  <ul local-class="operations">
+    <li class="float-right">
+      <i local-class="edit"></i>
+      <i local-class="add"></i>
+      <i local-class="del"></i>
+      {{switch-btn fontSize=12}}
+    </li>
+  </ul>
+
 </div>
 {{#if model.children}}
-  {{#each children as |child|}}
-    {{tree-view model=child}}
+  {{#each model.children as |child|}}
+    {{tree-view model=child depth=(add depth 1)}}
   {{/each}}
 {{/if}}

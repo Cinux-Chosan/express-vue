@@ -75,16 +75,16 @@ new mongo('posts').getDB().then(db => {
     let col = colCategory;
     try {
       let categories = await col.find().toArray();
-      categories.forEach(el => {
-        mapTree(el, el => {
-          el.type = 'category';
-          if (!el.attributes) {
-            let { name, children } = el;
-            el.attributes = { name, children };
-          }
-        });
-      });
-      res[bk](categories);
+      // categories.forEach(el => {
+      //   mapTree(el, el => {
+      //     el.type = 'category';
+      //     if (!el.attributes) {
+      //       let { name, children } = el;
+      //       el.attributes = { name, children };
+      //     }
+      //   });
+      // });
+      res.json({ data: categories });
     } catch (error) {
       res.status(500)[bk]('服务端错误', 0);
     }
