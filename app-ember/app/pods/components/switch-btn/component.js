@@ -1,16 +1,20 @@
 import Component from '@ember/component';
-import { computed } from 'app-ember/utils';
+import { on, observes } from 'app-ember/utils';
 
 export default Component.extend({
-  localClassNameBindings: ['open'],
+  localClassNameBindings: ['close'],
   attributeBindings: ['style'],
-  open: true,
+  close: false,
   fontSize: 12,
-  @computed('fontSize')
-  get style() {
-    return `font-size:${this.get('fontSize')}px`;
+  @on('didInsertElement')
+  @observes('fontSize')
+  styleChanged() {
+    let fontSize = this.get('fontSize');
+    this.$('span').css({
+      fontSize
+    })
   },
   click() {
-    this.toggleProperty('open');
+    this.toggleProperty('close');
   }
 });

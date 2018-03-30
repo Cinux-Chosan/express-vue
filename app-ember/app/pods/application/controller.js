@@ -1,10 +1,12 @@
 import Controller from '@ember/controller';
 import $ from 'jquery';
 import { run } from '@ember/runloop';
-import { observes } from 'app-ember/utils/decorators';
+import { observes, alias } from 'app-ember/utils/decorators';
 
 export default Controller.extend({
   withSidebar: true,
+  queryParams: ['login'],
+  @alias('loginService.isShowingModal') login: '',
   @observes('withSidebar')
   withSidebarChanged() {
     $('.common-sidebar').one('transitionend webkitTransitionEnd mozTransitionEnd oTransitionEnd', () => {

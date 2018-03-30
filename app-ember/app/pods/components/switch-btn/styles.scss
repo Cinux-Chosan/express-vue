@@ -45,6 +45,6 @@ $height: 2em;
   font-size: 0;  // 屏蔽掉空格导致的间隙
 }
 
-.open {
+.close {
   text-indent: - $width / 2;
 }

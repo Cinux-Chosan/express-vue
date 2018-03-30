@@ -1,17 +1,21 @@
-<div local-class="tree-item" style="text-indent: {{depth}}em;" data-depth={{depth}} data-id={{model._id}}>
+<div class="clearfix {{local-class (unless hasPermission 'noPermission')}}" local-class="treeItem" data-depth={{depth}} data-id={{model._id}}>
   {{model.name}}
-  <ul local-class="operations">
-    <li class="float-right">
-      <i local-class="edit"></i>
-      <i local-class="add"></i>
-      <i local-class="del"></i>
-      {{switch-btn fontSize=12}}
+  <ul local-class="operations" class="float-right">
+    <li class="">
+      {{#if hasPermission}}
+        <i local-class="edit" {{action "edit" model 'update' target=categoriesController}}></i>
+        <i local-class="add" {{action "edit" model 'add' target=categoriesController}}></i>
+        <i local-class="del" {{action "edit" model 'del' target=categoriesController}}></i>
+      {{/if}}
+      {{#if model.children}}
+        {{switch-btn fontSize=12 close=hideChildren}}
+      {{/if}}
     </li>
   </ul>
-
-</div>
-{{#if model.children}}
+  {{#liquid-if (xor model.children hideChildren) class="w-100"}}
   {{#each model.children as |child|}}
     {{tree-view model=child depth=(add depth 1)}}
   {{/each}}
-{{/if}}
+{{/liquid-if}}
+</div>
+

@@ -17,6 +17,9 @@ module.exports = function(defaults) {
     basicDepsOptions: {
       bootstrapOptions: {
         autoImport: false
+      },
+      messengerOptions: {
+        autoImport: true
       }
     }
   });

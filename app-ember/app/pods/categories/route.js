@@ -1,7 +1,9 @@
 import Route from '@ember/routing/route';
 
 export default Route.extend({
-  model() {
-    // return this.get('store').findAll('category');
+  beforeModel() {
+    if (!this.get('loginService.isLoggedIn') && !this.paramsFor('application').login) {
+      this.set('loginService.isShowingModal', 1);
+    }
   }
 });

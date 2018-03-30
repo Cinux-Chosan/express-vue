@@ -100,13 +100,13 @@ new mongo('posts').getDB().then(db => {
 
     let col = colUser;
     let pwd = encrypt(req.body.pwd);
-    let doc = {...req.body, pwd};
+    let doc = { ...req.body, pwd };
     let r = await col.findOne(doc);
 
     if(r) {
       req.session.username = req.body.name;
       req.session.uid = r._id;
-      res[bk]('登陆成功');
+      res[bk]('登陆成功', true);
       console.log(req.session.username);
     } else {
       let failTimes = req.session.failTimes;

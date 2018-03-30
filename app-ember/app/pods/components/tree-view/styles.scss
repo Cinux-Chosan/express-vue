@@ -1,5 +1,11 @@
 .operations {
   list-style-type: none;
+  i{
+    cursor: pointer;
+    &:hover{
+      color: #007bff;
+    }
+  }
 }
 
 .edit {
@@ -14,4 +20,8 @@
   @include icon('\e627');
 }
 
-.expand {}
+.noPermission{
+  .edit, .del, .add {
+    display: none;
+  }
+}

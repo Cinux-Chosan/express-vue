@@ -23,6 +23,8 @@ function getJson(url = '', data = {}, type = 'get') {
     })
 }
 
+
+
 export {
   getJson
 }

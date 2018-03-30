@@ -1,4 +1,11 @@
-{{category-tree}}
+{{category-tree class="p-20px" id=_uid hasPermission=loginService.isLogged}} {{!-- {{switch-btn fontSize=12}} {{switch-btnx}} --}}
 
-{{switch-btn fontSize=12}}
-{{switch-btnx}}
+{{#common-dialog isShowingModal=isShowingModal as |dialog|}}
+  {{dialog.head text="aaa"}}
+  {{#dialog.body}}
+    {{#common-form local-class="dialog-form" as |f|}}
+      {{f.input label="分类名" value=tmpNode.name}}
+    {{/common-form}}
+  {{/dialog.body}}
+  {{dialog.foot onOk=(action 'modalOk') onCancel=(action 'modalCancel')}}
+{{/common-dialog}}
