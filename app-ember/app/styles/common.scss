@@ -28,6 +28,10 @@
   color: #fff;
 }
 
+.pt-20px{
+  padding-top: 20px;
+}
+
 .pb-20px{
   padding-bottom: 20px;
 }
@@ -82,4 +86,13 @@ button.btn{
   &.btn-default{
     border: 1px solid  #eee;
   }
+}
+
+
+.clear-left{
+  clear: left;
+}
+
+.clear-right{
+  clear: right;
 }

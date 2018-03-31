@@ -1,5 +1,5 @@
 import Service from '@ember/service';
-import { getJson, tip } from 'app-ember/utils';
+import { on, getJson, tip } from 'app-ember/utils';
 
 
 export default Service.extend({
@@ -7,6 +7,13 @@ export default Service.extend({
   userName: '',
   userPwd: '',
   isLoggedIn: false,
+  @on('init')
+  async checkLogin() {
+    let r = await getJson('api/login');
+    if(r.meta.state) {
+      this.set('isLoggedIn', r.data.isLoggedIn);
+    }
+  },
   async login() {
     let { userName: name, userPwd: pwd } = this.getProperties(['userName', 'userPwd']);
     let result = await getJson('api/login', { name, pwd }, 'post');
