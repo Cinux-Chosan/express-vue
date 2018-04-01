@@ -3,7 +3,7 @@ let router = express.Router();
 let formidable = require('formidable');
 let util = require('util');
 let COS = require('cos-nodejs-sdk-v5');
-let cosData = require('./data/cos.js');
+let cosData = require('../conf/cos.js');
 
 // 创建实例
 let cos = new COS(cosData);
@@ -25,19 +25,23 @@ router.post('/kindEditorUpload', function (req, res, next) {
 })
 
 function upload(req, res, next, cb) {
-  let form = new formidable.IncomingForm();
-  form.parse(req, function (err, fields, files) {
-      if (Array.isArray(files)) {
-        //
-      } else {
-        for (const key in files) {
-          if (files.hasOwnProperty(key)) {
-            const element = files[key];
-            colUpload(res, element.name, element.path, cb);
+  if (req.session.username) {
+    let form = new formidable.IncomingForm();
+    form.parse(req, function (err, fields, files) {
+        if (Array.isArray(files)) {
+          //
+        } else {
+          for (const key in files) {
+            if (files.hasOwnProperty(key)) {
+              const element = files[key];
+              colUpload(res, element.name, element.path, cb);
+            }
           }
         }
-      }
-  });
+    });
+  } else {
+    cb('用户未登陆!', {});
+  }
 }
 
 function colUpload(res, Key, FilePath, cb) {
