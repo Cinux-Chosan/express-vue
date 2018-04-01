@@ -3,7 +3,7 @@ import { on, alias, getJson, tip } from 'app-ember/utils';
 
 export default Component.extend({
   @alias('model.data') categories: '',
-  isShowingModal: false,  
+  isShowingModal: false,
   @on('init')
   domInit() {
     this.getCategories();
@@ -20,7 +20,7 @@ export default Component.extend({
   },
   actions: {
     itemClicked() {
-      
+      this.get('itemClicked') && this.get('itemClicked')(...arguments);
     },
     edit(node = {}, status) {
 
@@ -50,7 +50,7 @@ export default Component.extend({
     openModal() {
       this.set('isShowingModal', true);
     },
-    
+
     async modalOk() {
       let { node, status, tmpNode } = this.getProperties(['node', 'status', 'tmpNode']);
       let { name } = tmpNode;

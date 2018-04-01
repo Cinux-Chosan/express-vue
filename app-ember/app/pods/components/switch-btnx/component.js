@@ -5,6 +5,7 @@ export default Component.extend({
   localClassNameBindings: ['close'],
   fontSize: 12,
   close: true,
+  bubble: true,
   @on('didInsertElement')
   @observes('fontSize')
   stylesChanged() {
@@ -15,5 +16,7 @@ export default Component.extend({
   },
   click() {
     this.toggleProperty('close');
+    this.get('onClick') && this.get('onClick')(...arguments);
+    return this.get('bubble');
   }
 });

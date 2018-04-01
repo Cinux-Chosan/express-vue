@@ -1,6 +1,6 @@
 <div id="app-main">
     {{#common-sidebar isShow=withSidebar class="common-sidebar"}}
-        {{category-tree local-class="appCateTree"}}
+        {{category-tree local-class="appCateTree" itemClicked=(action 'goToCategory')}}
     {{/common-sidebar}}
     <div local-class="appBody {{if withSidebar 'withSidebar'}}">
         <div class="container-fluid">

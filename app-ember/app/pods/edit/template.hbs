@@ -1,4 +1,4 @@
-<form class="p-1 mt-5 px-3">
+<form class="p-1 mt-5 px-3" id={{_subId}}>
   <div class="form-row">
     <div class="form-group col-11 clearfix">
      <div class="btn-group float-right">
@@ -23,18 +23,30 @@
     <div class="form-group col-12 h550">
       {{#if post_type}}
         {{#liquid-if (eq post_type 1) class="change-editor"}}
-          {{markdown-editor editor=editor content=model.content}}
+          {{markdown-editor editor=editor content=model.content imageUploadURL=editormdUpload}}
         {{else}}
-          {{kind-editor editor=editor content=model.content}}
+          {{kind-editor editor=editor content=model.content uploadJson=kindEditorUpload}}
         {{/liquid-if}}
       {{else}}
         {{#liquid-if (eq model.type 'html')}}
-          {{kind-editor editor=editor content=model.content}}
+          {{kind-editor editor=editor content=model.content uploadJson=kindEditorUpload}}
         {{else}}
         {{!-- default --}}
-          {{markdown-editor editor=editor content=model.content}}
+          {{markdown-editor editor=editor content=model.content imageUploadURL=editormdUpload}}
         {{/liquid-if}}
       {{/if}}
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-12">
+      <div class="btn-group">
+        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{or model.cateName '暂时没有选择分类'}}
+        </button>
+        <div class="dropdown-menu">
+          {{category-tree itemClicked=(action "pickCategory")}}
+        </div>
+      </div>
     </div>
   </div>
   <button class="btn btn-primary float-right" {{action "submit"}}>提 交</button>

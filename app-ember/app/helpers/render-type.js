@@ -1,5 +1,4 @@
 import { helper } from '@ember/component/helper';
-import { get } from '@ember/object';
 import Markdown from 'npm:markdown';
 
 const { markdown } = Markdown;

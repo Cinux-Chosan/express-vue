@@ -15,13 +15,20 @@ new mongo('posts').getDB().then(db => {
     colUser = db.collection('user');
 
   router.get('/posts', async (req, res, next) => {
+    let cate = req.query.cate;
+    let col = colPosts;
+    let docs = [];
+    if (cate) {
+      docs = await col.find({ cateNodes: { $regex: new RegExp(cate) } }).project({ title: 1 }).toArray();
+    } else {
       try {
-        let docs = await colPosts.find().project({ title: 1 }).toArray();
-        docs.forEach(el => el.type = 'post');
-        res[bk](docs, true);
-      } catch(e) {
+        docs = await col.find().project({ title: 1 }).toArray();
+      } catch (e) {
         res.status(500)[bk]('服务端错误', false);
       }
+    }
+    docs.forEach(el => el.type = 'post');
+    res[bk](docs, true);
   })
 
   router.get('/posts/:post_id', async (req, res, next) => {

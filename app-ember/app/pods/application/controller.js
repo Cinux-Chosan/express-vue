@@ -5,7 +5,8 @@ import { observes, alias } from 'app-ember/utils/decorators';
 
 export default Controller.extend({
   withSidebar: true,
-  queryParams: ['login'],
+  queryParams: ['login', 'category'],
+  category: '',
   @alias('loginService.isShowingModal') login: '',
   @observes('withSidebar')
   withSidebarChanged() {
@@ -18,6 +19,9 @@ export default Controller.extend({
   actions: {
     toggleSidebar(withSidebar) {
       this.set('withSidebar', withSidebar);
+    },
+    goToCategory(category) {
+      this.set('category', category.cateNodes);
     }
   }
 });

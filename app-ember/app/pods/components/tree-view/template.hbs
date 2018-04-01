@@ -1,10 +1,10 @@
-<div class="clearfix {{local-class (unless hasPermission 'noPermission')}}" local-class="treeItem" 
-  data-depth={{depth}} 
+<div class="clearfix {{local-class (unless hasPermission 'noPermission')}}" local-class="treeItem"
+  data-depth={{depth}}
   data-id={{model._id}}>
-  <span class="pointer" {{action 'itemClicked' target=categoryTree bubble=false}}>
+  <span class="pointer" {{action "itemClicked" model bubble=false}}>
     {{model.name}}
   </span>
-  <ul local-class="operations" class="float-right">
+  <ul local-class="operations" class="float-right mb-0">
     <li class="">
       {{#if hasPermission}}
         <i local-class="edit" {{action edit model 'update' bubble=false}}></i>
@@ -12,13 +12,13 @@
         <i local-class="del" {{action edit model 'del' bubble=false}}></i>
       {{/if}}
       {{#if model.children}}
-        {{switch-btnx fontSize=12 close=hideChildren}}
+        {{switch-btnx fontSize=12 close=hideChildren bubble=false}}
       {{/if}}
     </li>
   </ul>
   {{#liquid-if (xor model.children hideChildren) class="w-100"}}
   {{#each model.children as |child|}}
-    {{tree-view model=child depth=(add depth 1) edit=edit hasPermission=hasPermission}}
+    {{tree-view model=child depth=(add depth 1) edit=edit itemClicked=itemClicked hasPermission=hasPermission}}
   {{/each}}
 {{/liquid-if}}
 </div>
