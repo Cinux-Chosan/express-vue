@@ -1,13 +1,12 @@
 import { helper } from '@ember/component/helper';
-import Markdown from 'npm:markdown';
-
-const { markdown } = Markdown;
+import Marked from 'npm:marked';
 
 export function renderType([content = '', type] /*, hash*/ ) {
   switch (type) {
     case 'md':
     case 'markdown':
-      content = markdown.toHTML(content);
+      // content = markdown.toHTML(content);
+      content = Marked(content)
       break;
     case 'html':
       break;
