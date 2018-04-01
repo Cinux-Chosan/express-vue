@@ -4,8 +4,10 @@
         {{{render-type model.content model.postType}}}
     {{/prettify-content}}
     <div class="position-absolute flex-all-center" local-class="opts">
-        {{#link-to "edit" model}}
-            <i class="iconfont icon-edit pointer"></i>
-        {{/link-to}}
+        {{#if loginService.isLoggedIn}}
+            {{#link-to "edit" model}}
+                <i class="iconfont icon-edit pointer"></i>
+            {{/link-to}}
+        {{/if}}
     </div>
 {{/content-block}}
