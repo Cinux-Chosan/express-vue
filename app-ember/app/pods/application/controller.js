@@ -21,7 +21,7 @@ export default Controller.extend({
       this.set('withSidebar', withSidebar);
     },
     goToCategory(category) {
-      this.set('category', category.cateNodes);
+      this.transitionToRoute('index', { queryParams: { category: category.cateNodes }});
     }
   }
 });
