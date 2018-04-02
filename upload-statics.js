@@ -10,8 +10,9 @@ glob('app-ember/dist/assets/*.*', { absolute: true }, (err, files) => {
 
     // let basename = path.basename(el);
     // console.log(basename, el);
+    // console.log('/app-ember/' + path.relative('app-ember/dist', el));
 
-    colUpload(path.basename(el), el, (err, data) => {
+    colUpload('/app-ember/' + path.relative('app-ember/dist', el), el, (err, data) => {
       assert.equal(null, err);
       if (++count === files.length) {
         console.log('静态文件上传完成');
