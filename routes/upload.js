@@ -2,11 +2,7 @@ let express = require('express');
 let router = express.Router();
 let formidable = require('formidable');
 let util = require('util');
-let COS = require('cos-nodejs-sdk-v5');
-let cosData = require('../conf/cos.js');
-
-// 创建实例
-let cos = new COS(cosData);
+let { colUpload } = require('../lib/utils/cos.js');
 
 router.post('/', function (req, res, next) {
   return upload(...arguments);
@@ -34,7 +30,7 @@ function upload(req, res, next, cb) {
           for (const key in files) {
             if (files.hasOwnProperty(key)) {
               const element = files[key];
-              colUpload(res, element.name, element.path, cb);
+              colUpload(element.name, element.path, cb);
             }
           }
         }
@@ -44,17 +40,7 @@ function upload(req, res, next, cb) {
   }
 }
 
-function colUpload(res, Key, FilePath, cb) {
-  // 分片上传
-  cos.sliceUploadFile({
-    Bucket: `posts-${cosData.AppId}`,
-    Region: 'ap-chengdu',
-    Key,
-    FilePath
-  }, function (err, data) {
-    cb(...arguments);
-  });
-}
+
 
 
 

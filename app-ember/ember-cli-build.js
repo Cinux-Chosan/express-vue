@@ -5,6 +5,9 @@ const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 module.exports = function(defaults) {
   let app = new EmberApp(defaults, {
     // Add options here
+    fingerprint: {
+      prepend: EmberApp.env() === 'production' ? '//posts-1256188574.cos.ap-chengdu.myqcloud.com' : ''
+    },
     babel: {
       plugins: [
         'transform-decorators-legacy', 'transform-object-rest-spread'

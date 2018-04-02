@@ -1913,7 +1913,7 @@ chokidar@1.7.0:
 
 "chosan-ember-basic-deps@https://github.com/Cinux-Chosan/ember-basic-deps.git#master":
   version "0.0.6"
-  resolved "https://github.com/Cinux-Chosan/ember-basic-deps.git#5ecdbb9ce21bf95c3d1dd244da7c26a17a71a29b"
+  resolved "https://github.com/Cinux-Chosan/ember-basic-deps.git#fd8996254580dfed1014485de365cc308b8b6891"
   dependencies:
     ember-cli-babel "^6.6.0"
     ember-cli-htmlbars "^2.0.1"
