@@ -3,7 +3,7 @@ let glob = require("glob");
 let assert = require('assert');
 let path = require('path');
 
-glob('app-ember/dist/assets/*.*', { absolute: true }, (err, files) => {
+glob('app-ember/dist/+(assets|images)/**/*.*', { absolute: true }, (err, files) => {
   assert.equal(null, err);
   let count = 0;
   files.forEach(el => {
