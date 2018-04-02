@@ -28,7 +28,7 @@
           {{kind-editor editor=editor content=model.content uploadJson=kindEditorUpload}}
         {{/liquid-if}}
       {{else}}
-        {{#liquid-if (eq model.type 'html')}}
+        {{#liquid-if (eq model.postType 'html')}}
           {{kind-editor editor=editor content=model.content uploadJson=kindEditorUpload}}
         {{else}}
         {{!-- default --}}
