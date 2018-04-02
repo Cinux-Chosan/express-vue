@@ -21,6 +21,7 @@ export default Controller.extend({
       this.set('withSidebar', withSidebar);
     },
     goToCategory(category) {
+      alert(category);
       this.transitionToRoute('index', { queryParams: { category: category.cateNodes }});
     }
   }

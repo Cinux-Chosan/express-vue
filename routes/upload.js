@@ -30,7 +30,7 @@ function upload(req, res, next, cb) {
           for (const key in files) {
             if (files.hasOwnProperty(key)) {
               const element = files[key];
-              colUpload(element.name, element.path, cb);
+              colUpload(element.name, element.path, cb, true);
             }
           }
         }
