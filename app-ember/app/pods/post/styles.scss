@@ -3,3 +3,13 @@
   right: 30px;
   height: 60px;
 }
+
+.root{
+  :global(.markdown-body) {
+    ul, ol{
+      &:global(.linenums) {
+        padding-left: 3em;
+      }
+    }
+  }
+}

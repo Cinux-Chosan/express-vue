@@ -1,6 +1,6 @@
 
-{{#content-block title=model.title class="position-relative"}}
-    {{#prettify-content}}
+{{#content-block title=model.title class="position-relative" local-class="root"}}
+    {{#prettify-content class=(if (eq model.postType 'markdown') 'markdown-body')}}
         {{{render-type model.content model.postType}}}
     {{/prettify-content}}
     <div class="position-absolute flex-all-center" local-class="opts">

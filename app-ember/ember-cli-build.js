@@ -20,6 +20,9 @@ module.exports = function(defaults) {
       },
       messengerOptions: {
         autoImport: true
+      },
+      markdownCssOptions: {
+        autoImport: true
       }
     }
   });
