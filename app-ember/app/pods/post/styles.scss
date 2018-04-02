@@ -5,6 +5,9 @@
 }
 
 .root{
+  img{
+    max-width: 100%;
+  }
   :global(.markdown-body) {
     ul, ol{
       &:global(.linenums) {
