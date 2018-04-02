@@ -1,0 +1,21 @@
+let { colUpload } = require('./lib/utils/cos');
+let glob = require("glob");
+let assert = require('assert');
+let path = require('path');
+
+glob('app-ember/dist/assets/*.*', { absolute: true }, (err, files) => {
+  assert.equal(null, err);
+  let count = 0;
+  files.forEach(el => {
+
+    // let basename = path.basename(el);
+    // console.log(basename, el);
+
+    colUpload(path.basename(el), el, (err, data) => {
+      assert.equal(null, err);
+      if (++count === files.length) {
+        console.log('静态文件上传完成');
+      }
+    });
+  })
+})
