@@ -21,9 +21,9 @@ export default Component.extend({
       let el = root.find(`[data-id='${category._id}']`);
       let treeRoot = root.find('[date-depth=1]');
       let parents = el.parentsUntil(treeRoot.parent()).filter('[data-depth]');
-      parents.push(el.get(0));
+      [].unshift.call(parents, el.get(0));
       let cateNodes = parents.map((i, el) => $(el).data('id'));
-      cateNodes = [...cateNodes].join('-');
+      cateNodes = [].slice.call(cateNodes).join('-');
       category.cateNodes = cateNodes;
       this.get('itemClicked') && this.get('itemClicked')(...arguments);
     }
