@@ -21,11 +21,11 @@ app.set('port', port);
  */
 
 const options = {
-  cert: fs.readFileSync('/etc/letsencrypt/live/www.chosan.cn/cert.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/www.chosan.cn/fullchain.pem'),
   key: fs.readFileSync('/etc/letsencrypt/live/www.chosan.cn/privkey.pem')
 };
 
-var server = https.createServer(app);
+var server = https.createServer(options, app);
 
 /**
  * Listen on provided port, on all network interfaces.
