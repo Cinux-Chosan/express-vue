@@ -1,4 +1,5 @@
 import Controller from '@ember/controller';
+import { computed } from 'app-ember/utils';
 
 let POSTTYPE = ['markdown', 'markdown', 'html'];
 
@@ -10,8 +11,16 @@ export default Controller.extend({
   }],
   post_type: '',
   editor: '',
-  editormdUpload: '/upload/editormdUpload',
-  kindEditorUpload: '/upload/kindEditorUpload',
+  @computed('model.name')
+  get editormdUpload() { 
+    let name = this.get('model.name');
+    return `/upload/editormdUpload?dirname=${name}`;
+  },
+  @computed('model.name')
+  get kindEditorUpload(){
+    let name = this.get('model.name');
+    return `/upload/kindEditorUpload?dirname=${name}`;
+  },
   actions: {
     submit() {
       let { model, post_type, editor } = this.getProperties(['model', 'post_type', 'editor']);

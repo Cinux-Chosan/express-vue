@@ -22,6 +22,7 @@ router.post('/kindEditorUpload', function (req, res, next) {
 
 function upload(req, res, next, cb) {
   if (req.session.username) {
+    let dirname = req.query.dirname ? req.query.dirname + '/' : '';
     let form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
         if (Array.isArray(files)) {
@@ -30,7 +31,7 @@ function upload(req, res, next, cb) {
           for (const key in files) {
             if (files.hasOwnProperty(key)) {
               const element = files[key];
-              colUpload(element.name, element.path, cb, true);
+              colUpload(dirname + element.name, element.path, cb, true);
             }
           }
         }
