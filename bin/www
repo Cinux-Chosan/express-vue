@@ -21,7 +21,7 @@ app.set('port', port);
  */
 
 const options = {
-  cert: fs.readFileSync('/etc/letsencrypt/live/www.chosan.cn/fullchain.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/www.chosan.cn/cert.pem'),
   key: fs.readFileSync('/etc/letsencrypt/live/www.chosan.cn/privkey.pem')
 };
 
