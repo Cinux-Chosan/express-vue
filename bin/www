@@ -21,13 +21,26 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
+var server;
+var isHttps = process.env.PORT == 443;
 
-const options = {
-  cert: fs.readFileSync('/etc/letsencrypt/live/www.chosan.cn/fullchain.pem'),
-  key: fs.readFileSync('/etc/letsencrypt/live/www.chosan.cn/privkey.pem')
-};
+if (isHttps) {
+  const options = {
+    cert: fs.readFileSync('/etc/letsencrypt/live/www.chosan.cn/fullchain.pem'),
+    key: fs.readFileSync('/etc/letsencrypt/live/www.chosan.cn/privkey.pem')
+  };
 
-var server = https.createServer(options, app);
+  server = https.createServer(options, app);  // https 服务器
+
+  http.createServer((req, res) => {  // 负责将 http 请求重定向到 https
+    let redirectUrl = new URL(req.url, `https://${req.headers.host}`);
+    res.writeHead(301, { 'Location': redirectUrl.toString() });
+    res.end();
+  }).listen(80);
+} else {
+  server = http.createServer(app);  // http 服务器
+}
+
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -97,8 +110,3 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
-http.createServer((req, res) => {
-  let redirectUrl = new URL(req.url, `https://${req.headers.host}`);
-  res.writeHead(301, { 'Location': redirectUrl.toString() });
-  res.end();
-}).listen(80);
