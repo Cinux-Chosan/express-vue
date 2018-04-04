@@ -21,8 +21,8 @@ app.set('port', port);
  */
 
 const options = {
-  key: fs.readFileSync('/etc/letsencrypt/keys/0000_key-certbot.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/csr/0000_csr-certbot.pem')
+  cert: fs.readFileSync('/etc/letsencrypt/live/www.chosan.cn/fullchain.pem'),
+  key: fs.readFileSync('/etc/letsencrypt/live/www.chosan.cn/privkey.pem')
 };
 
 var server = https.createServer(app);
