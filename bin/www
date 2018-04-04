@@ -6,8 +6,10 @@
 
 var app = require('../app');
 var debug = require('debug')('myapp:server');
+var http = require('http');
 var https = require('https');
 var fs = require('fs');
+var { URL } = require('url');
 
 /**
  * Get port from environment and store in Express.
@@ -94,3 +96,9 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+http.createServer((req, res) => {
+  let redirectUrl = new URL(req.url, `https://${req.headers.host}`);
+  res.writeHead(301, { 'Location': redirectUrl.toString() });
+  res.end();
+}).listen(80);
