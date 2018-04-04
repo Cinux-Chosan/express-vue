@@ -41,7 +41,6 @@ if (isHttps) {
   server = http.createServer(app);  // http 服务器
 }
 
-
 /**
  * Listen on provided port, on all network interfaces.
  */
