@@ -5,5 +5,7 @@ export default DS.Model.extend({
     content: DS.attr(),
     postType: DS.attr(),
     cateName: DS.attr(),
-    cateNodes: DS.attr()
+    cateNodes: DS.attr(),
+    createTime: DS.attr('date'),
+    lastUpdateTime: DS.attr('date')
 });

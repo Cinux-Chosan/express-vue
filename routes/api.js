@@ -57,6 +57,7 @@ new mongo('posts').getDB().then(db => {
   router.post('/posts', checkLogin(async (req, res) => {
     let col = colPosts;
     let doc = getJSONAPIData(req.body);
+    doc.createTime = new Date().toISOString();
     let r = await col.insertOne(doc);
     doc = await col.findOne({_id: ObjectID(r.insertedId)});
     doc.type = 'post';
@@ -67,6 +68,7 @@ new mongo('posts').getDB().then(db => {
     let col = colPosts;
     let post_id = req.params.post_id;
     let doc = getJSONAPIData(req.body);
+    doc.lastUpdateTime = new Date().toISOString();
     if (post_id) {
       let _id = ObjectID(post_id);
       let r = await col.replaceOne({ _id }, doc );

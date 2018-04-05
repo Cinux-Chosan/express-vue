@@ -1,5 +1,5 @@
 
-{{#content-block title=model.title class="position-relative" local-class="root"}}
+{{#content-block title=model.title class="position-relative" local-class="root" remark=postRemark}}
     {{#prettify-content class=(if (eq model.postType 'markdown') 'markdown-body')}}
         {{{render-type model.content model.postType}}}
     {{/prettify-content}}
