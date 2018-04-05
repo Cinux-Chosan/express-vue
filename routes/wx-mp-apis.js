@@ -3,13 +3,19 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/tokencheck', function(req, res, next) {
-  let { signature, timestamp, nonce, echostr } = req.query;
-  let arr = [timestamp, nonce, echostr].sort();
-  let result = getSha1(arr.join(''));
-  console.log(result);
-  console.log(signature);
-  console.log(result === signature);
-  res.end(echostr);
+  try {
+      
+  
+    let { signature, timestamp, nonce, echostr } = req.query;
+    let arr = [timestamp, nonce, echostr].sort();
+    let result = getSha1(arr.join(''));
+    console.log(result);
+    console.log(signature);
+    console.log(result === signature);
+    res.end(echostr);
+  } catch (error) {
+      console.log(error);
+  }
 });
 
 module.exports = router;
