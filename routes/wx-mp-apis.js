@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var crypto = require('crypto');
 
 /* GET users listing. */
 router.get('/tokencheck', function(req, res, next) {
