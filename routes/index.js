@@ -6,7 +6,7 @@ var util = require('util');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   // res.render('index', { title: 'Express' });
-  return res.end(util.inspect(req));
+  // return res.end(util.inspect(req));
   if (req.hostname.startsWith('vue.')) {
     res.sendFile(path.resolve('./app-vue/dist/index.html'));
   } else {
