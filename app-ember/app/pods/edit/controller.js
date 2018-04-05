@@ -11,15 +11,15 @@ export default Controller.extend({
   }],
   post_type: '',
   editor: '',
-  @computed('model.name')
-  get editormdUpload() { 
-    let name = this.get('model.name');
-    return `/upload/editormdUpload?dirname=${name}`;
+  @computed('model.title')
+  get editormdUpload() {
+    let title = this.get('model.title');
+    return `/upload/editormdUpload?dirname=${title}`;
   },
-  @computed('model.name')
+  @computed('model.title')
   get kindEditorUpload(){
-    let name = this.get('model.name');
-    return `/upload/kindEditorUpload?dirname=${name}`;
+    let title = this.get('model.title');
+    return `/upload/kindEditorUpload?dirname=${title}`;
   },
   actions: {
     submit() {
