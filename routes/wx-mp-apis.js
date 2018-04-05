@@ -23,7 +23,7 @@ router.get('/tokencheck', function(req, res, next) {
 router.post('/tokencheck', function(req, res, next) {
   console.log(req.body);
   res.end(req.body);
-}
+})
 
 
 module.exports = router;
