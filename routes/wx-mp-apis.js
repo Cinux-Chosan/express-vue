@@ -13,7 +13,8 @@ router.get('/tokencheck', function(req, res, next) {
     console.log(result);
     console.log(signature);
     console.log(result === signature);
-    res.end(echostr);
+    console.log(req.body);
+    res.end(req.body);
   } catch (error) {
       console.log(error);
   }
