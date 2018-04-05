@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var crypto = require('crypto');
+var util = require('util');
 
 /* GET users listing. */
 router.get('/tokencheck', function(req, res, next) {
@@ -22,7 +23,7 @@ router.get('/tokencheck', function(req, res, next) {
 
 router.post('/tokencheck', function(req, res, next) {
   console.log(req.body);
-  res.end(req.body);
+  res.end(util.inspect(req.body));
 })
 
 
