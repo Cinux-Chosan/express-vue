@@ -6,10 +6,11 @@ var util = require('util');
 /* GET users listing. */
 router.get('/tokencheck', function(req, res, next) {
   try {
-      
-  
     let { signature, timestamp, nonce, echostr } = req.query;
+    console.log( signature, timestamp, nonce, echostr );
+    console.log('before:\n', arr);
     let arr = [timestamp, nonce, echostr].sort();
+    console.log('after:\n', arr);
     let result = getSha1(arr.join(''));
     console.log(result);
     console.log(signature);
