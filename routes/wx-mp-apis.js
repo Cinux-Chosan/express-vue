@@ -10,7 +10,7 @@ router.get('/tokencheck', function(req, res, next) {
     console.log( signature, timestamp, nonce, echostr );
     let arr = [timestamp, nonce, echostr];
     console.log('before:\n', arr);
-    let arr = arr.sort();
+    arr = arr.sort();
     console.log('after:\n', arr);
     let result = getSha1(arr.join(''));
     console.log(result);
