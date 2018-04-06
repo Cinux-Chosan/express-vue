@@ -15,16 +15,20 @@ var { URL } = require('url');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(process.env.POST_PORT || '3000');
 app.set('port', port);
 
 /**
  * Create HTTP server.
  */
 var server;
-var isHttps = process.env.PORT == 443;
 
-if (isHttps) {
+/*  // 使用了反向代理过后这段代码不再需要
+
+var isServer = process.env.SERVER;
+
+
+if (isServer) {
   const options = {
     cert: fs.readFileSync('/etc/letsencrypt/live/www.chosan.cn/fullchain.pem'),
     key: fs.readFileSync('/etc/letsencrypt/live/www.chosan.cn/privkey.pem')
@@ -40,6 +44,9 @@ if (isHttps) {
 } else {
   server = http.createServer(app);  // http 服务器
 }
+*/
+
+server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
