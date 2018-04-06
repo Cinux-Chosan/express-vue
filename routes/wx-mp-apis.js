@@ -2,13 +2,13 @@ var express = require('express');
 var router = express.Router();
 var crypto = require('crypto');
 var util = require('util');
+var token = 'cqmanlong';
 
 /* GET users listing. */
 router.get('/tokencheck', function(req, res, next) {
   try {
     let { signature, timestamp, nonce, echostr } = req.query;
-    console.log( signature, timestamp, nonce, echostr );
-    let arr = [timestamp, nonce, echostr];
+    let arr = [timestamp, nonce, token];
     console.log('before:\n', arr);
     arr = arr.sort();
     console.log('after:\n', arr);
