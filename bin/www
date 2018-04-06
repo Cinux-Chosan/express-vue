@@ -23,7 +23,7 @@ app.set('port', port);
  */
 var server;
 
-/*  // 使用了反向代理过后这段代码不再需要
+  // 使用了反向代理过后这段代码不再需要
 
 var isServer = process.env.SERVER;
 
@@ -35,18 +35,16 @@ if (isServer) {
   };
 
   server = https.createServer(options, app);  // https 服务器
-
+ /*
   http.createServer((req, res) => {  // 负责将 http 请求重定向到 https
     let redirectUrl = new URL(req.url, `https://${req.headers.host}`);
     res.writeHead(301, { 'Location': redirectUrl.toString() });
     res.end();
   }).listen(80);
+  */
 } else {
   server = http.createServer(app);  // http 服务器
 }
-*/
-
-server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
