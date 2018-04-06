@@ -8,18 +8,13 @@ var token = 'cqmanlong';
 router.get('/tokencheck', function(req, res, next) {
   try {
     let { signature, timestamp, nonce, echostr } = req.query;
-    let arr = [timestamp, nonce, token];
-    console.log('before:\n', arr);
-    arr = arr.sort();
-    console.log('after:\n', arr);
+    let arr = [timestamp, nonce, token].sort();
     let result = getSha1(arr.join(''));
-    console.log(result);
-    console.log(signature);
-    console.log(result === signature);
-    console.log(req.body);
-    res.end(req.body);
+    if (result === signature) {
+      res.end(echostr);
+    }
   } catch (error) {
-      console.log(error);
+      res.end(undefined);
   }
 });
 
