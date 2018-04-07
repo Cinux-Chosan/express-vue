@@ -10,7 +10,6 @@ var index = require('./routes/index');
 var signup = require('./routes/signup');
 var api = require('./routes/api');
 var upload = require('./routes/upload');
-var wxapi = require('./routes/wx-mp-apis');
 
 var app = express();
 
@@ -51,7 +50,6 @@ app.use('/', index);
 app.use('/signup', signup);
 app.use('/api', api);
 app.use('/upload', upload);
-app.use('/wxapi', wxapi);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

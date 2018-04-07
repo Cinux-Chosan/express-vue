@@ -23,8 +23,6 @@ app.set('port', port);
  */
 var server;
 
-  // 使用了反向代理过后这段代码不再需要
-
 var isServer = process.env.SERVER;
 
 
