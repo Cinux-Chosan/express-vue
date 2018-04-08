@@ -15,20 +15,31 @@ new mongo('posts').getDB().then(db => {
     colUser = db.collection('user');
 
   router.get('/posts', async (req, res, next) => {
-    let cate = req.query.cate;
+    let { cate, skip = 0, limit = 20 } = req.query;  // 默认每次返回 20 条
     let col = colPosts;
     let docs = [];
+    let cursor;
     if (cate) {
-      docs = await col.find({ cateNodes: { $regex: new RegExp(cate) } }).project({ title: 1 }).toArray();
+      cursor = col.find({ cateNodes: { $regex: new RegExp(cate) } })
     } else {
       try {
-        docs = await col.find().project({ title: 1 }).toArray();
+        cursor = col.find();
       } catch (e) {
         res.status(500)[bk]('服务端错误', false);
       }
     }
-    docs.forEach(el => el.type = 'post');
-    res[bk](docs, true);
+    cursor.project({ title: 1 })
+      .sort([ ["createTime", -1], ["lastUpdateTime", -1] ])
+      .skip(skip)
+      .limit(limit);
+    cursor.forEach(doc => {
+      doc.type = 'post';
+      docs.push(doc);
+    }, err => {
+      if (!err) {
+        res[bk](docs, true);
+      }
+    });
   })
 
   router.get('/posts/:post_id', async (req, res, next) => {
