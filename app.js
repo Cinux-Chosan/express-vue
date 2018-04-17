@@ -30,6 +30,8 @@ app.use(express.static(path.join(__dirname, 'app-vue/dist'), { index: false }));
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", req.headers.origin);
+  console.log('origin: ', req.headers.origin);
+
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Methods", "DELETE,GET,POST,HEAD,PATCH,PUT");
