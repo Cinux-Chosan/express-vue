@@ -5,7 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session')
-var util = require('util');
 
 var index = require('./routes/index');
 var signup = require('./routes/signup');
@@ -31,9 +30,6 @@ app.use(express.static(path.join(__dirname, 'app-vue/dist'), { index: false }));
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", req.headers.origin);
-  console.log('origin: ', req.headers.origin);
-  res.end(util.inspect(req.headers))
-
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Methods", "DELETE,GET,POST,HEAD,PATCH,PUT");
