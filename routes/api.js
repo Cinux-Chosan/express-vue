@@ -154,10 +154,16 @@ new mongo('posts').getDB().then(db => {
         root.children = root.children || [];
         root.children.push({_id, name: req.body.name});
       } else {
-        findChild(root, parentId, (el, index, arr) => {
-          el.children = el.children || [];
-          el.children.push({_id, name: req.body.name});
-        })
+        // findChild(root, parentId, (el, index, arr) => {
+        //   el.children = el.children || [];
+        //   el.children.push({_id, name: req.body.name});
+        // })
+        for (let node of retriveChild(root)) {
+          if (node._id == parentId) {
+            node.children = node.children || [];
+            node.children.push({_id, name: req.body.name});
+          }
+        }
       }
       r = await col.replaceOne({_id: root._id}, root);
     } else {
@@ -180,6 +186,12 @@ new mongo('posts').getDB().then(db => {
           findChild(root, req.body._id, (el, index, arr) => {
             arr.splice(index, 1);
           })
+          // for (let node of retriveChild(root)) {
+          //   if (node._id == req.body._id) {
+          //     node.children = node.children || [];
+          //     node.children.push({_id, name: req.body.name});
+          //   }
+          // }
           r = await col.replaceOne({_id: ObjectID(rootId)}, root);
         }
         let delOk = !!(r.deletedCount || r.modifiedCount)
@@ -196,16 +208,22 @@ new mongo('posts').getDB().then(db => {
   router.post('/updateCategory', checkLogin(async (req, res) => {
     let col = colCategory;
     let rootId = req.body.rootId;
+    let _id = req.body._id;
     if (rootId) {
       let r;
       let root = await col.findOne({_id: ObjectID(rootId)});
       if (root) {
-        if (rootId == root._id) {
+        if (_id == root._id) {
           r = await col.updateOne({_id: ObjectID(rootId) }, { $set: { name: req.body.name } });
         } else {
-          findChild(root, req.body._id, (el, index, arr) => {
-            el.name = req.body.name;
-          });
+          // findChild(root, req.body._id, (el, index, arr) => {
+          //   el.name = req.body.name;
+          // });
+          for (let node of retriveChild(root)) {
+            if (node._id == req.body._id) {
+              node.name = req.body.name;
+            }
+          }
           r = await col.replaceOne({_id: ObjectID(rootId)}, root);
         }
 
@@ -277,6 +295,15 @@ function findChild(node, _id, cb) {
       }
     }
   }
+}
+
+function * retriveChild(node = {}) {
+  if (node.children) {
+    for(let i = 0, nChildren = node.children.length; i < nChildren; i++) {
+      yield * retriveChild(node.children[i]);
+    }
+  }
+  yield node;
 }
 
 function isDev(req) {
