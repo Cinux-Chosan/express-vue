@@ -2,13 +2,13 @@ const express = require('express');
 const assert = require('assert');
 const crypto = require('crypto');
 const mongodb = require('mongodb');
-const mongo = require('../lib/utils/mongo');
+const myMongo = require('../lib/utils/mongo');
 require('../lib/utils/mk-mongo-counter');
 const router = express.Router();
 const ObjectID = mongodb.ObjectID;
 const { bk, encrypt, getMongoCounter } = require('../lib/utils/util');
 
-new mongo('posts').getDB().then(db => {
+new myMongo('posts').getDB().then(db => {
 
   let colPosts = db.collection('posts'),
     colCategory = db.collection('category'),
@@ -232,7 +232,7 @@ new mongo('posts').getDB().then(db => {
 
   router.post('/signup', async function (req, res, next) {
     if (!process.env.ALLOW_SIGNUP) return res[bk]('不允许注册!');
-    let db = await (new mongo('posts')).getDB();
+    let db = await (new myMongo('posts')).getDB();
     let col = colUser;
 
     let doc = await col.findOne({name: req.body.name});
@@ -248,7 +248,6 @@ new mongo('posts').getDB().then(db => {
     }
   });
 });
-
 
 
 module.exports = router;
@@ -278,6 +277,7 @@ function findChild(node, _id, cb) {
     }
   }
 }
+
 
 function isDev(req) {
   return ~req.hostname.indexOf('localhost');
