@@ -1,12 +1,48 @@
-.root{
-  line-height: 2em;
+.root {
+  line-height: 32px;
+  .treeItem {
+    padding-left: 20px;
+    position: relative;
+    &::before,
+    &::after {
+      content: '';
+      height: 16px;
+      position: absolute;
+      border-left: 1px solid #e7e7eb;
+      left: 10px;
+    }
+    &::before {
+      border-bottom: 1px solid #e7e7eb;
+      width: 8px;
+      top: 0;
+    }
+    &::after {
+      bottom: 0;
+    }
+    &.expanded::after {
+      height: 100%;
+    }
+    &[data-depth="1"] {
+      &::before,
+      &::after {
+        content: none;
+      }
+    }
+  }
+  &:last-child {
+    .treeItem {
+      &::after {
+        content: none;
+      }
+    }
+  }
 }
 
 .operations {
   list-style-type: none;
-  i{
+  i {
     cursor: pointer;
-    &:hover{
+    &:hover {
       color: #007bff;
     }
   }
@@ -24,8 +60,20 @@
   @include icon('\e627');
 }
 
-.noPermission{
-  .edit, .del, .add {
+.noPermission {
+  .edit,
+  .del,
+  .add {
     display: none;
+  }
+}
+
+.switchBtn{
+  // opacity: .1;
+  &:hover{
+    opacity: 1 !important;
+  }
+  &.switchBtnClosed{
+    opacity: .1;
   }
 }

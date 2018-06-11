@@ -5,16 +5,8 @@ import $ from 'jquery';
 export default Component.extend({
   model: '',
   depth: 1,
-  hideChildren: true,
+  hideChildren: false,
   hasPermission: false,
-  @on('didInsertElement')
-  @observes('depth')
-  styleChanged() {
-    let depth = this.get('depth');
-    this.$('> div:first-child').css({
-      textIndent: depth + 'em'
-    });
-  },
   actions: {
     itemClicked(category) {
       let root = this.$();

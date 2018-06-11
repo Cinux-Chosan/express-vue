@@ -1,4 +1,6 @@
-<div class="clearfix {{local-class (unless hasPermission 'noPermission')}}" local-class="treeItem"
+<div
+  class="clearfix {{local-class (unless hasPermission 'noPermission')}} {{local-class (unless hideChildren 'expanded')}}"
+  local-class="treeItem"
   data-depth={{depth}}
   data-id={{model._id}}
   {{action "itemClicked" model bubbles=false}}>
@@ -13,7 +15,9 @@
         <i local-class="del" {{action edit model 'del' bubbles=false}}></i>
       {{/if}}
       {{#if model.children}}
-        {{switch-btnx fontSize=12 close=hideChildren bubbles=false}}
+        {{switch-btnx fontSize=12 close=hideChildren bubbles=false
+          local-class=(concat (unless hideChildren 'switchBtnClosed') ' switchBtn')
+          }}
       {{/if}}
     </li>
   </ul>
