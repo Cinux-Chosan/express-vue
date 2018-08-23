@@ -41,8 +41,4 @@ function upload(req, res, next, cb) {
   }
 }
 
-
-
-
-
 module.exports = router;
