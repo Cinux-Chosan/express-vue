@@ -10,6 +10,7 @@ var http = require('http');
 var https = require('https');
 var fs = require('fs');
 var { URL } = require('url');
+var spdy = require('spdy'),
 
 /**
  * Get port from environment and store in Express.
@@ -32,7 +33,7 @@ if (isServer) {
     key: fs.readFileSync('/etc/letsencrypt/live/www.chosan.cn/privkey.pem')
   };
 
-  server = https.createServer(options, app);  // https 服务器
+  server = spdy.createServer(options, app);  // https 服务器
  /*
   http.createServer((req, res) => {  // 负责将 http 请求重定向到 https
     let redirectUrl = new URL(req.url, `https://${req.headers.host}`);
