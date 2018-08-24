@@ -17,6 +17,10 @@ module.exports = function(defaults) {
     sassOptions: {
       includePaths: ['node_modules/bootstrap/scss']
     },
+    // autoprefixer: {
+    //   browsers: ['>5%'],
+    //   cascade: false
+    // },
     basicDepsOptions: {
       bootstrapOptions: {
         autoImport: false

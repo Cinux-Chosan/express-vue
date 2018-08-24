@@ -9,7 +9,6 @@
 */
 .cm-s-mdn-like.CodeMirror { color: #999; background-color: #fff; }
 .cm-s-mdn-like .CodeMirror-selected { background: #cfc !important; }
-.cm-s-mdn-like.CodeMirror ::-moz-selection { background: #cfc; }
 .cm-s-mdn-like.CodeMirror ::selection { background: #cfc; }
 .cm-s-mdn-like.CodeMirror ::-moz-selection { background: #cfc; }
 
