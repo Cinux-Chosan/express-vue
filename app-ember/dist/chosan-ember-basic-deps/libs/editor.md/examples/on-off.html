@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8" />
+        <title>On / Off (bind/unbind) event handle - Editor.md examples</title>
+        <link rel="stylesheet" href="css/style.css" integrity="sha256-34fzcK08FhtpZJrB+Au5Q7LyXzgmDwjFTz5U59LKoPM= sha512-/JNkKpG4lndvP7QayH/SmKrZEzATRsVFIPgk7cuTIpJEaJMOxRcNxHIj9vP84TzoveEY67jAyWDuQNwFtW0dgg==" />
+        <link rel="stylesheet" href="../css/editormd.css" integrity="sha256-wRzd5bNaTytSAqVwymVPscgPSWDsijsPN5nX172fwlo= sha512-abcwcQ2dSN0XXXoB+vOyW/iugibE9wJ9VAywHckjAO5a2smSn/XH1+x6hlVRwQuCw0iIL1sL6FW2Os+F33pDjw==" />
+        <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
+    </head>
+    <body>
+        <div id="layout">
+            <header>
+                <h1>On / Off (bind/unbind) event handle</h1>
+                <p>Plaese press F12, open the develop tools.</p>     
+            </header>
+            <div id="test-editormd">                
+                <textarea style="display:none;">#### Example
+```javascript
+{
+    onscroll : function(event) {
+        console.clear();
+        console.log("onscroll =>", this, this.id, this.settings, event);
+    },
+
+    onpreviewscroll : function(event) {
+        console.clear();
+        console.log("onpreviewscroll =>", this, this.id, this.settings, event);
+    },
+
+    onload : function() {
+        this.off("previewscroll"); // unbind before handle
+
+        // Override settings.onpreviewscroll
+        this.on("previewscroll", function(){
+            console.clear();
+            console.log("on() => Override settings.onpreviewscroll =>", this, this.id, event, (new Date).getTime());
+        });
+
+        // defined event bind
+        this.on("resize", function(){
+            console.clear();
+            console.log("onresize =>", this, this.id, event, (new Date).getTime());
+        });
+    }
+}
+
+// Or
+editor.on("resize", function(){
+    // ...
+});
+
+editor.off("resize");
+```
+
+</textarea>
+            </div>
+        </div>        
+        <script src="js/jquery.min.js" integrity="sha256-erlk6o9cDmjejHuQVbnTD0Gpm2tNG0OrQAzIbir8spU= sha512-P0HkAI5vOEj3kgwrbRbYqGUbhEP5p2r4mMWK4Rv3tvScPpWgJsfkPHDuh1Oy7mCuAudt7cEntq94E49ZqLjpKw==" ></script>
+        <script src="../editormd.js" integrity="sha256-moxsHuShGqMFItcsTNP8qgezfjAAcZAQSCkJ/UH2JxU= sha512-LZm70SMBSFnfGeuYgchcpsV0OzkAMo9AjYxmhJhe0t/XkGFXBUd+dRtyhiLoM4ZH12/czIk9l/NvpGub4/EGMA==" ></script>
+        <script type="text/javascript">
+            var testEditor;
+            
+            $(function() {
+                $.get("./test.md", function(md){
+                    testEditor = editormd("test-editormd", {
+                        width    : "90%",
+                        height   : 720,
+                        appendMarkdown : md,
+                        path     : '../lib/',
+                        tex      : true,
+                        htmlDecode : true,
+                        flowChart : true,
+                        taskList  : true,
+                        sequenceDiagram : true,
+                        onscroll : function(event) {
+                            console.clear();
+                            console.log("onscroll =>", this, this.id, this.settings, event);
+                        },
+                        onpreviewscroll : function(event) {
+                            console.clear();
+                            console.log("onpreviewscroll =>", this, this.id, this.settings, event);
+                        },
+                        onload : function() {
+                            this.off("previewscroll");
+                            
+                            // Override settings.onpreviewscroll
+                            this.on("previewscroll", function(){
+                                console.clear();
+                                console.log("on() => Override settings.onpreviewscroll =>", this, this.id, event, (new Date).getTime());
+                            });
+                            
+                            // defined event bind
+                            this.on("resize", function(){
+                                console.clear();
+                                console.log("onresize =>", this, this.id, event, (new Date).getTime());
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>

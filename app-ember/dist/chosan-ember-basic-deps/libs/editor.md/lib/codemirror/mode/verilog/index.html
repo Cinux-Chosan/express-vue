@@ -1,0 +1,120 @@
+<!doctype html>
+
+<title>CodeMirror: Verilog/SystemVerilog mode</title>
+<meta charset="utf-8"/>
+<link rel=stylesheet href="../../doc/docs.css">
+
+<link rel="stylesheet" href="../../lib/codemirror.css" integrity="sha256-o+9UR9If1biRNIJtCGxCPKOwU7g4BdJi/rDs2ZZXPk4= sha512-n1/8xOdp0iZxMgkCTK0aEvktREEdssvSuSX4BM0Hi2FhziYKZjssh2XJGoknVS4JA7cP/FSdY51VHVGCiWMopg==" >
+<script src="../../lib/codemirror.js" integrity="sha256-M0WkrFhDvSCXAX5UruYoU3dO5p1V/FE1BiSTJb0CnBM= sha512-twgs7wMy3+kt68gxwzDztvz0PmHpFUGK/jIoUprgHUVD8mWQvzyqgYn16/LS8vq7j80hzFzgIeIpHidBs93HjA==" ></script>
+<script src="../../addon/edit/matchbrackets.js" integrity="sha256-E/YeB6UvNbZssma/xCNt7JMPJWywQ61FEV4tmbbjmwE= sha512-6R8hHj+f/Cr5FIC49Kx7HLf8PFfRRSmlOrDJpeH/cdK9uaku8UNUIffaiodIT8M3ig1fSWlP55qMxlj6gUb9qg==" ></script>
+<script src="verilog.js" integrity="sha256-Hx9QuI9N+JZd/ckvej9gJN0f1ErsRJOYN3QWPcO5iv4= sha512-NLrTGMfJF7TTwY9ZZt9N3Zcg3arJgkBNheNgR6B3ZIs/75D15OBJvuL2OdRftN72Ijp7mPpYhmQW8S1EDxtlKw==" ></script>
+<style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
+<div id=nav>
+  <a href="http://codemirror.net"><h1>CodeMirror</h1><img id=logo src="../../doc/logo.png"></a>
+
+  <ul>
+    <li><a href="../../index.html">Home</a>
+    <li><a href="../../doc/manual.html">Manual</a>
+    <li><a href="https://github.com/codemirror/codemirror">Code</a>
+  </ul>
+  <ul>
+    <li><a href="../index.html">Language modes</a>
+    <li><a class=active href="#">Verilog/SystemVerilog</a>
+  </ul>
+</div>
+
+<article>
+<h2>SystemVerilog mode</h2>
+
+<div><textarea id="code" name="code">
+// Literals
+1'b0
+1'bx
+1'bz
+16'hDC78
+'hdeadbeef
+'b0011xxzz
+1234
+32'd5678
+3.4e6
+-128.7
+
+// Macro definition
+`define BUS_WIDTH = 8;
+
+// Module definition
+module block(
+  input                   clk,
+  input                   rst_n,
+  input  [`BUS_WIDTH-1:0] data_in,
+  output [`BUS_WIDTH-1:0] data_out
+);
+  
+  always @(posedge clk or negedge rst_n) begin
+
+    if (~rst_n) begin
+      data_out <= 8'b0;
+    end else begin
+      data_out <= data_in;
+    end
+    
+    if (~rst_n)
+      data_out <= 8'b0;
+    else
+      data_out <= data_in;
+    
+    if (~rst_n)
+      begin
+        data_out <= 8'b0;
+      end
+    else
+      begin
+        data_out <= data_in;
+      end
+
+  end
+  
+endmodule
+
+// Class definition
+class test;
+
+  /**
+   * Sum two integers
+   */
+  function int sum(int a, int b);
+    int result = a + b;
+    string msg = $sformatf("%d + %d = %d", a, b, result);
+    $display(msg);
+    return result;
+  endfunction
+  
+  task delay(int num_cycles);
+    repeat(num_cycles) #1;
+  endtask
+  
+endclass
+
+</textarea></div>
+
+<script>
+  var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+    lineNumbers: true,
+    matchBrackets: true,
+    mode: {
+      name: "verilog",
+      noIndentKeywords: ["package"]
+    }
+  });
+</script>
+
+<p>
+Syntax highlighting and indentation for the Verilog and SystemVerilog languages (IEEE 1800).
+<h2>Configuration options:</h2>
+  <ul>
+    <li><strong>noIndentKeywords</strong> - List of keywords which should not cause identation to increase. E.g. ["package", "module"]. Default: None</li>
+  </ul>
+</p>
+
+<p><strong>MIME types defined:</strong> <code>text/x-verilog</code> and <code>text/x-systemverilog</code>.</p>
+</article>

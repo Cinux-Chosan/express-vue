@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8" />
+        <title>Read only mode - Editor.md examples</title>
+        <link rel="stylesheet" href="css/style.css" integrity="sha256-34fzcK08FhtpZJrB+Au5Q7LyXzgmDwjFTz5U59LKoPM= sha512-/JNkKpG4lndvP7QayH/SmKrZEzATRsVFIPgk7cuTIpJEaJMOxRcNxHIj9vP84TzoveEY67jAyWDuQNwFtW0dgg==" />
+        <link rel="stylesheet" href="../css/editormd.css" integrity="sha256-wRzd5bNaTytSAqVwymVPscgPSWDsijsPN5nX172fwlo= sha512-abcwcQ2dSN0XXXoB+vOyW/iugibE9wJ9VAywHckjAO5a2smSn/XH1+x6hlVRwQuCw0iIL1sL6FW2Os+F33pDjw==" />
+        <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
+    </head>
+    <body>
+        <div id="layout">
+            <header>
+                <h1>只读模式</h1> 
+                <p>Read only mode</p> 
+            </header>
+            <div class="btns">
+                <button id="watch-btn">Enable watch</button>
+                <button id="unwatch-btn">Disable watch</button>
+            </div>
+            <div id="test-editormd" class="editormd-onlyread">   
+                <textarea style="display:none;">#### Setting
+
+```javascript
+{
+    readOnly        : true,
+    //styleActiveLine : false,       // disable active line
+    //watch           : false,       // disable watch
+    //lineNumbers     : false        // hide line numbers
+}
+```
+</textarea>
+            </div>
+        </div>
+        <script src="js/jquery.min.js" integrity="sha256-erlk6o9cDmjejHuQVbnTD0Gpm2tNG0OrQAzIbir8spU= sha512-P0HkAI5vOEj3kgwrbRbYqGUbhEP5p2r4mMWK4Rv3tvScPpWgJsfkPHDuh1Oy7mCuAudt7cEntq94E49ZqLjpKw==" ></script>
+        <script src="../editormd.js" integrity="sha256-moxsHuShGqMFItcsTNP8qgezfjAAcZAQSCkJ/UH2JxU= sha512-LZm70SMBSFnfGeuYgchcpsV0OzkAMo9AjYxmhJhe0t/XkGFXBUd+dRtyhiLoM4ZH12/czIk9l/NvpGub4/EGMA==" ></script>   
+        <script type="text/javascript">
+			var testEditor;
+
+            $(function() {
+                testEditor = editormd("test-editormd", {
+                    width           : "90%",
+                    height          : 540,
+                    path            : "../lib/",
+                    //watch           : false,           // disable watch
+                    readOnly        : true,
+                    styleActiveLine : false,   // disable active line
+                    //lineNumbers     : false      // hide line numbers
+                });
+                
+                $("#watch-btn").click(function(){
+                    testEditor.watch();
+                });
+                
+                $("#unwatch-btn").click(function(){
+                    testEditor.unwatch();
+                });
+            });
+        </script>
+    </body>
+</html>

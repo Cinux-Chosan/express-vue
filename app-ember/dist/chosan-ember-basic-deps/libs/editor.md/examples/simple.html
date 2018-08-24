@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8" />
+        <title>Simple example - Editor.md examples</title>
+        <link rel="stylesheet" href="css/style.css" integrity="sha256-34fzcK08FhtpZJrB+Au5Q7LyXzgmDwjFTz5U59LKoPM= sha512-/JNkKpG4lndvP7QayH/SmKrZEzATRsVFIPgk7cuTIpJEaJMOxRcNxHIj9vP84TzoveEY67jAyWDuQNwFtW0dgg==" />
+        <link rel="stylesheet" href="../css/editormd.css" integrity="sha256-wRzd5bNaTytSAqVwymVPscgPSWDsijsPN5nX172fwlo= sha512-abcwcQ2dSN0XXXoB+vOyW/iugibE9wJ9VAywHckjAO5a2smSn/XH1+x6hlVRwQuCw0iIL1sL6FW2Os+F33pDjw==" />
+        <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
+    </head>
+    <body>
+        <div id="layout">
+            <header>
+                <h1>Simple example</h1>
+            </header>
+            <div id="test-editormd">
+                <textarea style="display:none;">[TOC]
+
+#### Disabled options
+
+- TeX (Based on KaTeX);
+- Emoji;
+- Task lists;
+- HTML tags decode;
+- Flowchart and Sequence Diagram;
+
+#### Editor.md directory
+
+    editor.md/
+            lib/
+            css/
+            scss/
+            tests/
+            fonts/
+            images/
+            plugins/
+            examples/
+            languages/     
+            editormd.js
+            ...
+
+```html
+&lt;!-- English --&gt;
+&lt;script src="../dist/js/languages/en.js"&gt;&lt;/script&gt;
+
+&lt;!-- 繁體中文 --&gt;
+&lt;script src="../dist/js/languages/zh-tw.js"&gt;&lt;/script&gt;
+```
+</textarea>
+            </div>
+        </div>
+        <script src="js/jquery.min.js" integrity="sha256-erlk6o9cDmjejHuQVbnTD0Gpm2tNG0OrQAzIbir8spU= sha512-P0HkAI5vOEj3kgwrbRbYqGUbhEP5p2r4mMWK4Rv3tvScPpWgJsfkPHDuh1Oy7mCuAudt7cEntq94E49ZqLjpKw==" ></script>
+        <script src="../editormd.min.js" integrity="sha256-b3VYt26GSvx8el5JzOhdtt1GMR4lfHSiK+HV3nvQ7Qc= sha512-dDs+wISfBK/bK3QrS4JPoKL5qDvtkZKr1bGGHse17S3vLk69xYc/e77+DvrMBxlMo9y62gIMjAsPUgR4pFtheQ==" ></script>
+        <script type="text/javascript">
+			var testEditor;
+
+            $(function() {
+                testEditor = editormd("test-editormd", {
+                    width   : "90%",
+                    height  : 640,
+                    syncScrolling : "single",
+                    path    : "../lib/"
+                });
+                
+                /*
+                // or
+                testEditor = editormd({
+                    id      : "test-editormd",
+                    width   : "90%",
+                    height  : 640,
+                    path    : "../lib/"
+                });
+                */
+            });
+        </script>
+    </body>
+</html>

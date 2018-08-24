@@ -1,0 +1,85 @@
+<!doctype html>
+
+<title>CodeMirror: Lua mode</title>
+<meta charset="utf-8"/>
+<link rel=stylesheet href="../../doc/docs.css">
+
+<link rel="stylesheet" href="../../lib/codemirror.css" integrity="sha256-o+9UR9If1biRNIJtCGxCPKOwU7g4BdJi/rDs2ZZXPk4= sha512-n1/8xOdp0iZxMgkCTK0aEvktREEdssvSuSX4BM0Hi2FhziYKZjssh2XJGoknVS4JA7cP/FSdY51VHVGCiWMopg==" >
+<link rel="stylesheet" href="../../theme/neat.css" integrity="sha256-uNv+vsyyGt2MVTcVbkTc6s5AFvH4EJSzcY4gqBx9PXk= sha512-VtAAw7a+Xi2rGUkYEFOIByUdAUDPqL0zgusu3g2V6Qmnf3OWYqcffll0+C/bZjAYCJQP6TFgq3oeHLHXh791uw==" >
+<script src="../../addon/edit/matchbrackets.js" integrity="sha256-E/YeB6UvNbZssma/xCNt7JMPJWywQ61FEV4tmbbjmwE= sha512-6R8hHj+f/Cr5FIC49Kx7HLf8PFfRRSmlOrDJpeH/cdK9uaku8UNUIffaiodIT8M3ig1fSWlP55qMxlj6gUb9qg==" ></script>
+<script src="../../lib/codemirror.js" integrity="sha256-M0WkrFhDvSCXAX5UruYoU3dO5p1V/FE1BiSTJb0CnBM= sha512-twgs7wMy3+kt68gxwzDztvz0PmHpFUGK/jIoUprgHUVD8mWQvzyqgYn16/LS8vq7j80hzFzgIeIpHidBs93HjA==" ></script>
+<script src="lua.js" integrity="sha256-6ZyebRSNx0BL2rU4Lmovh+T/jN1N63vvcDj7R/W0tOw= sha512-M8f/gOY439Fhj/S8v6E0zZjWBfwDNCPljW44UD/8npLIrpBewTUJ3kXS5rBWfegZGn9yr+r2oN+f1+554EHjFA==" ></script>
+<style>.CodeMirror {border: 1px solid black;}</style>
+<div id=nav>
+  <a href="http://codemirror.net"><h1>CodeMirror</h1><img id=logo src="../../doc/logo.png"></a>
+
+  <ul>
+    <li><a href="../../index.html">Home</a>
+    <li><a href="../../doc/manual.html">Manual</a>
+    <li><a href="https://github.com/codemirror/codemirror">Code</a>
+  </ul>
+  <ul>
+    <li><a href="../index.html">Language modes</a>
+    <li><a class=active href="#">Lua</a>
+  </ul>
+</div>
+
+<article>
+<h2>Lua mode</h2>
+<form><textarea id="code" name="code">
+--[[
+example useless code to show lua syntax highlighting
+this is multiline comment
+]]
+
+function blahblahblah(x)
+
+  local table = {
+    "asd" = 123,
+    "x" = 0.34,  
+  }
+  if x ~= 3 then
+    print( x )
+  elseif x == "string"
+    my_custom_function( 0x34 )
+  else
+    unknown_function( "some string" )
+  end
+
+  --single line comment
+  
+end
+
+function blablabla3()
+
+  for k,v in ipairs( table ) do
+    --abcde..
+    y=[=[
+  x=[[
+      x is a multi line string
+   ]]
+  but its definition is iside a highest level string!
+  ]=]
+    print(" \"\" ")
+
+    s = math.sin( x )
+  end
+
+end
+</textarea></form>
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        matchBrackets: true,
+        theme: "neat"
+      });
+    </script>
+
+    <p>Loosely based on Franciszek
+    Wawrzak's <a href="http://codemirror.net/1/contrib/lua">CodeMirror
+    1 mode</a>. One configuration parameter is
+    supported, <code>specials</code>, to which you can provide an
+    array of strings to have those identifiers highlighted with
+    the <code>lua-special</code> style.</p>
+    <p><strong>MIME types defined:</strong> <code>text/x-lua</code>.</p>
+
+  </article>

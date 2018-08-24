@@ -1,0 +1,71 @@
+<!doctype html>
+
+<title>CodeMirror: Dart mode</title>
+<meta charset="utf-8"/>
+<link rel=stylesheet href="../../doc/docs.css">
+<link rel="stylesheet" href="../../lib/codemirror.css" integrity="sha256-o+9UR9If1biRNIJtCGxCPKOwU7g4BdJi/rDs2ZZXPk4= sha512-n1/8xOdp0iZxMgkCTK0aEvktREEdssvSuSX4BM0Hi2FhziYKZjssh2XJGoknVS4JA7cP/FSdY51VHVGCiWMopg==" >
+<script src="../../lib/codemirror.js" integrity="sha256-M0WkrFhDvSCXAX5UruYoU3dO5p1V/FE1BiSTJb0CnBM= sha512-twgs7wMy3+kt68gxwzDztvz0PmHpFUGK/jIoUprgHUVD8mWQvzyqgYn16/LS8vq7j80hzFzgIeIpHidBs93HjA==" ></script>
+<script src="../clike/clike.js" integrity="sha256-0ZVFsSFzQciSoBcgc1p0tAjiCF6XkENx46Pkq66diko= sha512-OAWq5hbrZn0VEg2oGPEucplM8S9GFegLHmrV46/8IWAj/O3/jpC2PglQf/7A+1iUjyug/2RNxQsGXnpBCf7JBw==" ></script>
+<script src="dart.js" integrity="sha256-EFfIO/CM3HUHaaJmh3MiBm/1hKWbtP3bb48rjV6GGDg= sha512-dxcHx0KDibScFommRrq6OUOKvQa2z4HB3e4ednv4JwFWP/VlpHVeofJvfLU4XTBt2qhEZcP0lHVyWXMp4+JDgQ==" ></script>
+<style>.CodeMirror {border: 1px solid #dee;}</style>
+<div id=nav>
+  <a href="http://codemirror.net"><h1>CodeMirror</h1><img id=logo src="../../doc/logo.png"></a>
+
+  <ul>
+    <li><a href="../../index.html">Home</a>
+    <li><a href="../../doc/manual.html">Manual</a>
+    <li><a href="https://github.com/codemirror/codemirror">Code</a>
+  </ul>
+  <ul>
+    <li><a href="../index.html">Language modes</a>
+    <li><a class=active href="#">Dart</a>
+  </ul>
+</div>
+
+<article>
+<h2>Dart mode</h2>
+<form>
+<textarea id="code" name="code">
+import 'dart:math' show Random;
+
+void main() {
+  print(new Die(n: 12).roll());
+}
+
+// Define a class.
+class Die {
+  // Define a class variable.
+  static Random shaker = new Random();
+
+  // Define instance variables.
+  int sides, value;
+
+  // Define a method using shorthand syntax.
+  String toString() => '$value';
+
+  // Define a constructor.
+  Die({int n: 6}) {
+    if (4 <= n && n <= 20) {
+      sides = n;
+    } else {
+      // Support for errors and exceptions.
+      throw new ArgumentError(/* */);
+    }
+  }
+
+  // Define an instance method.
+  int roll() {
+    return value = shaker.nextInt(sides) + 1;
+  }
+}
+</textarea>
+</form>
+
+<script>
+  var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+    lineNumbers: true,
+    mode: "application/dart"
+  });
+</script>
+
+</article>

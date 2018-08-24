@@ -1,0 +1,61 @@
+<!doctype html>
+
+<title>CodeMirror: SPARQL mode</title>
+<meta charset="utf-8"/>
+<link rel=stylesheet href="../../doc/docs.css">
+
+<link rel="stylesheet" href="../../lib/codemirror.css" integrity="sha256-o+9UR9If1biRNIJtCGxCPKOwU7g4BdJi/rDs2ZZXPk4= sha512-n1/8xOdp0iZxMgkCTK0aEvktREEdssvSuSX4BM0Hi2FhziYKZjssh2XJGoknVS4JA7cP/FSdY51VHVGCiWMopg==" >
+<script src="../../lib/codemirror.js" integrity="sha256-M0WkrFhDvSCXAX5UruYoU3dO5p1V/FE1BiSTJb0CnBM= sha512-twgs7wMy3+kt68gxwzDztvz0PmHpFUGK/jIoUprgHUVD8mWQvzyqgYn16/LS8vq7j80hzFzgIeIpHidBs93HjA==" ></script>
+<script src="../../addon/edit/matchbrackets.js" integrity="sha256-E/YeB6UvNbZssma/xCNt7JMPJWywQ61FEV4tmbbjmwE= sha512-6R8hHj+f/Cr5FIC49Kx7HLf8PFfRRSmlOrDJpeH/cdK9uaku8UNUIffaiodIT8M3ig1fSWlP55qMxlj6gUb9qg==" ></script>
+<script src="sparql.js" integrity="sha256-yvEdKO37Yd8/AgirwydVuLf07tadCX0VFzINSaHTemA= sha512-aqmzyjvP68WuiP3dq5YMS5CS7KLM9Psu9cd/dZejFVJEVhWzWJaCXUwAHQsxyhHvTu4oh/58d0okQKBCRkVHpw==" ></script>
+<style>.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
+<div id=nav>
+  <a href="http://codemirror.net"><h1>CodeMirror</h1><img id=logo src="../../doc/logo.png"></a>
+
+  <ul>
+    <li><a href="../../index.html">Home</a>
+    <li><a href="../../doc/manual.html">Manual</a>
+    <li><a href="https://github.com/codemirror/codemirror">Code</a>
+  </ul>
+  <ul>
+    <li><a href="../index.html">Language modes</a>
+    <li><a class=active href="#">SPARQL</a>
+  </ul>
+</div>
+
+<article>
+<h2>SPARQL mode</h2>
+<form><textarea id="code" name="code">
+PREFIX a: &lt;http://www.w3.org/2000/10/annotation-ns#>
+PREFIX dc: &lt;http://purl.org/dc/elements/1.1/>
+PREFIX foaf: &lt;http://xmlns.com/foaf/0.1/>
+PREFIX rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#>
+
+# Comment!
+
+SELECT ?given ?family
+WHERE {
+  {
+    ?annot a:annotates &lt;http://www.w3.org/TR/rdf-sparql-query/> .
+    ?annot dc:creator ?c .
+    OPTIONAL {?c foaf:givenName ?given ;
+                 foaf:familyName ?family }
+  } UNION {
+    ?c !foaf:knows/foaf:knows? ?thing.
+    ?thing rdfs
+  } MINUS {
+    ?thing rdfs:label "剛柔流"@jp
+  }
+  FILTER isBlank(?c)
+}
+</textarea></form>
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        mode: "application/sparql-query",
+        matchBrackets: true
+      });
+    </script>
+
+    <p><strong>MIME types defined:</strong> <code>application/sparql-query</code>.</p>
+
+  </article>

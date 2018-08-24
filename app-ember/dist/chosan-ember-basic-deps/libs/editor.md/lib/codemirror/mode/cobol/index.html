@@ -1,0 +1,210 @@
+<!doctype html>
+
+<title>CodeMirror: COBOL mode</title>
+<meta charset="utf-8"/>
+<link rel=stylesheet href="../../doc/docs.css">
+
+<link rel="stylesheet" href="../../lib/codemirror.css" integrity="sha256-o+9UR9If1biRNIJtCGxCPKOwU7g4BdJi/rDs2ZZXPk4= sha512-n1/8xOdp0iZxMgkCTK0aEvktREEdssvSuSX4BM0Hi2FhziYKZjssh2XJGoknVS4JA7cP/FSdY51VHVGCiWMopg==" >
+<link rel="stylesheet" href="../../theme/neat.css" integrity="sha256-uNv+vsyyGt2MVTcVbkTc6s5AFvH4EJSzcY4gqBx9PXk= sha512-VtAAw7a+Xi2rGUkYEFOIByUdAUDPqL0zgusu3g2V6Qmnf3OWYqcffll0+C/bZjAYCJQP6TFgq3oeHLHXh791uw==" >
+<link rel="stylesheet" href="../../theme/elegant.css" integrity="sha256-geWk1mcF/j1pwCL7qzJCQotJzdYO8TjXDLakh0aREg8= sha512-PnFABNIqhAlieE//wHQRz9BpufkOMLNU/P7I6YKZE0TQx5dpo90abpDknOQL8tZcupbKeWLsCx+E8MGHCJ9wow==" >
+<link rel="stylesheet" href="../../theme/erlang-dark.css" integrity="sha256-J0V32Fcy3uzSFiyDQkw2Q5dV2IXdVQpifMINoR0p5nE= sha512-Z4MXIuG57afNXSrJiNbxaByET+yAOBB4lw9zo7p2iHW33OE0lNSTrwMbAxF25GF4tl0vqhAlznAxQugAHhKeSA==" >
+<link rel="stylesheet" href="../../theme/night.css" integrity="sha256-MDvQSTqeEfWmgAbKhlbVJVuDcTCapVbPqQAazYslPq0= sha512-RHdbusjJThaaWQCAcVfMIvXcnqxU4e/2rDDKfU6N1oFdAsR8puxkrwm3ae9g7kX0s5piqYjnX3MfxHXNY2DKyQ==" >
+<link rel="stylesheet" href="../../theme/monokai.css" integrity="sha256-jxhedP5w2BTLYYY1z/oy7ds62Fq7oqhpV15r2EKValU= sha512-nKkhi2hvo1ztGBS6wsfcljHWj+DVIgDnG2TOaUJ+X5TtaZtDlwgVtuX24BujcCWvh3w7wwv2PzmTMQt9aLwZxw==" >
+<link rel="stylesheet" href="../../theme/cobalt.css" integrity="sha256-VUrNXfBraKjigZbb37jhQlWe49MzeauS9iMKi1bJSaI= sha512-oCMN1Q5oNqVUu4fwcJj/dnFmNcDdgOXS5gDTKn7z9+uQUNNM5qAF9aWAoKopB+ONuZ/k2xxl3oXTR3BGAW93dw==" >
+<link rel="stylesheet" href="../../theme/eclipse.css" integrity="sha256-pW5+VLJnzmKCQnvVroOSWgQXAjKqNpG6XiHRqQcQfWI= sha512-/cq6PN7tRPCE3ogRHUw2heMHwR52iKKGCDO6ermRiSQBN5s8KqtTstuovqdAY+Utac9Kj1NPS07GwYipPZVtMQ==" >
+<link rel="stylesheet" href="../../theme/rubyblue.css" integrity="sha256-gQxcQaOf7NSXvsPfLklQqk1WZ8baMp9rblRuAWk9tUs= sha512-vKYAHkywARtl53Z3qP3LBeK0y7EPPZbJqh2MvFcUDLIvI0l39YXXIsGcCMRREydBhb3ZsLA5EGYJD0t1Kzgq8Q==" >
+<link rel="stylesheet" href="../../theme/lesser-dark.css" integrity="sha256-9uN2NM19DdEXXirkobmGxXtjHOgIakWe1TmnuB0iYSo= sha512-6bYIiZ+Tx6qZtjsCDW9SzmapQGQkk88RftvA2qgll/SjwmujLX9KwJDcnm4K4NXutI6UwX0QPna8OI8GkLOYsQ==" >
+<link rel="stylesheet" href="../../theme/xq-dark.css" integrity="sha256-TvzqWr+t9dJ+et+Wrse/Id+Q07gcgR7057+4ToMEWag= sha512-SFlQauPnyjnPtU6N8C5EzrVMSIuXqqByr+13/wkX2aIid423MpUDUvg3k7qz3YHOT7Ys7nlPhUvU0dUzRey2wA==" >
+<link rel="stylesheet" href="../../theme/xq-light.css" integrity="sha256-bXGRHp2wadKB+k8rk5p+gG2XE/IHyOuRGeG+QAgiD+w= sha512-W3QQL6e8QOqxH/PBWYXFIpIs/mZ4OBdwrlYyqgtGXK+0qNwhb+Zf+V8g0s4CezXXTnwZxRf7523/M1ScfzCkkg==" >
+<link rel="stylesheet" href="../../theme/ambiance.css" integrity="sha256-EBK83H4b+UIV+nNziE7YuAeiz1DclPxznhY1D8Zs+W4= sha512-EKtjkV28AQNOuetWgEcWaQX0xBOnFWe9s3tOHK1D0P47Vo6r09DdI5teIL1wP8A7HvsVDfZZYnDvmvnbSqKxeg==" >
+<link rel="stylesheet" href="../../theme/blackboard.css" integrity="sha256-TAUit07pvMQIgma3OgOjuMhji1lYtoKz7AFI0labfGQ= sha512-FJ7u018ZFKnVgIAyetdYi8/piDTOwS6AuQPsLPcfKTULrUr3pYMiXWns5wjq6DkeCaaH8U6FHbbXVZQgaIuOFA==" >
+<link rel="stylesheet" href="../../theme/vibrant-ink.css" integrity="sha256-nWG8dR4B4ZN2FsKtzR8aUwlTVlvtxwGCEgqdpTUYtro= sha512-yCjW9/l0DSJr6Lutbqz7c0XYirZ8Aiec4EE6+5X4SuyHHf3CFF7gPeu4AfibjIfx8nSbIJ2Zlnur5+WDzn3cog==" >
+<link rel="stylesheet" href="../../theme/solarized.css" integrity="sha256-LhUnXeL5eR7iLHEO5jHK+PIIK1ZcTKqg/toYdyLKxMc= sha512-FyoUugdawmCZpKgYBLxm5NOWBEAGOPFiBE+MxOv9fEW23YZ0SC5ACZxxsQIBeS4BGdh2NI6T0Chmo/vGhySa/g==" >
+<link rel="stylesheet" href="../../theme/twilight.css" integrity="sha256-1Q01g7Pl6EIu2fSjZ/HUykKzpJHdko/i2ZL1YP3SXFc= sha512-dmXHqenmOCoctuc88UGAiV44HOS1s83vjUTCaz2tREHEg35AK7vSWVk3Wswk8KXXQGUprvtTSY8Xa38tvyQcUA==" >
+<link rel="stylesheet" href="../../theme/midnight.css" integrity="sha256-3LcfK7JRDaVIYFgRpegsPFgwvM+Hy/o3FduRV3rUfNs= sha512-uj5rLeZmYG9Sxyf2dUgBz1eULA/jwf/m6eqv10smHIE42xYxpavi0lKoHtTbtAsxELBh8ecetA7f5M2FO/pzMw==" >
+<link rel="stylesheet" href="../../addon/dialog/dialog.css" integrity="sha256-tv28xIBqFyPQbhDTSVqBuDl7pOc0DyZq7YfOpE9fRT8= sha512-vjfAjFR0EMLlw28tSL9p6Gt+cYdf9TK1paNdFnsbiHwKdERfU1ATqTSMnVTK3ohnNZDHNyrsAOiKjWwjfBgFRA==" >
+<script src="../../lib/codemirror.js" integrity="sha256-M0WkrFhDvSCXAX5UruYoU3dO5p1V/FE1BiSTJb0CnBM= sha512-twgs7wMy3+kt68gxwzDztvz0PmHpFUGK/jIoUprgHUVD8mWQvzyqgYn16/LS8vq7j80hzFzgIeIpHidBs93HjA==" ></script>
+<script src="../../addon/edit/matchbrackets.js" integrity="sha256-E/YeB6UvNbZssma/xCNt7JMPJWywQ61FEV4tmbbjmwE= sha512-6R8hHj+f/Cr5FIC49Kx7HLf8PFfRRSmlOrDJpeH/cdK9uaku8UNUIffaiodIT8M3ig1fSWlP55qMxlj6gUb9qg==" ></script>
+<script src="cobol.js" integrity="sha256-asijzPbE0XGOV4dZ9yDeQLIY110s8CnavDQgumpeLQ4= sha512-IRcOMHYZmj7Yog++AYQ49vkApGBKB9w+NjomY4Ui2GBbbzGhz9SxocbHWDRyHr3zCAtLXOwJuVDjn7xrz5zEEA==" ></script>
+<script src="../../addon/selection/active-line.js" integrity="sha256-xZc6UFf7vUubOLVaOkeADzEeX5gGJDEuwgJMIwyjQLY= sha512-xuZFyjuGb5XjH1s/p31U/RMfbzY6f6p6f1ViaU3aAyCAoagX+Fp9Bv4YQWm+u4Z2J+Gjd/9IftkHcDY2Q0FFfQ==" ></script>
+<script src="../../addon/search/search.js" integrity="sha256-f4ODm3NlFqKNIODSdPLUwxbPfRqRTV6U+7U40XnyxgA= sha512-v49DH78ZW8LURXn7mbtbJzyoohavp9ZktkQLIorM6pazrZz0pt6NYLJuMql2zaihQ0sXIBbxaElh8enaPNa5cA==" ></script>
+<script src="../../addon/dialog/dialog.js" integrity="sha256-OJfEFcTaKdTAABgOQrLQnvBFoM3VjgxDLUYNsyVK3xI= sha512-wNwYifadfCX/Zej1+TN6JmxFNTOlH/x6EVsgWBlRKM1Ry1PGRTjR+dbB80jM526JCyDE54irXvjGy+mWahS5Hw==" ></script>
+<script src="../../addon/search/searchcursor.js" integrity="sha256-ZEW/GH8QmFj/0nHZ8ofRm2jtS5pGhi/vJP7qqFXSyY0= sha512-81QJ1+HI5QnAsiwqmNb63eLouFv1vqzd91kDMLfZOgkByasvftCImFAQxu+zIlziNKLWfB7c+z0YI+npxSg2Gg==" ></script>
+<style>
+        .CodeMirror {
+          border: 1px solid #eee;
+          font-size : 20px;
+          height : auto !important;
+        }
+        .CodeMirror-activeline-background {background: #555555 !important;}
+    </style>
+<div id=nav>
+  <a href="http://codemirror.net"><h1>CodeMirror</h1><img id=logo src="../../doc/logo.png"></a>
+
+  <ul>
+    <li><a href="../../index.html">Home</a>
+    <li><a href="../../doc/manual.html">Manual</a>
+    <li><a href="https://github.com/codemirror/codemirror">Code</a>
+  </ul>
+  <ul>
+    <li><a href="../index.html">Language modes</a>
+    <li><a class=active href="#">COBOL</a>
+  </ul>
+</div>
+
+<article>
+<h2>COBOL mode</h2>
+
+    <p> Select Theme <select onchange="selectTheme()" id="selectTheme">
+        <option>default</option>
+        <option>ambiance</option>
+        <option>blackboard</option>
+        <option>cobalt</option>
+        <option>eclipse</option>
+        <option>elegant</option>
+        <option>erlang-dark</option>
+        <option>lesser-dark</option>
+        <option>midnight</option>
+        <option>monokai</option>
+        <option>neat</option>
+        <option>night</option>
+        <option>rubyblue</option>
+        <option>solarized dark</option>
+        <option>solarized light</option>
+        <option selected>twilight</option>
+        <option>vibrant-ink</option>
+        <option>xq-dark</option>
+        <option>xq-light</option>
+    </select>    Select Font Size <select onchange="selectFontsize()" id="selectFontSize">
+          <option value="13px">13px</option>
+          <option value="14px">14px</option>
+          <option value="16px">16px</option>
+          <option value="18px">18px</option>
+          <option value="20px" selected="selected">20px</option>
+          <option value="24px">24px</option>
+          <option value="26px">26px</option>
+          <option value="28px">28px</option>
+          <option value="30px">30px</option>
+          <option value="32px">32px</option>
+          <option value="34px">34px</option>
+          <option value="36px">36px</option>
+        </select>
+<label for="checkBoxReadOnly">Read-only</label>
+<input type="checkbox" id="checkBoxReadOnly" onchange="selectReadOnly()">
+<label for="id_tabToIndentSpace">Insert Spaces on Tab</label>
+<input type="checkbox" id="id_tabToIndentSpace" onchange="tabToIndentSpace()">
+</p>
+<textarea id="code" name="code">
+---------1---------2---------3---------4---------5---------6---------7---------8
+12345678911234567892123456789312345678941234567895123456789612345678971234567898
+000010 IDENTIFICATION DIVISION.                                        MODTGHERE
+000020 PROGRAM-ID.       SAMPLE.
+000030 AUTHOR.           TEST SAM. 
+000040 DATE-WRITTEN.     5 February 2013
+000041
+000042* A sample program just to show the form.
+000043* The program copies its input to the output,
+000044* and counts the number of records.
+000045* At the end this number is printed.
+000046
+000050 ENVIRONMENT DIVISION.
+000060 INPUT-OUTPUT SECTION.
+000070 FILE-CONTROL.
+000080     SELECT STUDENT-FILE     ASSIGN TO SYSIN
+000090         ORGANIZATION IS LINE SEQUENTIAL.
+000100     SELECT PRINT-FILE       ASSIGN TO SYSOUT
+000110         ORGANIZATION IS LINE SEQUENTIAL.
+000120
+000130 DATA DIVISION.
+000140 FILE SECTION.
+000150 FD  STUDENT-FILE
+000160     RECORD CONTAINS 43 CHARACTERS
+000170     DATA RECORD IS STUDENT-IN.
+000180 01  STUDENT-IN              PIC X(43).
+000190
+000200 FD  PRINT-FILE
+000210     RECORD CONTAINS 80 CHARACTERS
+000220     DATA RECORD IS PRINT-LINE.
+000230 01  PRINT-LINE              PIC X(80).
+000240
+000250 WORKING-STORAGE SECTION.
+000260 01  DATA-REMAINS-SWITCH     PIC X(2)      VALUE SPACES.
+000261 01  RECORDS-WRITTEN         PIC 99.
+000270
+000280 01  DETAIL-LINE.
+000290     05  FILLER              PIC X(7)      VALUE SPACES.
+000300     05  RECORD-IMAGE        PIC X(43).
+000310     05  FILLER              PIC X(30)     VALUE SPACES.
+000311 
+000312 01  SUMMARY-LINE.
+000313     05  FILLER              PIC X(7)      VALUE SPACES.
+000314     05  TOTAL-READ          PIC 99.
+000315     05  FILLER              PIC X         VALUE SPACE.
+000316     05  FILLER              PIC X(17)     
+000317                 VALUE  'Records were read'.
+000318     05  FILLER              PIC X(53)     VALUE SPACES.
+000319
+000320 PROCEDURE DIVISION.
+000321
+000330 PREPARE-SENIOR-REPORT.
+000340     OPEN INPUT  STUDENT-FILE
+000350          OUTPUT PRINT-FILE.
+000351     MOVE ZERO TO RECORDS-WRITTEN.
+000360     READ STUDENT-FILE
+000370         AT END MOVE 'NO' TO DATA-REMAINS-SWITCH
+000380     END-READ.
+000390     PERFORM PROCESS-RECORDS
+000410         UNTIL DATA-REMAINS-SWITCH = 'NO'.
+000411     PERFORM PRINT-SUMMARY.
+000420     CLOSE STUDENT-FILE
+000430           PRINT-FILE.
+000440     STOP RUN.
+000450
+000460 PROCESS-RECORDS.
+000470     MOVE STUDENT-IN TO RECORD-IMAGE.
+000480     MOVE DETAIL-LINE TO PRINT-LINE.
+000490     WRITE PRINT-LINE.
+000500     ADD 1 TO RECORDS-WRITTEN.
+000510     READ STUDENT-FILE
+000520         AT END MOVE 'NO' TO DATA-REMAINS-SWITCH
+000530     END-READ. 
+000540
+000550 PRINT-SUMMARY.
+000560     MOVE RECORDS-WRITTEN TO TOTAL-READ.
+000570     MOVE SUMMARY-LINE TO PRINT-LINE.
+000571     WRITE PRINT-LINE. 
+000572
+000580
+</textarea>
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        lineNumbers: true,
+        matchBrackets: true,
+        mode: "text/x-cobol",
+        theme : "twilight",
+        styleActiveLine: true,
+        showCursorWhenSelecting : true,  
+      });
+      function selectTheme() {
+        var themeInput = document.getElementById("selectTheme");
+        var theme = themeInput.options[themeInput.selectedIndex].innerHTML;
+        editor.setOption("theme", theme);
+      }
+      function selectFontsize() {
+        var fontSizeInput = document.getElementById("selectFontSize");
+        var fontSize = fontSizeInput.options[fontSizeInput.selectedIndex].innerHTML;
+        editor.getWrapperElement().style.fontSize = fontSize;
+        editor.refresh();
+      }
+      function selectReadOnly() {
+        editor.setOption("readOnly", document.getElementById("checkBoxReadOnly").checked);
+      }
+      function tabToIndentSpace() {
+        if (document.getElementById("id_tabToIndentSpace").checked) {
+            editor.setOption("extraKeys", {Tab: function(cm) { cm.replaceSelection("    ", "end"); }});
+        } else {
+            editor.setOption("extraKeys", {Tab: function(cm) { cm.replaceSelection("    ", "end"); }});
+        }
+      }
+    </script>
+  </article>

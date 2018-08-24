@@ -1,0 +1,67 @@
+<!doctype html>
+
+<title>CodeMirror: Modelica mode</title>
+<meta charset="utf-8"/>
+<link rel=stylesheet href="../../doc/docs.css">
+
+<link rel="stylesheet" href="../../lib/codemirror.css" integrity="sha256-o+9UR9If1biRNIJtCGxCPKOwU7g4BdJi/rDs2ZZXPk4= sha512-n1/8xOdp0iZxMgkCTK0aEvktREEdssvSuSX4BM0Hi2FhziYKZjssh2XJGoknVS4JA7cP/FSdY51VHVGCiWMopg==" >
+<script src="../../lib/codemirror.js" integrity="sha256-M0WkrFhDvSCXAX5UruYoU3dO5p1V/FE1BiSTJb0CnBM= sha512-twgs7wMy3+kt68gxwzDztvz0PmHpFUGK/jIoUprgHUVD8mWQvzyqgYn16/LS8vq7j80hzFzgIeIpHidBs93HjA==" ></script>
+<script src="../../addon/edit/matchbrackets.js" integrity="sha256-E/YeB6UvNbZssma/xCNt7JMPJWywQ61FEV4tmbbjmwE= sha512-6R8hHj+f/Cr5FIC49Kx7HLf8PFfRRSmlOrDJpeH/cdK9uaku8UNUIffaiodIT8M3ig1fSWlP55qMxlj6gUb9qg==" ></script>
+<link rel="stylesheet" href="../../addon/hint/show-hint.css" integrity="sha256-OLkTuR0jk6YrHKFEfu73OyC7oO4fbjNMSdBSLAmtLi8= sha512-P1gg/BxgpYvwbM96KvcnO4eVrUsa9ler5O1BpkRdHbRL2BDWIK5hwWz85ixEjuQDHKs+JChALANQKJ1Zdujg4A==" >
+<script src="../../addon/hint/show-hint.js" integrity="sha256-BznhAnHQ+J7oDBTvWGz1HrM0xYneqJSXAUi+lkkdguo= sha512-MgAGBfuO6yYoyJbkdaK/6/3cCN+YCXDlX6zdm0DKpNW4qQNLro6HafifN2wgv9GhmFpWQnt/Ohyyz+ud6fUbnA==" ></script>
+<script src="modelica.js" integrity="sha256-f+3P/v9fxWAnzag16YCwI4hg+iigdKOkONCsw+bweh8= sha512-4YrsbgySXNtpFuf14DYIe+XqcnrH0oql+4SJifeFxobJLPk1xplMdxbR9efGujGpZrS5shQ4pDBFsHFqOL9WeQ==" ></script>
+<style>.CodeMirror {border: 2px inset #dee;}</style>
+<div id=nav>
+  <a href="http://codemirror.net"><h1>CodeMirror</h1><img id=logo src="../../doc/logo.png"></a>
+
+  <ul>
+    <li><a href="../../index.html">Home</a>
+    <li><a href="../../doc/manual.html">Manual</a>
+    <li><a href="https://github.com/codemirror/codemirror">Code</a>
+  </ul>
+  <ul>
+    <li><a href="../index.html">Language modes</a>
+    <li><a class=active href="#">Modelica</a>
+  </ul>
+</div>
+
+<article>
+<h2>Modelica mode</h2>
+
+<div><textarea id="modelica">
+model BouncingBall
+  parameter Real e = 0.7;
+  parameter Real g = 9.81;
+  Real h(start=1);
+  Real v;
+  Boolean flying(start=true);
+  Boolean impact;
+  Real v_new;
+equation
+  impact = h <= 0.0;
+  der(v) = if flying then -g else 0;
+  der(h) = v;
+  when {h <= 0.0 and v <= 0.0, impact} then
+    v_new = if edge(impact) then -e*pre(v) else 0;
+    flying = v_new > 0;
+    reinit(v, v_new);
+  end when;
+  annotation (uses(Modelica(version="3.2")));
+end BouncingBall;
+</textarea></div>
+
+    <script>
+      var modelicaEditor = CodeMirror.fromTextArea(document.getElementById("modelica"), {
+        lineNumbers: true,
+        matchBrackets: true,
+        mode: "text/x-modelica"
+      });
+      var mac = CodeMirror.keyMap.default == CodeMirror.keyMap.macDefault;
+      CodeMirror.keyMap.default[(mac ? "Cmd" : "Ctrl") + "-Space"] = "autocomplete";
+    </script>
+
+    <p>Simple mode that tries to handle Modelica as well as it can.</p>
+
+    <p><strong>MIME types defined:</strong> <code>text/x-modelica</code>
+    (Modlica code).</p>
+</article>

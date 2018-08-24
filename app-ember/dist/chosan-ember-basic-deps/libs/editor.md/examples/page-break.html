@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+        <meta charset="utf-8" />
+        <title>Page break - Editor.md examples</title>
+        <link rel="stylesheet" href="css/style.css" integrity="sha256-34fzcK08FhtpZJrB+Au5Q7LyXzgmDwjFTz5U59LKoPM= sha512-/JNkKpG4lndvP7QayH/SmKrZEzATRsVFIPgk7cuTIpJEaJMOxRcNxHIj9vP84TzoveEY67jAyWDuQNwFtW0dgg==" />
+        <link rel="stylesheet" href="../css/editormd.css" integrity="sha256-wRzd5bNaTytSAqVwymVPscgPSWDsijsPN5nX172fwlo= sha512-abcwcQ2dSN0XXXoB+vOyW/iugibE9wJ9VAywHckjAO5a2smSn/XH1+x6hlVRwQuCw0iIL1sL6FW2Os+F33pDjw==" />
+        <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
+    </head>
+    <body>
+        <div id="layout">
+            <header>
+                <h1>Page break</h1>
+            </header>
+            <div class="btns">
+                <button id="print-btn">Print Test</button>
+                <button id="disabled-btn">Disabled</button>
+                <button id="enabled-btn">Enabled</button>
+            </div>
+            <div id="test-editormd">
+                <textarea style="display:none;">#### Syntax
+
+    [At least 8 equals]
+
+    [========]
+
+#### Disabled
+
+    {
+        pageBreak : false
+    }
+
+#### Examples
+
+[========]
+
+> page start
+
+#### Editor.md directory
+
+    editor.md/
+            lib/
+            css/
+            scss/
+            tests/
+            fonts/
+            images/
+            plugins/
+            examples/
+            languages/
+            editormd.js
+            ...
+
+> page end
+</textarea>
+            </div>
+        </div>
+        <script src="js/jquery.min.js" integrity="sha256-erlk6o9cDmjejHuQVbnTD0Gpm2tNG0OrQAzIbir8spU= sha512-P0HkAI5vOEj3kgwrbRbYqGUbhEP5p2r4mMWK4Rv3tvScPpWgJsfkPHDuh1Oy7mCuAudt7cEntq94E49ZqLjpKw==" ></script>
+        <script src="../editormd.js" integrity="sha256-moxsHuShGqMFItcsTNP8qgezfjAAcZAQSCkJ/UH2JxU= sha512-LZm70SMBSFnfGeuYgchcpsV0OzkAMo9AjYxmhJhe0t/XkGFXBUd+dRtyhiLoM4ZH12/czIk9l/NvpGub4/EGMA==" ></script>
+        <script type="text/javascript">
+			var testEditor;
+
+            $(function() {
+                testEditor = editormd("test-editormd", {
+                    width   : "90%",
+                    height  : 720,
+                    path    : "../lib/"
+                });
+                
+                $("#print-btn").click(function(){
+                    var html = testEditor.preview.html();
+                    
+                    document.write('<link rel="stylesheet" href="css/style.css" integrity="sha256-34fzcK08FhtpZJrB+Au5Q7LyXzgmDwjFTz5U59LKoPM= sha512-/JNkKpG4lndvP7QayH/SmKrZEzATRsVFIPgk7cuTIpJEaJMOxRcNxHIj9vP84TzoveEY67jAyWDuQNwFtW0dgg==" /><link rel="stylesheet" href="../css/editormd.css" integrity="sha256-wRzd5bNaTytSAqVwymVPscgPSWDsijsPN5nX172fwlo= sha512-abcwcQ2dSN0XXXoB+vOyW/iugibE9wJ9VAywHckjAO5a2smSn/XH1+x6hlVRwQuCw0iIL1sL6FW2Os+F33pDjw==" />' + html);
+                    window.print();
+                });
+                
+                $("#disabled-btn").click(function(){
+                    testEditor.config("pageBreak", false);
+                });
+                
+                $("#enabled-btn").click(function(){
+                    testEditor.config("pageBreak", true);
+                });
+            });
+        </script>
+    </body>
+</html>

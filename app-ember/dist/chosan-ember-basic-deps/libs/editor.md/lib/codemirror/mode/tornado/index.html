@@ -1,0 +1,63 @@
+<!doctype html>
+
+<title>CodeMirror: Tornado template mode</title>
+<meta charset="utf-8"/>
+<link rel=stylesheet href="../../doc/docs.css">
+
+<link rel="stylesheet" href="../../lib/codemirror.css" integrity="sha256-o+9UR9If1biRNIJtCGxCPKOwU7g4BdJi/rDs2ZZXPk4= sha512-n1/8xOdp0iZxMgkCTK0aEvktREEdssvSuSX4BM0Hi2FhziYKZjssh2XJGoknVS4JA7cP/FSdY51VHVGCiWMopg==" >
+<script src="../../lib/codemirror.js" integrity="sha256-M0WkrFhDvSCXAX5UruYoU3dO5p1V/FE1BiSTJb0CnBM= sha512-twgs7wMy3+kt68gxwzDztvz0PmHpFUGK/jIoUprgHUVD8mWQvzyqgYn16/LS8vq7j80hzFzgIeIpHidBs93HjA==" ></script>
+<script src="../../addon/mode/overlay.js" integrity="sha256-80SzOAF1PuOUyYy5Fi18SP1sLF73DsjgFa4wEn8t8eg= sha512-wRTkSK7l5lCavS0W4X6N9u2E3u6FHGpiU9EoQB9/9GJssUHXHLI8pD136nBRmGxcKkA+VdbBsLuWDpbzJBbtcQ==" ></script>
+<script src="../xml/xml.js" integrity="sha256-K2v4fGbNHpuKTWTCuGnwCYHyWho9IGzo3rPP72AyYLg= sha512-318ljTeQ+se2pMAILfkR4rXpuscNwrKtLTohE3IpE/dD/1IdcisAp3+/YpEJS5Jpu/NTiOpBbdbS6zlp3QDLPQ==" ></script>
+<script src="../htmlmixed/htmlmixed.js" integrity="sha256-/2iF7yvUFQTovJfbhcjAgSCU9jXPyNX3JhAE4jIAoZY= sha512-qeaJRf1YZ3BQoC7t0JjkjgKqrE8Pkz/V6thzgf+ozt+fCWCTTfe22tHANfBqTDEcKXnWKQ4jrm7yGXNE4Kd3dA==" ></script>
+<script src="tornado.js" integrity="sha256-Z4keuvbM3kv7hWgkM+KeHh1+oOHvtTzgbSfaEUDeRDU= sha512-QH15ufVmGViWxml9FvVXrk5Orq9lpyabNY7jvz4oEs4GxJBHmXcTtPWa/RDBhrJyyOjhBhT1arSugJ85epzrqw==" ></script>
+<style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
+<div id=nav>
+  <a href="http://codemirror.net"><h1>CodeMirror</h1><img id=logo src="../../doc/logo.png"></a>
+
+  <ul>
+    <li><a href="../../index.html">Home</a>
+    <li><a href="../../doc/manual.html">Manual</a>
+    <li><a href="https://github.com/marijnh/codemirror">Code</a>
+  </ul>
+  <ul>
+    <li><a href="../index.html">Language modes</a>
+    <li><a class=active href="#">Tornado</a>
+  </ul>
+</div>
+
+<article>
+<h2>Tornado template mode</h2>
+<form><textarea id="code" name="code">
+<!doctype html>
+<html>
+    <head>
+        <title>My Tornado web application</title>
+    </head>
+    <body>
+        <h1>
+            {{ title }}
+        </h1>
+        <ul class="my-list">
+            {% for item in items %}
+                <li>{% item.name %}</li>
+            {% empty %}
+                <li>You have no items in your list.</li>
+            {% end %}
+        </ul>
+    </body>
+</html>
+</textarea></form>
+
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        lineNumbers: true,
+        mode: "tornado",
+        indentUnit: 4,
+        indentWithTabs: true
+      });
+    </script>
+
+    <p>Mode for HTML with embedded Tornado template markup.</p>
+
+    <p><strong>MIME types defined:</strong> <code>text/x-tornado</code></p>
+  </article>
