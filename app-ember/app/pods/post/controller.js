@@ -16,7 +16,7 @@ export default Controller.extend({
       postRemark = `文章创建于： ${createTime.toLocaleString()}；`;
     }
     if (updateTime) {
-      postRemark += updateTime ? ` <br/> 最后更新于：${updateTime.toLocaleString()}；` : '';
+      postRemark += `${updateTime} <br/> ` ? `最后更新于：${updateTime.toLocaleString()}；` : '';
     }
     return postRemark;
   }
