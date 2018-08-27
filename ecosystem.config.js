@@ -1,6 +1,6 @@
 module.exports = {
   apps : [{
-    name      : 'API',
+    name      : 'post',
     script    : 'bin/www',
     env: {
       NODE_ENV: 'development'
@@ -12,12 +12,13 @@ module.exports = {
 
   deploy : {
     production : {
-      key: '/c/Users/17981/.ssh/id_rsa.pub',
-      host : 'github.com',
-      user: 'git',
+      host : 'chosan.cn',
+      user: 'root',
       ref  : 'origin/master',
+      ssh_options: "StrictHostKeyChecking=no",
       repo : 'git@github.com:Cinux-Chosan/express-vue.git',
-      path : '/var/www/production',
+      path : '/tmp',
+      'post-setup': 'npm install',
       'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production'
     }
   }
