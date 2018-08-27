@@ -21,7 +21,7 @@ module.exports = {
       repo: "git@github.com:Cinux-Chosan/express-vue.git",
       path: "/zhangjianjun",
       "post-setup": "npm i && pm2 start ecosystem.config.js --env production",
-      "pre-deploy-local": "git add . && git commit -m preDeploy && git push",
+      "pre-deploy-local": "git add . && git commit -m 'preDeploy' && git push",
       "post-deploy": ` \
         cd app-ember && \
         npm i && \
