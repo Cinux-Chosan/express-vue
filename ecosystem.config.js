@@ -22,10 +22,10 @@ module.exports = {
       path: "/zhangjianjun",
       "post-setup": "npm i && pm2 start ecosystem.config.js --env production",
       "pre-deploy-local": `\
-      git add . && \
-      git commit -m preDeploy && \
-      git push \
-      `,
+        git add . && \
+        git commit -m preDeploy && \
+        git push \
+        `,
       "pre-deploy": "git pull",
       "post-deploy": `\
         cd app-ember && \
