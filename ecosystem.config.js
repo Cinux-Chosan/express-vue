@@ -26,6 +26,7 @@ module.exports = {
       git commit -m preDeploy && \
       git push \
       `,
+      "pre-deploy": "git pull",
       "post-deploy": `\
         cd app-ember && \
         npm i && \
