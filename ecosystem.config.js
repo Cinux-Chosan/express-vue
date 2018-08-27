@@ -13,16 +13,24 @@ module.exports = {
   ],
 
   deploy: {
-    production: {
+    prod: {
       host: "chosan.cn",
       user: "root",
       ref: "origin/master",
       ssh_options: "StrictHostKeyChecking=no",
       repo: "git@github.com:Cinux-Chosan/express-vue.git",
       path: "/zhangjianjun",
-      "post-setup": "npm i",
-      "post-deploy":
-        "yarn && cd app-ember && yarn && ember b --prod && cd .. && node upload-statics.js && pm2 reload ecosystem.config.js --env production"
+      "post-setup": "npm i && pm2 start ecosystem.config.js --env production",
+      "pre-deploy-local": "git add . && git commit -am 'pre deploy' && git push",
+      "post-deploy": ` \
+        cd app-ember && \
+        npm i && \
+        ember b --prod && \
+        cd .. && \
+        npm i && \
+        node upload-statics.js && \
+        pm2 reload ecosystem.config.js --env production \
+        `
     }
   }
 };
