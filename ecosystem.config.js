@@ -20,7 +20,6 @@ module.exports = {
       ssh_options: "StrictHostKeyChecking=no",
       repo: "git@github.com:Cinux-Chosan/express-vue.git",
       path: "/zhangjianjun",
-      force: true,
       "post-setup": "npm i && pm2 start ecosystem.config.js --env production",
       "pre-deploy-local": `\
         git add . && \
