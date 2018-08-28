@@ -24,6 +24,7 @@ module.exports = {
       "pre-deploy-local": `\
         git add . && \
         git commit -m preDeploy && \
+        git pull && \
         git push \
         `,
       "pre-deploy": "git pull",
