@@ -28,6 +28,10 @@ app.use(bodyParser.raw());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.use(compression({
+  filter: req => !req.url.match(/\.(png|jpeg|jpg|gif)$/)  // 一般图片等二进制文件压缩收益不高，因此不对图片等二进制文件进行压缩
+}));
+
 app.use(express.static(path.join(__dirname, 'app-ember/dist'), { index: false }));
 app.use(express.static(path.join(__dirname, 'app-vue/dist'), { index: false }));
 
@@ -54,10 +58,6 @@ app.use('/signup', signup);
 app.use('/api', api);
 app.use('/upload', upload);
 app.use('/jump', jump);
-
-app.use(compression({
-  filter: req => !req.url.match(/\.(png|jpeg|jpg|gif)$/)  // 一般图片等二进制文件压缩收益不高，因此不对图片等二进制文件进行压缩
-}));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
