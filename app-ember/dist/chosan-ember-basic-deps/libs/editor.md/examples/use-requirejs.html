@@ -3,10 +3,10 @@
     <head>
         <meta charset="utf-8" />
         <title>Using require.js - Editor.md examples</title>
-        <link rel="stylesheet" href="css/style.css" integrity="sha256-QPLAxDpbGfvM5dPoARGyjZPTu49OlZ995lQApioETvc= sha512-xzEWcCLajKrWWTaEzIpgaYiULJdUuecfBuwLTfvajq5ZqfxTsGsb7KD9dVsSYCO7TV0cEsqvf9pqgB2FgbKNZQ==" />
-        <link rel="stylesheet" href="../lib/codemirror/codemirror.min.css" integrity="sha256-KDncBPx/ozucSdS1Ss4TBeV0VHBjUp+FPES9aeSfDFI= sha512-C4uQUBu87e2GmMbxwxBvO3QkO8xZsmLt3zLyv9xM4+UrZDs2XQlFjONUPCSWWpTDSengSEdcuxYdjqtg3iLmOQ==" /> 
-        <!-- <link rel="stylesheet" href="../lib/codemirror/addon/fold/foldgutter.css" integrity="sha256-V27800C3cLYNd9jCnp3za/WFdjkb6rUbQ5EU5O0BrFY= sha512-HNaL8iFjZj0wunEk3HwsjZ9gxJi5YScB+ENZHrh9F83gizg0Q4qu5GuPVjt6sUca1mZTZlPNLRNkjO9JdItYzA==" /> -->
-        <link rel="stylesheet" href="../css/editormd.min.css" integrity="sha256-BjHkn7jizM3vRWDCqM+6RUoz/pQse0eEnTmRpT9N7P4= sha512-622Ph6EgjLY9IS3FEeSMqe3uQgbNbUOQbGwrjENeXaC6Hko/fBd94ocmCWkLLWmqIZJp0wNa7bHHlErlYKB//Q==" />
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="../lib/codemirror/codemirror.min.css" /> 
+        <!-- <link rel="stylesheet" href="../lib/codemirror/addon/fold/foldgutter.css" /> -->
+        <link rel="stylesheet" href="../css/editormd.min.css" />
         <link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
     </head>
     <body>
@@ -36,7 +36,7 @@
             </div>
             <div id="test-editormd"></div>
         </div>   
-        <script src="js/require.min.js" integrity="sha256-dzdO6QU/YbYDHjXYEts/YzHHEVJjLjxogFYYo+QCYeg= sha512-p0nv5O7H0K0W4zjWjxgwAspWxK8hNq+hwlGGdnADXfW5RIBvDcRh/4AXkD93ZF9ucJSRRaCNK6m/bzVrupViTQ==" ></script>
+        <script src="js/require.min.js"></script>
         <script type="text/javascript">            
             requirejs.config({
                 baseUrl: "../lib/",
@@ -75,7 +75,7 @@
             require(deps, function(editormd) {
                 
                 // if enable codeFold
-                // or <link rel="stylesheet" href="../lib/codemirror/addon/fold/foldgutter.css" integrity="sha256-V27800C3cLYNd9jCnp3za/WFdjkb6rUbQ5EU5O0BrFY= sha512-HNaL8iFjZj0wunEk3HwsjZ9gxJi5YScB+ENZHrh9F83gizg0Q4qu5GuPVjt6sUca1mZTZlPNLRNkjO9JdItYzA==" />
+                // or <link rel="stylesheet" href="../lib/codemirror/addon/fold/foldgutter.css" />
                 editormd.loadCSS("../lib/codemirror/addon/fold/foldgutter");
                 
                 $.get('test.md', function(md) {

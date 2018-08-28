@@ -1,2 +1,35 @@
-KindEditor.plugin("fixtoolbar",function(o){function i(){var i=o(".ke-toolbar"),s=i.pos().y
-o(window).bind("scroll",function(){"fixed"==i.css("position")?document.body.scrollTop-s<0&&(i.css("position","static"),i.css("top","auto")):i.pos().y-document.body.scrollTop<0&&(i.css("position","fixed"),i.css("top",0))})}this.fixToolBar&&(this.isCreated?i():this.afterCreate(i))})
+/**
+ * Created by chenyihong on 14/12/4.
+ */
+
+KindEditor.plugin('fixtoolbar', function (K) {
+    var self = this;
+    if (!self.fixToolBar) {
+        return;
+    }
+
+    function init() {
+        var toolbar = K('.ke-toolbar');
+        var originY = toolbar.pos().y;
+        K(window).bind('scroll', function () {
+            if (toolbar.css('position') == 'fixed') {
+                if(document.body.scrollTop - originY < 0){
+                    toolbar.css('position', 'static');
+                    toolbar.css('top', 'auto');
+                }
+            } else {
+                if (toolbar.pos().y - document.body.scrollTop < 0) {
+                    toolbar.css('position', 'fixed');
+                    toolbar.css('top', 0);
+                }
+            }
+        });
+    }
+
+    if (self.isCreated) {
+        init();
+    } else {
+        self.afterCreate(init);
+    }
+
+});

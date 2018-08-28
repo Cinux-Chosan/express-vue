@@ -1,18 +1,118 @@
-(function(e){"object"==typeof exports&&"object"==typeof module?e(require("../../lib/codemirror")):"function"==typeof define&&define.amd?define(["../../lib/codemirror"],e):e(CodeMirror)})(function(e){"use strict"
-e.multiplexingMode=function(n){var t=Array.prototype.slice.call(arguments,1),i=t.length
-function r(e,n,t){if("string"==typeof n)return e.indexOf(n,t)
-var i=n.exec(t?e.slice(t):e)
-return i?i.index+t:-1}return{startState:function(){return{outer:e.startState(n),innerActive:null,inner:null}},copyState:function(t){return{outer:e.copyState(n,t.outer),innerActive:t.innerActive,inner:t.innerActive&&e.copyState(t.innerActive.mode,t.inner)}},token:function(o,c){if(c.innerActive){var l=c.innerActive
-a=o.string
-if(!l.close&&o.sol())return c.innerActive=c.inner=null,this.token(o,c)
-if((d=l.close?r(a,l.close,o.pos):-1)==o.pos)return o.match(l.close),c.innerActive=c.inner=null,l.delimStyle
-d>-1&&(o.string=a.slice(0,d))
-var u=l.mode.token(o,c.inner)
-return d>-1&&(o.string=a),l.innerStyle&&(u=u?u+" "+l.innerStyle:l.innerStyle),u}for(var s=1/0,a=o.string,v=0;v<i;++v){var d,f=t[v]
-if((d=r(a,f.open,o.pos))==o.pos)return o.match(f.open),c.innerActive=f,c.inner=e.startState(f.mode,n.indent?n.indent(c.outer,""):0),f.delimStyle;-1!=d&&d<s&&(s=d)}s!=1/0&&(o.string=a.slice(0,s))
-var A=n.token(o,c.outer)
-return s!=1/0&&(o.string=a),A},indent:function(t,i){var r=t.innerActive?t.innerActive.mode:n
-return r.indent?r.indent(t.innerActive?t.inner:t.outer,i):e.Pass},blankLine:function(r){var o=r.innerActive?r.innerActive.mode:n
-if(o.blankLine&&o.blankLine(r.innerActive?r.inner:r.outer),r.innerActive)"\n"===r.innerActive.close&&(r.innerActive=r.inner=null)
-else for(var c=0;c<i;++c){var l=t[c]
-"\n"===l.open&&(r.innerActive=l,r.inner=e.startState(l.mode,o.indent?o.indent(r.outer,""):0))}},electricChars:n.electricChars,innerMode:function(e){return e.inner?{state:e.inner,mode:e.innerActive.mode}:{state:e.outer,mode:n}}}}})
+// CodeMirror, copyright (c) by Marijn Haverbeke and others
+// Distributed under an MIT license: http://codemirror.net/LICENSE
+
+(function(mod) {
+  if (typeof exports == "object" && typeof module == "object") // CommonJS
+    mod(require("../../lib/codemirror"));
+  else if (typeof define == "function" && define.amd) // AMD
+    define(["../../lib/codemirror"], mod);
+  else // Plain browser env
+    mod(CodeMirror);
+})(function(CodeMirror) {
+"use strict";
+
+CodeMirror.multiplexingMode = function(outer /*, others */) {
+  // Others should be {open, close, mode [, delimStyle] [, innerStyle]} objects
+  var others = Array.prototype.slice.call(arguments, 1);
+  var n_others = others.length;
+
+  function indexOf(string, pattern, from) {
+    if (typeof pattern == "string") return string.indexOf(pattern, from);
+    var m = pattern.exec(from ? string.slice(from) : string);
+    return m ? m.index + from : -1;
+  }
+
+  return {
+    startState: function() {
+      return {
+        outer: CodeMirror.startState(outer),
+        innerActive: null,
+        inner: null
+      };
+    },
+
+    copyState: function(state) {
+      return {
+        outer: CodeMirror.copyState(outer, state.outer),
+        innerActive: state.innerActive,
+        inner: state.innerActive && CodeMirror.copyState(state.innerActive.mode, state.inner)
+      };
+    },
+
+    token: function(stream, state) {
+      if (!state.innerActive) {
+        var cutOff = Infinity, oldContent = stream.string;
+        for (var i = 0; i < n_others; ++i) {
+          var other = others[i];
+          var found = indexOf(oldContent, other.open, stream.pos);
+          if (found == stream.pos) {
+            stream.match(other.open);
+            state.innerActive = other;
+            state.inner = CodeMirror.startState(other.mode, outer.indent ? outer.indent(state.outer, "") : 0);
+            return other.delimStyle;
+          } else if (found != -1 && found < cutOff) {
+            cutOff = found;
+          }
+        }
+        if (cutOff != Infinity) stream.string = oldContent.slice(0, cutOff);
+        var outerToken = outer.token(stream, state.outer);
+        if (cutOff != Infinity) stream.string = oldContent;
+        return outerToken;
+      } else {
+        var curInner = state.innerActive, oldContent = stream.string;
+        if (!curInner.close && stream.sol()) {
+          state.innerActive = state.inner = null;
+          return this.token(stream, state);
+        }
+        var found = curInner.close ? indexOf(oldContent, curInner.close, stream.pos) : -1;
+        if (found == stream.pos) {
+          stream.match(curInner.close);
+          state.innerActive = state.inner = null;
+          return curInner.delimStyle;
+        }
+        if (found > -1) stream.string = oldContent.slice(0, found);
+        var innerToken = curInner.mode.token(stream, state.inner);
+        if (found > -1) stream.string = oldContent;
+
+        if (curInner.innerStyle) {
+          if (innerToken) innerToken = innerToken + ' ' + curInner.innerStyle;
+          else innerToken = curInner.innerStyle;
+        }
+
+        return innerToken;
+      }
+    },
+
+    indent: function(state, textAfter) {
+      var mode = state.innerActive ? state.innerActive.mode : outer;
+      if (!mode.indent) return CodeMirror.Pass;
+      return mode.indent(state.innerActive ? state.inner : state.outer, textAfter);
+    },
+
+    blankLine: function(state) {
+      var mode = state.innerActive ? state.innerActive.mode : outer;
+      if (mode.blankLine) {
+        mode.blankLine(state.innerActive ? state.inner : state.outer);
+      }
+      if (!state.innerActive) {
+        for (var i = 0; i < n_others; ++i) {
+          var other = others[i];
+          if (other.open === "\n") {
+            state.innerActive = other;
+            state.inner = CodeMirror.startState(other.mode, mode.indent ? mode.indent(state.outer, "") : 0);
+          }
+        }
+      } else if (state.innerActive.close === "\n") {
+        state.innerActive = state.inner = null;
+      }
+    },
+
+    electricChars: outer.electricChars,
+
+    innerMode: function(state) {
+      return state.inner ? {state: state.inner, mode: state.innerActive.mode} : {state: state.outer, mode: outer};
+    }
+  };
+};
+
+});
