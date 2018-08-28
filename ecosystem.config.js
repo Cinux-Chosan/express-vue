@@ -23,13 +23,13 @@ module.exports = {
       "post-setup": "npm i && pm2 start ecosystem.config.js --env production",
       "pre-deploy-local": `\
         git add . && \
-        git commit -m preDeployLocalHook && \
+        git commit -m preDeployLocalHook ; \
         git pull && \
         git push \
         `,
       "pre-deploy": `\
         git add . && \
-        git commit -m preDeployHook || \
+        git commit -m preDeployHook ; \
         git pull --rebase \
         `,
       "post-deploy": `\
