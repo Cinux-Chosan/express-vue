@@ -15,7 +15,7 @@ module.exports = {
   deploy: {
     prod: {
       host: "chosan.cn",
-      user: "root", 
+      user: "root",
       ref: "origin/master",
       ssh_options: "StrictHostKeyChecking=no",
       repo: "git@github.com:Cinux-Chosan/express-vue.git",
@@ -23,10 +23,15 @@ module.exports = {
       "post-setup": "npm i && pm2 start ecosystem.config.js --env production",
       "pre-deploy-local": `\
         git add . && \
-        git commit -m preDeploy || \
+        git commit -m preDeployLocalHook && \
+        git pull && \
         git push \
         `,
-      "pre-deploy": "git pull",
+      "pre-deploy": `\
+        git add . && \
+        git commit -am preDeployHook && \
+        git pull --rebase \
+        `,
       "post-deploy": `\
         cd app-ember && \
         npm i && \

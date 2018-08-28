@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session')
+var compression = require('compression')
 
 var index = require('./routes/index');
 var signup = require('./routes/signup');
@@ -20,11 +21,16 @@ app.set('view engine', 'hbs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
 app.use(logger('dev'));
 app.use(bodyParser.json({type: '*/vnd.api+json'}));
 app.use(bodyParser.raw());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use(compression({
+  filter: req => !req.url.match(/\.(png|jpeg|jpg|gif)$/)  // 一般图片等二进制文件压缩收益不高，因此不对图片等二进制文件进行压缩
+}));
 
 app.use(express.static(path.join(__dirname, 'app-ember/dist'), { index: false }));
 app.use(express.static(path.join(__dirname, 'app-vue/dist'), { index: false }));
