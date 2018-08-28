@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session')
+var compression = require('compression')
 
 var index = require('./routes/index');
 var signup = require('./routes/signup');
@@ -20,6 +21,7 @@ app.set('view engine', 'hbs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json({type: '*/vnd.api+json'}));
 app.use(bodyParser.raw());
