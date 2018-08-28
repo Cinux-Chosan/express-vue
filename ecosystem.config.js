@@ -15,7 +15,7 @@ module.exports = {
   deploy: {
     prod: {
       host: "chosan.cn",
-      user: "root", 
+      user: "root",
       ref: "origin/master",
       ssh_options: "StrictHostKeyChecking=no",
       repo: "git@github.com:Cinux-Chosan/express-vue.git",
