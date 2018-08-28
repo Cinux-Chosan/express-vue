@@ -28,7 +28,7 @@ module.exports = {
         git push \
         `,
       "pre-deploy": `\
-        git add * && \
+        git add -A && \
         git commit -m preDeployHook ; \
         git pull --rebase \
         `,
