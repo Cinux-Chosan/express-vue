@@ -29,7 +29,7 @@ module.exports = {
         `,
       "pre-deploy": `\
         git add . && \
-        git commit -am preDeployHook && \
+        git commit -m preDeployHook && \
         git pull --rebase \
         `,
       "post-deploy": `\
