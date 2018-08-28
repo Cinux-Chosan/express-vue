@@ -30,7 +30,7 @@ module.exports = {
       "pre-deploy": `\
         git add -A && \
         git commit -m preDeployHook ; \
-        git pull --rebase \
+        git pull origin master \
         `,
       "post-deploy": `\
         cd app-ember && \
