@@ -14,6 +14,7 @@ module.exports = {
 
   deploy: {
     prod: {
+
       host: "chosan.cn",
       user: "root",
       ref: "origin/master",
