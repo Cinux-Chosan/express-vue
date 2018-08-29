@@ -13,10 +13,10 @@ export default Controller.extend({
     let updateTime = this.getWithDefault('model.lastUpdateTime', '');
     let postRemark = '';
     if (createTime) {
-      postRemark = `文章创建于： ${createTime.toLocaleString()}；`;
+      postRemark = `文章创建于： ${createTime.toLocaleString()}； <br/> `;
     }
     if (updateTime) {
-      postRemark += updateTime ? ` <br/> 最后更新于：${updateTime.toLocaleString()}；` : '';
+      postRemark += `${updateTime}` ? `最后更新于：${updateTime.toLocaleString()}；` : '';
     }
     return postRemark;
   }
