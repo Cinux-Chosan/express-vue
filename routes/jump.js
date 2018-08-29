@@ -11,7 +11,6 @@ router.get('/:jumpId', async function(req, res, next) {
   const col = db.collection('jump');
   const { jumpId } = req.params;
   const jumpInfo = await col.findOne({ _id: ObjectID(jumpId) });
-  console.log(jumpId, jumpInfo);
   const { jumpUrl } = jumpInfo;
   res.writeHead(302, { 'Location': jumpUrl });
   res.end();
