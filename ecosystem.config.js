@@ -33,6 +33,7 @@ module.exports = {
         git pull --commit --no-edit origin master \
         `,
       "post-deploy": `\
+        git pull ; \
         npm config set registry https://registry.npm.taobao.org/ && \
         cd app-ember && \
         yarn && \

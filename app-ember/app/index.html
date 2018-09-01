@@ -35,12 +35,12 @@
     };
     var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
       window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-    if (raf) raf(function () { window.setTimeout(loadDeferredStyles, 5000); });
+    if (raf) raf(function () { window.setTimeout(loadDeferredStyles, 100); });
     else window.addEventListener('load', loadDeferredStyles);
   </script>
 
   <script src="{{rootURL}}assets/vendor.js" async></script>
-  <!-- <script src="{{rootURL}}assets/app-ember.js" async></script>  -->
+  <script src="{{rootURL}}assets/app-ember.js" async></script> 
   {{content-for "body-footer"}}
 </body>
 
