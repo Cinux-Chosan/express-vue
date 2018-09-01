@@ -33,6 +33,7 @@ module.exports = {
         git pull origin master \
         `,
       "post-deploy": `\
+        npm config set registry https://registry.npm.taobao.org/ && \
         cd app-ember && \
         npm i && \
         ember b --prod && \
