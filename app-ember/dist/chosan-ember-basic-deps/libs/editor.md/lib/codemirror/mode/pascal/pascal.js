@@ -1,109 +1,18 @@
-// CodeMirror, copyright (c) by Marijn Haverbeke and others
-// Distributed under an MIT license: http://codemirror.net/LICENSE
-
-(function(mod) {
-  if (typeof exports == "object" && typeof module == "object") // CommonJS
-    mod(require("../../lib/codemirror"));
-  else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror"], mod);
-  else // Plain browser env
-    mod(CodeMirror);
-})(function(CodeMirror) {
-"use strict";
-
-CodeMirror.defineMode("pascal", function() {
-  function words(str) {
-    var obj = {}, words = str.split(" ");
-    for (var i = 0; i < words.length; ++i) obj[words[i]] = true;
-    return obj;
-  }
-  var keywords = words("and array begin case const div do downto else end file for forward integer " +
-                       "boolean char function goto if in label mod nil not of or packed procedure " +
-                       "program record repeat set string then to type until var while with");
-  var atoms = {"null": true};
-
-  var isOperatorChar = /[+\-*&%=<>!?|\/]/;
-
-  function tokenBase(stream, state) {
-    var ch = stream.next();
-    if (ch == "#" && state.startOfLine) {
-      stream.skipToEnd();
-      return "meta";
-    }
-    if (ch == '"' || ch == "'") {
-      state.tokenize = tokenString(ch);
-      return state.tokenize(stream, state);
-    }
-    if (ch == "(" && stream.eat("*")) {
-      state.tokenize = tokenComment;
-      return tokenComment(stream, state);
-    }
-    if (/[\[\]{}\(\),;\:\.]/.test(ch)) {
-      return null;
-    }
-    if (/\d/.test(ch)) {
-      stream.eatWhile(/[\w\.]/);
-      return "number";
-    }
-    if (ch == "/") {
-      if (stream.eat("/")) {
-        stream.skipToEnd();
-        return "comment";
-      }
-    }
-    if (isOperatorChar.test(ch)) {
-      stream.eatWhile(isOperatorChar);
-      return "operator";
-    }
-    stream.eatWhile(/[\w\$_]/);
-    var cur = stream.current();
-    if (keywords.propertyIsEnumerable(cur)) return "keyword";
-    if (atoms.propertyIsEnumerable(cur)) return "atom";
-    return "variable";
-  }
-
-  function tokenString(quote) {
-    return function(stream, state) {
-      var escaped = false, next, end = false;
-      while ((next = stream.next()) != null) {
-        if (next == quote && !escaped) {end = true; break;}
-        escaped = !escaped && next == "\\";
-      }
-      if (end || !escaped) state.tokenize = null;
-      return "string";
-    };
-  }
-
-  function tokenComment(stream, state) {
-    var maybeEnd = false, ch;
-    while (ch = stream.next()) {
-      if (ch == ")" && maybeEnd) {
-        state.tokenize = null;
-        break;
-      }
-      maybeEnd = (ch == "*");
-    }
-    return "comment";
-  }
-
-  // Interface
-
-  return {
-    startState: function() {
-      return {tokenize: null};
-    },
-
-    token: function(stream, state) {
-      if (stream.eatSpace()) return null;
-      var style = (state.tokenize || tokenBase)(stream, state);
-      if (style == "comment" || style == "meta") return style;
-      return style;
-    },
-
-    electricChars: "{}"
-  };
-});
-
-CodeMirror.defineMIME("text/x-pascal", "pascal");
-
-});
+(function(e){"object"==typeof exports&&"object"==typeof module?e(require("../../lib/codemirror")):"function"==typeof define&&define.amd?define(["../../lib/codemirror"],e):e(CodeMirror)})(function(e){"use strict"
+e.defineMode("pascal",function(){var e=function(e){for(var r={},t=e.split(" "),n=0;n<t.length;++n)r[t[n]]=!0
+return r}("and array begin case const div do downto else end file for forward integer boolean char function goto if in label mod nil not of or packed procedure program record repeat set string then to type until var while with"),r={null:!0},t=/[+\-*&%=<>!?|\/]/
+function n(e,r){for(var t,n=!1;t=e.next();){if(")"==t&&n){r.tokenize=null
+break}n="*"==t}return"comment"}return{startState:function(){return{tokenize:null}},token:function(o,i){if(o.eatSpace())return null
+var a=(i.tokenize||function(o,i){var a,u=o.next()
+if("#"==u&&i.startOfLine)return o.skipToEnd(),"meta"
+if('"'==u||"'"==u)return i.tokenize=(a=u,function(e,r){for(var t,n=!1,o=!1;null!=(t=e.next());){if(t==a&&!n){o=!0
+break}n=!n&&"\\"==t}return!o&&n||(r.tokenize=null),"string"}),i.tokenize(o,i)
+if("("==u&&o.eat("*"))return i.tokenize=n,n(o,i)
+if(/[\[\]{}\(\),;\:\.]/.test(u))return null
+if(/\d/.test(u))return o.eatWhile(/[\w\.]/),"number"
+if("/"==u&&o.eat("/"))return o.skipToEnd(),"comment"
+if(t.test(u))return o.eatWhile(t),"operator"
+o.eatWhile(/[\w\$_]/)
+var f=o.current()
+return e.propertyIsEnumerable(f)?"keyword":r.propertyIsEnumerable(f)?"atom":"variable"})(o,i)
+return a},electricChars:"{}"}}),e.defineMIME("text/x-pascal","pascal")})

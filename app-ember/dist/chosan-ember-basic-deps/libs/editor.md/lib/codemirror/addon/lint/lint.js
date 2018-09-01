@@ -1,205 +1,30 @@
-// CodeMirror, copyright (c) by Marijn Haverbeke and others
-// Distributed under an MIT license: http://codemirror.net/LICENSE
-
-(function(mod) {
-  if (typeof exports == "object" && typeof module == "object") // CommonJS
-    mod(require("../../lib/codemirror"));
-  else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror"], mod);
-  else // Plain browser env
-    mod(CodeMirror);
-})(function(CodeMirror) {
-  "use strict";
-  var GUTTER_ID = "CodeMirror-lint-markers";
-
-  function showTooltip(e, content) {
-    var tt = document.createElement("div");
-    tt.className = "CodeMirror-lint-tooltip";
-    tt.appendChild(content.cloneNode(true));
-    document.body.appendChild(tt);
-
-    function position(e) {
-      if (!tt.parentNode) return CodeMirror.off(document, "mousemove", position);
-      tt.style.top = Math.max(0, e.clientY - tt.offsetHeight - 5) + "px";
-      tt.style.left = (e.clientX + 5) + "px";
-    }
-    CodeMirror.on(document, "mousemove", position);
-    position(e);
-    if (tt.style.opacity != null) tt.style.opacity = 1;
-    return tt;
-  }
-  function rm(elt) {
-    if (elt.parentNode) elt.parentNode.removeChild(elt);
-  }
-  function hideTooltip(tt) {
-    if (!tt.parentNode) return;
-    if (tt.style.opacity == null) rm(tt);
-    tt.style.opacity = 0;
-    setTimeout(function() { rm(tt); }, 600);
-  }
-
-  function showTooltipFor(e, content, node) {
-    var tooltip = showTooltip(e, content);
-    function hide() {
-      CodeMirror.off(node, "mouseout", hide);
-      if (tooltip) { hideTooltip(tooltip); tooltip = null; }
-    }
-    var poll = setInterval(function() {
-      if (tooltip) for (var n = node;; n = n.parentNode) {
-        if (n && n.nodeType == 11) n = n.host;
-        if (n == document.body) return;
-        if (!n) { hide(); break; }
-      }
-      if (!tooltip) return clearInterval(poll);
-    }, 400);
-    CodeMirror.on(node, "mouseout", hide);
-  }
-
-  function LintState(cm, options, hasGutter) {
-    this.marked = [];
-    this.options = options;
-    this.timeout = null;
-    this.hasGutter = hasGutter;
-    this.onMouseOver = function(e) { onMouseOver(cm, e); };
-  }
-
-  function parseOptions(cm, options) {
-    if (options instanceof Function) return {getAnnotations: options};
-    if (!options || options === true) options = {};
-    if (!options.getAnnotations) options.getAnnotations = cm.getHelper(CodeMirror.Pos(0, 0), "lint");
-    if (!options.getAnnotations) throw new Error("Required option 'getAnnotations' missing (lint addon)");
-    return options;
-  }
-
-  function clearMarks(cm) {
-    var state = cm.state.lint;
-    if (state.hasGutter) cm.clearGutter(GUTTER_ID);
-    for (var i = 0; i < state.marked.length; ++i)
-      state.marked[i].clear();
-    state.marked.length = 0;
-  }
-
-  function makeMarker(labels, severity, multiple, tooltips) {
-    var marker = document.createElement("div"), inner = marker;
-    marker.className = "CodeMirror-lint-marker-" + severity;
-    if (multiple) {
-      inner = marker.appendChild(document.createElement("div"));
-      inner.className = "CodeMirror-lint-marker-multiple";
-    }
-
-    if (tooltips != false) CodeMirror.on(inner, "mouseover", function(e) {
-      showTooltipFor(e, labels, inner);
-    });
-
-    return marker;
-  }
-
-  function getMaxSeverity(a, b) {
-    if (a == "error") return a;
-    else return b;
-  }
-
-  function groupByLine(annotations) {
-    var lines = [];
-    for (var i = 0; i < annotations.length; ++i) {
-      var ann = annotations[i], line = ann.from.line;
-      (lines[line] || (lines[line] = [])).push(ann);
-    }
-    return lines;
-  }
-
-  function annotationTooltip(ann) {
-    var severity = ann.severity;
-    if (!severity) severity = "error";
-    var tip = document.createElement("div");
-    tip.className = "CodeMirror-lint-message-" + severity;
-    tip.appendChild(document.createTextNode(ann.message));
-    return tip;
-  }
-
-  function startLinting(cm) {
-    var state = cm.state.lint, options = state.options;
-    var passOptions = options.options || options; // Support deprecated passing of `options` property in options
-    if (options.async || options.getAnnotations.async)
-      options.getAnnotations(cm.getValue(), updateLinting, passOptions, cm);
-    else
-      updateLinting(cm, options.getAnnotations(cm.getValue(), passOptions, cm));
-  }
-
-  function updateLinting(cm, annotationsNotSorted) {
-    clearMarks(cm);
-    var state = cm.state.lint, options = state.options;
-
-    var annotations = groupByLine(annotationsNotSorted);
-
-    for (var line = 0; line < annotations.length; ++line) {
-      var anns = annotations[line];
-      if (!anns) continue;
-
-      var maxSeverity = null;
-      var tipLabel = state.hasGutter && document.createDocumentFragment();
-
-      for (var i = 0; i < anns.length; ++i) {
-        var ann = anns[i];
-        var severity = ann.severity;
-        if (!severity) severity = "error";
-        maxSeverity = getMaxSeverity(maxSeverity, severity);
-
-        if (options.formatAnnotation) ann = options.formatAnnotation(ann);
-        if (state.hasGutter) tipLabel.appendChild(annotationTooltip(ann));
-
-        if (ann.to) state.marked.push(cm.markText(ann.from, ann.to, {
-          className: "CodeMirror-lint-mark-" + severity,
-          __annotation: ann
-        }));
-      }
-
-      if (state.hasGutter)
-        cm.setGutterMarker(line, GUTTER_ID, makeMarker(tipLabel, maxSeverity, anns.length > 1,
-                                                       state.options.tooltips));
-    }
-    if (options.onUpdateLinting) options.onUpdateLinting(annotationsNotSorted, annotations, cm);
-  }
-
-  function onChange(cm) {
-    var state = cm.state.lint;
-    clearTimeout(state.timeout);
-    state.timeout = setTimeout(function(){startLinting(cm);}, state.options.delay || 500);
-  }
-
-  function popupSpanTooltip(ann, e) {
-    var target = e.target || e.srcElement;
-    showTooltipFor(e, annotationTooltip(ann), target);
-  }
-
-  function onMouseOver(cm, e) {
-    var target = e.target || e.srcElement;
-    if (!/\bCodeMirror-lint-mark-/.test(target.className)) return;
-    var box = target.getBoundingClientRect(), x = (box.left + box.right) / 2, y = (box.top + box.bottom) / 2;
-    var spans = cm.findMarksAt(cm.coordsChar({left: x, top: y}, "client"));
-    for (var i = 0; i < spans.length; ++i) {
-      var ann = spans[i].__annotation;
-      if (ann) return popupSpanTooltip(ann, e);
-    }
-  }
-
-  CodeMirror.defineOption("lint", false, function(cm, val, old) {
-    if (old && old != CodeMirror.Init) {
-      clearMarks(cm);
-      cm.off("change", onChange);
-      CodeMirror.off(cm.getWrapperElement(), "mouseover", cm.state.lint.onMouseOver);
-      delete cm.state.lint;
-    }
-
-    if (val) {
-      var gutters = cm.getOption("gutters"), hasLintGutter = false;
-      for (var i = 0; i < gutters.length; ++i) if (gutters[i] == GUTTER_ID) hasLintGutter = true;
-      var state = cm.state.lint = new LintState(cm, parseOptions(cm, val), hasLintGutter);
-      cm.on("change", onChange);
-      if (state.options.tooltips != false)
-        CodeMirror.on(cm.getWrapperElement(), "mouseover", state.onMouseOver);
-
-      startLinting(cm);
-    }
-  });
-});
+(function(t){"object"==typeof exports&&"object"==typeof module?t(require("../../lib/codemirror")):"function"==typeof define&&define.amd?define(["../../lib/codemirror"],t):t(CodeMirror)})(function(t){"use strict"
+var e="CodeMirror-lint-markers"
+function n(t){t.parentNode&&t.parentNode.removeChild(t)}function o(e,o,r){var i=function(e,n){var o=document.createElement("div")
+function r(e){if(!o.parentNode)return t.off(document,"mousemove",r)
+o.style.top=Math.max(0,e.clientY-o.offsetHeight-5)+"px",o.style.left=e.clientX+5+"px"}return o.className="CodeMirror-lint-tooltip",o.appendChild(n.cloneNode(!0)),document.body.appendChild(o),t.on(document,"mousemove",r),r(e),null!=o.style.opacity&&(o.style.opacity=1),o}(e,o)
+function a(){var e
+t.off(r,"mouseout",a),i&&((e=i).parentNode&&(null==e.style.opacity&&n(e),e.style.opacity=0,setTimeout(function(){n(e)},600)),i=null)}var s=setInterval(function(){if(i)for(var t=r;;t=t.parentNode){if(t&&11==t.nodeType&&(t=t.host),t==document.body)return
+if(!t){a()
+break}}if(!i)return clearInterval(s)},400)
+t.on(r,"mouseout",a)}function r(t,e,n){this.marked=[],this.options=e,this.timeout=null,this.hasGutter=n,this.onMouseOver=function(e){(function(t,e){var n=e.target||e.srcElement
+if(!/\bCodeMirror-lint-mark-/.test(n.className))return
+for(var o=n.getBoundingClientRect(),r=(o.left+o.right)/2,i=(o.top+o.bottom)/2,a=t.findMarksAt(t.coordsChar({left:r,top:i},"client")),s=0;s<a.length;++s){var l=a[s].__annotation
+if(l)return f(l,e)}})(t,e)}}function i(t){var n=t.state.lint
+n.hasGutter&&t.clearGutter(e)
+for(var o=0;o<n.marked.length;++o)n.marked[o].clear()
+n.marked.length=0}function a(e,n,r,i){var a=document.createElement("div"),s=a
+return a.className="CodeMirror-lint-marker-"+n,r&&((s=a.appendChild(document.createElement("div"))).className="CodeMirror-lint-marker-multiple"),0!=i&&t.on(s,"mouseover",function(t){o(t,e,s)}),a}function s(t){var e=t.severity
+e||(e="error")
+var n=document.createElement("div")
+return n.className="CodeMirror-lint-message-"+e,n.appendChild(document.createTextNode(t.message)),n}function l(t){var e=t.state.lint.options,n=e.options||e
+e.async||e.getAnnotations.async?e.getAnnotations(t.getValue(),u,n,t):u(t,e.getAnnotations(t.getValue(),n,t))}function u(t,n){i(t)
+for(var o,r=t.state.lint,l=r.options,u=function(t){for(var e=[],n=0;n<t.length;++n){var o=t[n],r=o.from.line;(e[r]||(e[r]=[])).push(o)}return e}(n),c=0;c<u.length;++c){var f=u[c]
+if(f){for(var m=null,d=r.hasGutter&&document.createDocumentFragment(),p=0;p<f.length;++p){var v=f[p],g=v.severity
+g||(g="error"),m="error"==(o=m)?o:g,l.formatAnnotation&&(v=l.formatAnnotation(v)),r.hasGutter&&d.appendChild(s(v)),v.to&&r.marked.push(t.markText(v.from,v.to,{className:"CodeMirror-lint-mark-"+g,__annotation:v}))}r.hasGutter&&t.setGutterMarker(c,e,a(d,m,f.length>1,r.options.tooltips))}}l.onUpdateLinting&&l.onUpdateLinting(n,u,t)}function c(t){var e=t.state.lint
+clearTimeout(e.timeout),e.timeout=setTimeout(function(){l(t)},e.options.delay||500)}function f(t,e){var n=e.target||e.srcElement
+o(e,s(t),n)}t.defineOption("lint",!1,function(n,o,a){if(a&&a!=t.Init&&(i(n),n.off("change",c),t.off(n.getWrapperElement(),"mouseover",n.state.lint.onMouseOver),delete n.state.lint),o){for(var s=n.getOption("gutters"),u=!1,f=0;f<s.length;++f)s[f]==e&&(u=!0)
+var m=n.state.lint=new r(n,function(e,n){if(n instanceof Function)return{getAnnotations:n}
+if(n&&!0!==n||(n={}),n.getAnnotations||(n.getAnnotations=e.getHelper(t.Pos(0,0),"lint")),!n.getAnnotations)throw new Error("Required option 'getAnnotations' missing (lint addon)")
+return n}(n,o),u)
+n.on("change",c),0!=m.options.tooltips&&t.on(n.getWrapperElement(),"mouseover",m.onMouseOver),l(n)}})})

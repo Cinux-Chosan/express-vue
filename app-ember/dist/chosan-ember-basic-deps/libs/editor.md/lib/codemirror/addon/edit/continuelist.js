@@ -1,51 +1,8 @@
-// CodeMirror, copyright (c) by Marijn Haverbeke and others
-// Distributed under an MIT license: http://codemirror.net/LICENSE
-
-(function(mod) {
-  if (typeof exports == "object" && typeof module == "object") // CommonJS
-    mod(require("../../lib/codemirror"));
-  else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror"], mod);
-  else // Plain browser env
-    mod(CodeMirror);
-})(function(CodeMirror) {
-  "use strict";
-
-  var listRE = /^(\s*)(>[> ]*|[*+-]\s|(\d+)\.)(\s*)/,
-      emptyListRE = /^(\s*)(>[> ]*|[*+-]|(\d+)\.)(\s*)$/,
-      unorderedListRE = /[*+-]\s/;
-
-  CodeMirror.commands.newlineAndIndentContinueMarkdownList = function(cm) {
-    if (cm.getOption("disableInput")) return CodeMirror.Pass;
-    var ranges = cm.listSelections(), replacements = [];
-    for (var i = 0; i < ranges.length; i++) {
-      var pos = ranges[i].head, match;
-      var eolState = cm.getStateAfter(pos.line);
-      var inList = eolState.list !== false;
-      var inQuote = eolState.quote !== false;
-
-      if (!ranges[i].empty() || (!inList && !inQuote) || !(match = cm.getLine(pos.line).match(listRE))) {
-        cm.execCommand("newlineAndIndent");
-        return;
-      }
-      if (cm.getLine(pos.line).match(emptyListRE)) {
-        cm.replaceRange("", {
-          line: pos.line, ch: 0
-        }, {
-          line: pos.line, ch: pos.ch + 1
-        });
-        replacements[i] = "\n";
-
-      } else {
-        var indent = match[1], after = match[4];
-        var bullet = unorderedListRE.test(match[2]) || match[2].indexOf(">") >= 0
-          ? match[2]
-          : (parseInt(match[3], 10) + 1) + ".";
-
-        replacements[i] = "\n" + indent + bullet + after;
-      }
-    }
-
-    cm.replaceSelections(replacements);
-  };
-});
+(function(e){"object"==typeof exports&&"object"==typeof module?e(require("../../lib/codemirror")):"function"==typeof define&&define.amd?define(["../../lib/codemirror"],e):e(CodeMirror)})(function(e){"use strict"
+var n=/^(\s*)(>[> ]*|[*+-]\s|(\d+)\.)(\s*)/,t=/^(\s*)(>[> ]*|[*+-]|(\d+)\.)(\s*)$/,i=/[*+-]\s/
+e.commands.newlineAndIndentContinueMarkdownList=function(o){if(o.getOption("disableInput"))return e.Pass
+for(var r=o.listSelections(),d=[],l=0;l<r.length;l++){var s,c=r[l].head,a=o.getStateAfter(c.line),f=!1!==a.list,u=!1!==a.quote
+if(!r[l].empty()||!f&&!u||!(s=o.getLine(c.line).match(n)))return void o.execCommand("newlineAndIndent")
+if(o.getLine(c.line).match(t))o.replaceRange("",{line:c.line,ch:0},{line:c.line,ch:c.ch+1}),d[l]="\n"
+else{var m=s[1],p=s[4],h=i.test(s[2])||s[2].indexOf(">")>=0?s[2]:parseInt(s[3],10)+1+"."
+d[l]="\n"+m+h+p}}o.replaceSelections(d)}})

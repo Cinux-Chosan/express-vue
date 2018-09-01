@@ -1,240 +1,27 @@
-// CodeMirror, copyright (c) by Marijn Haverbeke and others
-// Distributed under an MIT license: http://codemirror.net/LICENSE
-
-(function(mod) {
-  if (typeof exports == "object" && typeof module == "object") // CommonJS
-    mod(require("../../lib/codemirror"), require("../../mode/sql/sql"));
-  else if (typeof define == "function" && define.amd) // AMD
-    define(["../../lib/codemirror", "../../mode/sql/sql"], mod);
-  else // Plain browser env
-    mod(CodeMirror);
-})(function(CodeMirror) {
-  "use strict";
-
-  var tables;
-  var defaultTable;
-  var keywords;
-  var CONS = {
-    QUERY_DIV: ";",
-    ALIAS_KEYWORD: "AS"
-  };
-  var Pos = CodeMirror.Pos;
-
-  function getKeywords(editor) {
-    var mode = editor.doc.modeOption;
-    if (mode === "sql") mode = "text/x-sql";
-    return CodeMirror.resolveMode(mode).keywords;
-  }
-
-  function getText(item) {
-    return typeof item == "string" ? item : item.text;
-  }
-
-  function getItem(list, item) {
-    if (!list.slice) return list[item];
-    for (var i = list.length - 1; i >= 0; i--) if (getText(list[i]) == item)
-      return list[i];
-  }
-
-  function shallowClone(object) {
-    var result = {};
-    for (var key in object) if (object.hasOwnProperty(key))
-      result[key] = object[key];
-    return result;
-  }
-
-  function match(string, word) {
-    var len = string.length;
-    var sub = getText(word).substr(0, len);
-    return string.toUpperCase() === sub.toUpperCase();
-  }
-
-  function addMatches(result, search, wordlist, formatter) {
-    for (var word in wordlist) {
-      if (!wordlist.hasOwnProperty(word)) continue;
-      if (Array.isArray(wordlist)) {
-        word = wordlist[word];
-      }
-      if (match(search, word)) {
-        result.push(formatter(word));
-      }
-    }
-  }
-
-  function cleanName(name) {
-    // Get rid name from backticks(`) and preceding dot(.)
-    if (name.charAt(0) == ".") {
-      name = name.substr(1);
-    }
-    return name.replace(/`/g, "");
-  }
-
-  function insertBackticks(name) {
-    var nameParts = getText(name).split(".");
-    for (var i = 0; i < nameParts.length; i++)
-      nameParts[i] = "`" + nameParts[i] + "`";
-    var escaped = nameParts.join(".");
-    if (typeof name == "string") return escaped;
-    name = shallowClone(name);
-    name.text = escaped;
-    return name;
-  }
-
-  function nameCompletion(cur, token, result, editor) {
-    // Try to complete table, colunm names and return start position of completion
-    var useBacktick = false;
-    var nameParts = [];
-    var start = token.start;
-    var cont = true;
-    while (cont) {
-      cont = (token.string.charAt(0) == ".");
-      useBacktick = useBacktick || (token.string.charAt(0) == "`");
-
-      start = token.start;
-      nameParts.unshift(cleanName(token.string));
-
-      token = editor.getTokenAt(Pos(cur.line, token.start));
-      if (token.string == ".") {
-        cont = true;
-        token = editor.getTokenAt(Pos(cur.line, token.start));
-      }
-    }
-
-    // Try to complete table names
-    var string = nameParts.join(".");
-    addMatches(result, string, tables, function(w) {
-      return useBacktick ? insertBackticks(w) : w;
-    });
-
-    // Try to complete columns from defaultTable
-    addMatches(result, string, defaultTable, function(w) {
-      return useBacktick ? insertBackticks(w) : w;
-    });
-
-    // Try to complete columns
-    string = nameParts.pop();
-    var table = nameParts.join(".");
-
-    // Check if table is available. If not, find table by Alias
-    if (!getItem(tables, table))
-      table = findTableByAlias(table, editor);
-
-    var columns = getItem(tables, table);
-    if (columns && Array.isArray(tables) && columns.columns)
-      columns = columns.columns;
-
-    if (columns) {
-      addMatches(result, string, columns, function(w) {
-        if (typeof w == "string") {
-          w = table + "." + w;
-        } else {
-          w = shallowClone(w);
-          w.text = table + "." + w.text;
-        }
-        return useBacktick ? insertBackticks(w) : w;
-      });
-    }
-
-    return start;
-  }
-
-  function eachWord(lineText, f) {
-    if (!lineText) return;
-    var excepted = /[,;]/g;
-    var words = lineText.split(" ");
-    for (var i = 0; i < words.length; i++) {
-      f(words[i]?words[i].replace(excepted, '') : '');
-    }
-  }
-
-  function convertCurToNumber(cur) {
-    // max characters of a line is 999,999.
-    return cur.line + cur.ch / Math.pow(10, 6);
-  }
-
-  function convertNumberToCur(num) {
-    return Pos(Math.floor(num), +num.toString().split('.').pop());
-  }
-
-  function findTableByAlias(alias, editor) {
-    var doc = editor.doc;
-    var fullQuery = doc.getValue();
-    var aliasUpperCase = alias.toUpperCase();
-    var previousWord = "";
-    var table = "";
-    var separator = [];
-    var validRange = {
-      start: Pos(0, 0),
-      end: Pos(editor.lastLine(), editor.getLineHandle(editor.lastLine()).length)
-    };
-
-    //add separator
-    var indexOfSeparator = fullQuery.indexOf(CONS.QUERY_DIV);
-    while(indexOfSeparator != -1) {
-      separator.push(doc.posFromIndex(indexOfSeparator));
-      indexOfSeparator = fullQuery.indexOf(CONS.QUERY_DIV, indexOfSeparator+1);
-    }
-    separator.unshift(Pos(0, 0));
-    separator.push(Pos(editor.lastLine(), editor.getLineHandle(editor.lastLine()).text.length));
-
-    //find valid range
-    var prevItem = 0;
-    var current = convertCurToNumber(editor.getCursor());
-    for (var i=0; i< separator.length; i++) {
-      var _v = convertCurToNumber(separator[i]);
-      if (current > prevItem && current <= _v) {
-        validRange = { start: convertNumberToCur(prevItem), end: convertNumberToCur(_v) };
-        break;
-      }
-      prevItem = _v;
-    }
-
-    var query = doc.getRange(validRange.start, validRange.end, false);
-
-    for (var i = 0; i < query.length; i++) {
-      var lineText = query[i];
-      eachWord(lineText, function(word) {
-        var wordUpperCase = word.toUpperCase();
-        if (wordUpperCase === aliasUpperCase && getItem(tables, previousWord))
-          table = previousWord;
-        if (wordUpperCase !== CONS.ALIAS_KEYWORD)
-          previousWord = word;
-      });
-      if (table) break;
-    }
-    return table;
-  }
-
-  CodeMirror.registerHelper("hint", "sql", function(editor, options) {
-    tables = (options && options.tables) || {};
-    var defaultTableName = options && options.defaultTable;
-    defaultTable = (defaultTableName && getItem(tables, defaultTableName)) || [];
-    keywords = keywords || getKeywords(editor);
-
-    var cur = editor.getCursor();
-    var result = [];
-    var token = editor.getTokenAt(cur), start, end, search;
-    if (token.end > cur.ch) {
-      token.end = cur.ch;
-      token.string = token.string.slice(0, cur.ch - token.start);
-    }
-
-    if (token.string.match(/^[.`\w@]\w*$/)) {
-      search = token.string;
-      start = token.start;
-      end = token.end;
-    } else {
-      start = end = cur.ch;
-      search = "";
-    }
-    if (search.charAt(0) == "." || search.charAt(0) == "`") {
-      start = nameCompletion(cur, token, result, editor);
-    } else {
-      addMatches(result, search, tables, function(w) {return w;});
-      addMatches(result, search, defaultTable, function(w) {return w;});
-      addMatches(result, search, keywords, function(w) {return w.toUpperCase();});
-    }
-
-    return {list: result, from: Pos(cur.line, start), to: Pos(cur.line, end)};
-  });
-});
+(function(t){"object"==typeof exports&&"object"==typeof module?t(require("../../lib/codemirror"),require("../../mode/sql/sql")):"function"==typeof define&&define.amd?define(["../../lib/codemirror","../../mode/sql/sql"],t):t(CodeMirror)})(function(t){"use strict"
+var r,e,n,o={QUERY_DIV:";",ALIAS_KEYWORD:"AS"},i=t.Pos
+function s(t){return"string"==typeof t?t:t.text}function a(t,r){if(!t.slice)return t[r]
+for(var e=t.length-1;e>=0;e--)if(s(t[e])==r)return t[e]}function u(t){var r={}
+for(var e in t)t.hasOwnProperty(e)&&(r[e]=t[e])
+return r}function f(t,r){var e=t.length,n=s(r).substr(0,e)
+return t.toUpperCase()===n.toUpperCase()}function c(t,r,e,n){for(var o in e)e.hasOwnProperty(o)&&(Array.isArray(e)&&(o=e[o]),f(r,o)&&t.push(n(o)))}function l(t){for(var r=s(t).split("."),e=0;e<r.length;e++)r[e]="`"+r[e]+"`"
+var n=r.join(".")
+return"string"==typeof t?n:((t=u(t)).text=n,t)}function p(t,n,s,f){for(var p,v=!1,A=[],y=n.start,m=!0;m;)m="."==n.string.charAt(0),v=v||"`"==n.string.charAt(0),y=n.start,A.unshift(("."==(p=n.string).charAt(0)&&(p=p.substr(1)),p.replace(/`/g,""))),"."==(n=f.getTokenAt(i(t.line,n.start))).string&&(m=!0,n=f.getTokenAt(i(t.line,n.start)))
+var x=A.join(".")
+c(s,x,r,function(t){return v?l(t):t}),c(s,x,e,function(t){return v?l(t):t}),x=A.pop()
+var b=A.join(".")
+a(r,b)||(b=function(t,e){var n=e.doc,s=n.getValue(),u=t.toUpperCase(),f="",c="",l=[],p={start:i(0,0),end:i(e.lastLine(),e.getLineHandle(e.lastLine()).length)},v=s.indexOf(o.QUERY_DIV)
+for(;-1!=v;)l.push(n.posFromIndex(v)),v=s.indexOf(o.QUERY_DIV,v+1)
+l.unshift(i(0,0)),l.push(i(e.lastLine(),e.getLineHandle(e.lastLine()).text.length))
+for(var A=0,y=h(e.getCursor()),m=0;m<l.length;m++){var x=h(l[m])
+if(y>A&&y<=x){p={start:d(A),end:d(x)}
+break}A=x}for(var b=n.getRange(p.start,p.end,!1),m=0;m<b.length;m++){var q=b[m]
+if(g(q,function(t){var e=t.toUpperCase()
+e===u&&a(r,f)&&(c=f),e!==o.ALIAS_KEYWORD&&(f=t)}),c)break}return c}(b,f))
+var q=a(r,b)
+return q&&Array.isArray(r)&&q.columns&&(q=q.columns),q&&c(s,x,q,function(t){return"string"==typeof t?t=b+"."+t:(t=u(t)).text=b+"."+t.text,v?l(t):t}),y}function g(t,r){if(t)for(var e=/[,;]/g,n=t.split(" "),o=0;o<n.length;o++)r(n[o]?n[o].replace(e,""):"")}function h(t){return t.line+t.ch/Math.pow(10,6)}function d(t){return i(Math.floor(t),+t.toString().split(".").pop())}t.registerHelper("hint","sql",function(o,s){r=s&&s.tables||{}
+var u=s&&s.defaultTable
+e=u&&a(r,u)||[],n=n||function(r){var e=r.doc.modeOption
+return"sql"===e&&(e="text/x-sql"),t.resolveMode(e).keywords}(o)
+var f,l,g,h=o.getCursor(),d=[],v=o.getTokenAt(h)
+return v.end>h.ch&&(v.end=h.ch,v.string=v.string.slice(0,h.ch-v.start)),v.string.match(/^[.`\w@]\w*$/)?(g=v.string,f=v.start,l=v.end):(f=l=h.ch,g=""),"."==g.charAt(0)||"`"==g.charAt(0)?f=p(h,v,d,o):(c(d,g,r,function(t){return t}),c(d,g,e,function(t){return t}),c(d,g,n,function(t){return t.toUpperCase()})),{list:d,from:i(h.line,f),to:i(h.line,l)}})})
