@@ -24,12 +24,13 @@
     <link integrity="" type="text/css" rel="stylesheet" href="{{rootURL}}assets/app-ember.css">
   </noscript>
 
+  <div id="container-styles"></div>
+  
   <script>
     var loadDeferredStyles = function () {
       var addStylesNode = document.getElementById("deferred-styles");
-      var replacement = document.createElement("div");
+      var replacement = document.getElementById("container-styles");
       replacement.innerHTML = addStylesNode.textContent;
-      document.body.prepend(replacement)
       addStylesNode.parentElement.removeChild(addStylesNode);
     };
     var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
