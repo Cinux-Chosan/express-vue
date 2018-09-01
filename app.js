@@ -54,8 +54,9 @@ app.use(session({
   }
 }))
 
-app.use((req, res) => {
+app.use((req, res, next) => {
   res.setHeader('Cache-Control', 'no-store');
+  next();
 });
 
 app.use('/', index);
