@@ -1,13 +1,18 @@
-var express = require('express');
-var router = express.Router();
-var path = require('path');
-var util = require('util');
-var mongodb = require('mongodb');
+const express = require('express');
+const router = express.Router();
+const path = require('path');
+const util = require('util');
+const mongodb = require('mongodb');
+const myMongo = require('../lib/utils/mongo');
+const ObjectID = mongodb.ObjectID;
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  // res.render('index', { title: 'Express' });
-  res.writeHead(301, { 'Location': 'https://www.zbj.com/?reqtoken=1' });
+router.get('/:jumpId', async function(req, res, next) {
+  const db = await new myMongo('jump').getDB();
+  const col = db.collection('jump');
+  const { jumpId } = req.params;
+  const jumpInfo = await col.findOne({ _id: ObjectID(jumpId) });
+  const { jumpUrl } = jumpInfo;
+  res.writeHead(302, { 'Location': jumpUrl });
   res.end();
 });
 
