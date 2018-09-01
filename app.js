@@ -54,11 +54,15 @@ app.use(session({
   }
 }))
 
+app.use((req, res) => {
+  res.setHeader('Cache-Control', 'no-store');
+});
+
 app.use('/', index);
 app.use('/signup', signup);
-app.use('/api', api);
 app.use('/upload', upload);
 app.use('/jump', jump);
+app.use('/api', api);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
