@@ -7,12 +7,11 @@
   <title>Chosan’s</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> {{content-for "head"}}
-  <link rel="stylesheet" href="//at.alicdn.com/t/font_551264_aczf826ys86ez5mi.css">
-
-  <!-- <link integrity="" rel="stylesheet" href="{{rootURL}}assets/vendor.css">
-    <link integrity="" rel="stylesheet" href="{{rootURL}}assets/app-ember.css"> -->
-  <!-- <script src="http://172.31.27.191:8080/target/target-script-min.js#anonymous" type="text/javascript"></script> -->
-
+  <style>
+    noscript {
+      display: none;
+    }
+  </style>
   {{content-for "head-footer"}}
 </head>
 
@@ -20,9 +19,11 @@
   {{content-for "body"}}
 
   <noscript id="deferred-styles">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_551264_aczf826ys86ez5mi.css">
     <link integrity="" rel="stylesheet" href="{{rootURL}}assets/vendor.css">
     <link integrity="" rel="stylesheet" href="{{rootURL}}assets/app-ember.css">
   </noscript>
+
   <script>
     var loadDeferredStyles = function () {
       var addStylesNode = document.getElementById("deferred-styles");
