@@ -28,9 +28,7 @@ module.exports = {
         git push \
         `,
       "pre-deploy": `\
-        git add -A && \
-        git commit -m preDeployHook ; \
-        git pull origin master \
+        git pull --commit --no-edit origin master \
         `,
       "post-deploy": `\
         npm config set registry https://registry.npm.taobao.org/ && \
