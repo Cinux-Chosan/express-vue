@@ -22,8 +22,6 @@
     <link rel="stylesheet" href="//at.alicdn.com/t/font_551264_aczf826ys86ez5mi.css">
     <link integrity="" rel="stylesheet" href="{{rootURL}}assets/vendor.css">
     <link integrity="" rel="stylesheet" href="{{rootURL}}assets/app-ember.css">
-    <script src="{{rootURL}}assets/vendor.js"></script>
-    <script src="{{rootURL}}assets/app-ember.js" async></script>
   </noscript>
 
   <script>
@@ -38,8 +36,11 @@
       window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
     if (raf) raf(function () { window.setTimeout(loadDeferredStyles, 0); });
     else window.addEventListener('load', loadDeferredStyles);
-  </script>
- {{content-for "body-footer"}}
+  </script> 
+  
+  <script src="{{rootURL}}assets/vendor.js"></script>
+  <script src="{{rootURL}}assets/app-ember.js" async></script>
+  {{content-for "body-footer"}}
 </body>
 
 </html>
