@@ -25,7 +25,7 @@
   </noscript>
 
   <div id="container-styles"></div>
-  
+
   <script>
     var loadDeferredStyles = function () {
       var addStylesNode = document.getElementById("deferred-styles");
@@ -33,8 +33,9 @@
       replacement.innerHTML = addStylesNode.textContent;
       addStylesNode.parentElement.removeChild(addStylesNode);
     };
-    var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-      window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+    var raf
+    //  = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+      // window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
     if (raf) raf(function () { window.setTimeout(loadDeferredStyles, 0); });
     else window.addEventListener('load', loadDeferredStyles);
   </script>
