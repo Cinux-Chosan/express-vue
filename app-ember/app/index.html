@@ -19,9 +19,9 @@
   {{content-for "body"}}
 
   <noscript id="deferred-styles">
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_551264_aczf826ys86ez5mi.css">
-    <link integrity="" rel="stylesheet" href="{{rootURL}}assets/vendor.css">
-    <link integrity="" rel="stylesheet" href="{{rootURL}}assets/app-ember.css">
+    <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_551264_aczf826ys86ez5mi.css">
+    <link integrity="" type="text/css" rel="stylesheet" href="{{rootURL}}assets/vendor.css">
+    <link integrity="" type="text/css" rel="stylesheet" href="{{rootURL}}assets/app-ember.css">
   </noscript>
 
   <script>
@@ -29,18 +29,17 @@
       var addStylesNode = document.getElementById("deferred-styles");
       var replacement = document.createElement("div");
       replacement.innerHTML = addStylesNode.textContent;
-      document.body.appendChild(replacement)
+      document.body.prepend(replacement)
       addStylesNode.parentElement.removeChild(addStylesNode);
     };
     var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
       window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
     if (raf) raf(function () { window.setTimeout(loadDeferredStyles, 0); });
     else window.addEventListener('load', loadDeferredStyles);
-  </script> 
-  
+  </script>
+
   <script src="{{rootURL}}assets/vendor.js"></script>
-  <script src="{{rootURL}}assets/app-ember.js" async></script>
-  {{content-for "body-footer"}}
+  <script src="{{rootURL}}assets/app-ember.js" async></script> {{content-for "body-footer"}}
 </body>
 
 </html>
