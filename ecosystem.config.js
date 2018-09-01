@@ -27,11 +27,11 @@ module.exports = {
         git pull && \
         git push \
         `,
-      // "pre-deploy": `\
-      //   git add -A && \
-      //   git commit -m preDeployHook ; \
-      //   git pull origin master \
-      //   `,
+      "pre-deploy": `\
+        git add -A && \
+        git commit -m preDeployHook ; \
+        git pull origin master \
+        `,
       "post-deploy": `\
         cd app-ember && \
         npm i && \
