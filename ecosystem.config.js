@@ -28,6 +28,8 @@ module.exports = {
         git push \
         `,
       "pre-deploy": `\
+        git add -A && \
+        git commit -m preDeployHook ; \
         git pull --commit --no-edit origin master \
         `,
       "post-deploy": `\
