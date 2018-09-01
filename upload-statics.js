@@ -11,6 +11,8 @@ glob('app-ember/dist/+(assets|images)/**/*.*', { absolute: true }, (err, files) 
   let count = 0;
   delObj({
     Key: '/app-ember/'
+  }, (err, data) => {
+    console.log('删除完成！', err,  data);
   });
   files.forEach(FilePath => {
     let options = {
