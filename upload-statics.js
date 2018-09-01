@@ -23,10 +23,10 @@ glob('app-ember/dist/+(assets|images)/**/*.*', { absolute: true }, (err, files) 
 
     if (FilePath.match(/.(js|css)$/)) {
       let ws = createWriteStream(FilePath);
-      options.ContentEncoding = 'gzip';
+      // options.ContentEncoding = 'gzip';
       ws.on('finish', () => {
         console.log(`文件\t${FilePath}\t压缩完成`);
-        colUpload(options, err => {
+        colUpload({ ...options, ContentEncoding: 'gzip' }, err => {
           assert.equal(null, err);
           if (++count === files.length) {
             console.log('静态文件上传完成');
