@@ -29,6 +29,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use(compression({
+  threshold: '10b',
   filter: req => !req.url.match(/\.(png|jpeg|jpg|gif)$/)  // 一般图片等二进制文件压缩收益不高，因此不对图片等二进制文件进行压缩
 }));
 
