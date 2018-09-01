@@ -35,10 +35,10 @@ module.exports = {
       "post-deploy": `\
         npm config set registry https://registry.npm.taobao.org/ && \
         cd app-ember && \
-        npm i && \
+        yarn && \
         ember b --prod && \
         cd .. && \
-        npm i && \
+        yarn && \
         node upload-statics.js && \
         pm2 reload ecosystem.config.js --env production \
         `
