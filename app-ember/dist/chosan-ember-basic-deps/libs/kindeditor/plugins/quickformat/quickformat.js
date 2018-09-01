@@ -1,7 +1,0 @@
-KindEditor.plugin("quickformat",function(e){var t=this,n=e.toMap("blockquote,center,div,h1,h2,h3,h4,h5,h6,p")
-function o(e){for(var t=e.first();t&&t.first();)t=t.first()
-return t}t.clickToolbar("quickformat",function(){t.focus()
-for(var r,a=t.edit.doc,i=t.cmd.range,c=e(a.body).first(),m=[],f=[],h=i.createBookmark(!0);c;){r=c.next()
-var s=o(c)
-s&&"img"==s.name||(n[c.name]?(c.html(c.html().replace(/^(\s|&nbsp;|　)+/gi,"")),c.css("text-indent","2em")):f.push(c),(!r||n[r.name]||n[c.name]&&!n[r.name])&&(f.length>0&&m.push(f),f=[])),c=r}e.each(m,function(t,n){var o=e('<p style="text-indent:2em;"></p>',a)
-n[0].before(o),e.each(n,function(e,t){o.append(t)})}),i.moveToBookmark(h),t.addBookmark()})})
