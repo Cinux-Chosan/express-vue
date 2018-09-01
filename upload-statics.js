@@ -19,10 +19,11 @@ glob('app-ember/dist/+(assets|images)/**/*.*', { absolute: true }, (err, files) 
       Key: '/app-ember/' + path.relative('app-ember/dist', FilePath), 
       FilePath
     };
+    console.log(options)
 
     if (FilePath.match(/.(js|css)$/)) {
       let ws = createWriteStream(FilePath);
-      options.contentEncoding = 'gzip';
+      options.ContentEncoding = 'gzip';
       ws.on('finish', () => {
         console.log(`文件\t${FilePath}\t压缩完成`);
         colUpload(options, err => {
