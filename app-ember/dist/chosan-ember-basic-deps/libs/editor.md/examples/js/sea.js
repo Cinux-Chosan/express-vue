@@ -12,7 +12,7 @@ else delete h[e]
 return o}
 var p=o.emit=function(e,r){var t=h[e]
 if(t)for(var n=0,a=(t=t.slice()).length;a>n;n++)t[n](r)
-return o},g=/[^?#]*\//,E=/\/\.\//g,y=/\/[^/]+\/\.\.\//,m=/([^:/])\/+\//g,b=/^([^/:]+)(\/.+)$/,A=/{([^{]+)}/g,_=/^\/\/.|:\//,x=/^.*?\/\/.*?\//,D=document,T=location.href&&0!==location.href.indexOf("about:")?a(location.href):"",q=D.scripts,N=a(function(e){return e.hasAttribute?e.src:e.getAttribute("src",4)}(D.getElementById("seajsnode")||q[q.length-1])||T)
+return o},g=/[^?#]*\//,E=/\/\.\//g,y=/\/[^\/]+\/\.\.\//,m=/([^:\/])\/+\//g,b=/^([^\/:]+)(\/.+)$/,A=/{([^{]+)}/g,_=/^\/\/.|:\//,x=/^.*?\/\/.*?\//,D=document,T=location.href&&0!==location.href.indexOf("about:")?a(location.href):"",q=D.scripts,N=a(function(e){return e.hasAttribute?e.src:e.getAttribute("src",4)}(D.getElementById("seajsnode")||q[q.length-1])||T)
 o.resolve=function(e,r){if(!e)return""
 var t=i(e=function(e){var r=e.length-1,t=e.charAt(r)
 return"#"===t?e.substring(0,r):".js"===e.substring(r-2)||e.indexOf("?")>0||"/"===t?e:e+".js"}(e=function(e){var r=u.vars

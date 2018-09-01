@@ -2,12 +2,7 @@
 e.TernServer=function(s){var l=this
 this.options=s||{}
 var u=this.options.plugins||(this.options.plugins={})
-u.doc_comment||(u.doc_comment=!0),this.options.useWorker?this.server=new function(e){var t=e.worker=new Worker(e.options.workerScript)
-t.postMessage({type:"init",defs:e.options.defs,plugins:e.options.plugins,scripts:e.options.workerDeps})
-var n=0,o={}
-function i(e,r){r&&(e.id=++n,o[n]=r),t.postMessage(e)}t.onmessage=function(t){var n=t.data
-"getFile"==n.type?r(e,n.name,function(e,t){i({type:"getFile",err:String(e),text:t,id:n.id})}):"debug"==n.type?window.console.log(n.message):n.id&&o[n.id]&&(o[n.id](n.err,n.body),delete o[n.id])},t.onerror=function(e){for(var t in o)o[t](e)
-o={}},this.addFile=function(e,t){i({type:"add",name:e,text:t})},this.delFile=function(e){i({type:"del",name:e})},this.request=function(e,t){i({type:"req",body:e},t)}}(this):this.server=new tern.Server({getFile:function(e,t){return r(l,e,t)},async:!0,defs:this.options.defs||[],plugins:u}),this.docs=Object.create(null),this.trackChange=function(e,t){(function(e,t,n){var r=i(e,t),s=e.cachedArgHints
+u.doc_comment||(u.doc_comment=!0),this.options.useWorker?this.server=new T(this):this.server=new tern.Server({getFile:function(e,t){return r(l,e,t)},async:!0,defs:this.options.defs||[],plugins:u}),this.docs=Object.create(null),this.trackChange=function(e,t){(function(e,t,n){var r=i(e,t),s=e.cachedArgHints
 s&&s.doc==t&&h(s.start,n.to)<=0&&(e.cachedArgHints=null)
 var c=r.changed
 null==c&&(r.changed=c={from:n.from.line,to:n.from.line})
@@ -107,4 +102,9 @@ function i(){var e;(t.state.ternTooltip=null,r.parentNode)&&(t.off("cursorActivi
 e.on(r,"mousemove",function(){s=!0}),e.on(r,"mouseout",function(t){e.contains(r,t.relatedTarget||t.toElement)||(a?i():s=!1)}),setTimeout(function(){a=!0,s||i()},1700),t.on("cursorActivity",i),t.on("blur",i),t.on("scroll",i)}function y(e,t,o){var r=g("div",n+"tooltip",o)
 return r.style.left=e+"px",r.style.top=t+"px",document.body.appendChild(r),r}function C(e){var t=e&&e.parentNode
 t&&t.removeChild(e)}function x(e,t,n){e.options.showError?e.options.showError(t,n):v(t,String(n))}function b(e){e.activeArgHints&&(C(e.activeArgHints),e.activeArgHints=null)}function w(e,t){var n=t.doc.getValue()
-return e.options.fileFilter&&(n=e.options.fileFilter(n,t.name,t.doc)),n}})
+return e.options.fileFilter&&(n=e.options.fileFilter(n,t.name,t.doc)),n}function T(e){var t=e.worker=new Worker(e.options.workerScript)
+t.postMessage({type:"init",defs:e.options.defs,plugins:e.options.plugins,scripts:e.options.workerDeps})
+var n=0,o={}
+function i(e,r){r&&(e.id=++n,o[n]=r),t.postMessage(e)}t.onmessage=function(t){var n=t.data
+"getFile"==n.type?r(e,n.name,function(e,t){i({type:"getFile",err:String(e),text:t,id:n.id})}):"debug"==n.type?window.console.log(n.message):n.id&&o[n.id]&&(o[n.id](n.err,n.body),delete o[n.id])},t.onerror=function(e){for(var t in o)o[t](e)
+o={}},this.addFile=function(e,t){i({type:"add",name:e,text:t})},this.delFile=function(e){i({type:"del",name:e})},this.request=function(e,t){i({type:"req",body:e},t)}}})

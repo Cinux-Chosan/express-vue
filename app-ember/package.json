@@ -51,6 +51,7 @@
     "ember-source": "~3.0.0",
     "ember-welcome-page": "^3.0.0",
     "emberx-select": "^3.1.1",
+    "ember-cli-deploy-compress": "*",
     "eslint-plugin-ember": "^5.0.0",
     "github-markdown-css": "^2.10.0",
     "liquid-fire": "^0.29.2",

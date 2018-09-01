@@ -8,16 +8,16 @@ if(">"==o){if(1==e){r.tokenize=c
 break}return r.tokenize=t(e-1),r.tokenize(n,r)}}return"meta"}}(1))):null:t.eat("?")?(t.eatWhile(/[\w\._\-]/),e.tokenize=s("meta","?>"),"meta"):(i=t.eat("/")?"closeTag":"openTag",e.tokenize=f,"tag bracket"):"&"==r?(t.eat("#")?t.eat("x")?t.eatWhile(/[a-fA-F\d]/)&&t.eat(";"):t.eatWhile(/[\d]/)&&t.eat(";"):t.eatWhile(/[\w\.\-:]/)&&t.eat(";"))?"atom":"error":(t.eatWhile(/[^&<]/),null)}function f(t,e){var n,r,o=t.next()
 if(">"==o||"/"==o&&t.eat(">"))return e.tokenize=c,i=">"==o?"endTag":"selfcloseTag","tag bracket"
 if("="==o)return i="equals",null
-if("<"==o){e.tokenize=c,e.state=p,e.tagName=e.tagStart=null
+if("<"==o){e.tokenize=c,e.state=h,e.tagName=e.tagStart=null
 var a=e.tokenize(t,e)
 return a?a+" tag error":"tag error"}return/[\'\"]/.test(o)?(e.tokenize=(n=o,(r=function(t,e){for(;!t.eol();)if(t.next()==n){e.tokenize=f
 break}return"string"}).isInAttribute=!0,r),e.stringStartCol=t.column(),e.tokenize(t,e)):(t.match(/^[^\s\u00a0=<>\"\']*[^\s\u00a0=<>\"\'\/]/),"word")}function s(t,e){return function(n,r){for(;!n.eol();){if(n.match(e)){r.tokenize=c
-break}n.next()}return t}}function m(t){t.context&&(t.context=t.context.prev)}function g(t,e){for(var n;;){if(!t.context)return
+break}n.next()}return t}}function m(t,e,n){this.prev=t.context,this.tagName=e,this.indent=t.indented,this.startOfLine=n,(u.doNotIndent.hasOwnProperty(e)||t.context&&t.context.noIndent)&&(this.noIndent=!0)}function g(t){t.context&&(t.context=t.context.prev)}function p(t,e){for(var n;;){if(!t.context)return
 if(n=t.context.tagName,!u.contextGrabbers.hasOwnProperty(n)||!u.contextGrabbers[n].hasOwnProperty(e))return
-m(t)}}function p(t,e,n){return"openTag"==t?(n.tagStart=e.column(),h):"closeTag"==t?x:p}function h(t,e,n){return"word"==t?(n.tagName=e.current(),l="tag",w):(l="error",h)}function x(t,e,n){if("word"==t){var r=e.current()
-return n.context&&n.context.tagName!=r&&u.implicitlyClosed.hasOwnProperty(n.context.tagName)&&m(n),n.context&&n.context.tagName==r?(l="tag",b):(l="tag error",k)}return l="error",k}function b(t,e,n){return"endTag"!=t?(l="error",b):(m(n),p)}function k(t,e,n){return l="error",b(t,0,n)}function w(t,e,n){if("word"==t)return l="attribute",y
+g(t)}}function h(t,e,n){return"openTag"==t?(n.tagStart=e.column(),x):"closeTag"==t?b:h}function x(t,e,n){return"word"==t?(n.tagName=e.current(),l="tag",y):(l="error",x)}function b(t,e,n){if("word"==t){var r=e.current()
+return n.context&&n.context.tagName!=r&&u.implicitlyClosed.hasOwnProperty(n.context.tagName)&&g(n),n.context&&n.context.tagName==r?(l="tag",k):(l="tag error",w)}return l="error",w}function k(t,e,n){return"endTag"!=t?(l="error",k):(g(n),h)}function w(t,e,n){return l="error",k(t,0,n)}function y(t,e,n){if("word"==t)return l="attribute",v
 if("endTag"==t||"selfcloseTag"==t){var r=n.tagName,o=n.tagStart
-return n.tagName=n.tagStart=null,"selfcloseTag"==t||u.autoSelfClosers.hasOwnProperty(r)?g(n,r):(g(n,r),n.context=new function(t,e,n){this.prev=t.context,this.tagName=e,this.indent=t.indented,this.startOfLine=n,(u.doNotIndent.hasOwnProperty(e)||t.context&&t.context.noIndent)&&(this.noIndent=!0)}(n,r,o==n.indented)),p}return l="error",w}function y(t,e,n){return"equals"==t?v:(u.allowMissing||(l="error"),w(t,0,n))}function v(t,e,n){return"string"==t?z:"word"==t&&u.allowUnquoted?(l="string",w):(l="error",w(t,0,n))}function z(t,e,n){return"string"==t?z:w(t,0,n)}return{startState:function(){return{tokenize:c,state:p,indented:0,tagName:null,tagStart:null,context:null}},token:function(t,e){if(!e.tagName&&t.sol()&&(e.indented=t.indentation()),t.eatSpace())return null
+return n.tagName=n.tagStart=null,"selfcloseTag"==t||u.autoSelfClosers.hasOwnProperty(r)?p(n,r):(p(n,r),n.context=new m(n,r,o==n.indented)),h}return l="error",y}function v(t,e,n){return"equals"==t?z:(u.allowMissing||(l="error"),y(t,0,n))}function z(t,e,n){return"string"==t?N:"word"==t&&u.allowUnquoted?(l="string",y):(l="error",y(t,0,n))}function N(t,e,n){return"string"==t?N:y(t,0,n)}return{startState:function(){return{tokenize:c,state:h,indented:0,tagName:null,tagStart:null,context:null}},token:function(t,e){if(!e.tagName&&t.sol()&&(e.indented=t.indentation()),t.eatSpace())return null
 i=null
 var n=e.tokenize(t,e)
 return(n||i)&&"comment"!=n&&(l=null,e.state=e.state(i||n,t,e),l&&(n="error"==l?n+" error":l)),n},indent:function(e,n,i){var l=e.context

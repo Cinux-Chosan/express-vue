@@ -19,9 +19,9 @@ e||(e="error")
 var n=document.createElement("div")
 return n.className="CodeMirror-lint-message-"+e,n.appendChild(document.createTextNode(t.message)),n}function l(t){var e=t.state.lint.options,n=e.options||e
 e.async||e.getAnnotations.async?e.getAnnotations(t.getValue(),u,n,t):u(t,e.getAnnotations(t.getValue(),n,t))}function u(t,n){i(t)
-for(var o,r=t.state.lint,l=r.options,u=function(t){for(var e=[],n=0;n<t.length;++n){var o=t[n],r=o.from.line;(e[r]||(e[r]=[])).push(o)}return e}(n),c=0;c<u.length;++c){var f=u[c]
-if(f){for(var m=null,d=r.hasGutter&&document.createDocumentFragment(),p=0;p<f.length;++p){var v=f[p],g=v.severity
-g||(g="error"),m="error"==(o=m)?o:g,l.formatAnnotation&&(v=l.formatAnnotation(v)),r.hasGutter&&d.appendChild(s(v)),v.to&&r.marked.push(t.markText(v.from,v.to,{className:"CodeMirror-lint-mark-"+g,__annotation:v}))}r.hasGutter&&t.setGutterMarker(c,e,a(d,m,f.length>1,r.options.tooltips))}}l.onUpdateLinting&&l.onUpdateLinting(n,u,t)}function c(t){var e=t.state.lint
+for(var o,r,l=t.state.lint,u=l.options,c=function(t){for(var e=[],n=0;n<t.length;++n){var o=t[n],r=o.from.line;(e[r]||(e[r]=[])).push(o)}return e}(n),f=0;f<c.length;++f){var m=c[f]
+if(m){for(var d=null,p=l.hasGutter&&document.createDocumentFragment(),v=0;v<m.length;++v){var g=m[v],h=g.severity
+h||(h="error"),r=h,d="error"==(o=d)?o:r,u.formatAnnotation&&(g=u.formatAnnotation(g)),l.hasGutter&&p.appendChild(s(g)),g.to&&l.marked.push(t.markText(g.from,g.to,{className:"CodeMirror-lint-mark-"+h,__annotation:g}))}l.hasGutter&&t.setGutterMarker(f,e,a(p,d,m.length>1,l.options.tooltips))}}u.onUpdateLinting&&u.onUpdateLinting(n,c,t)}function c(t){var e=t.state.lint
 clearTimeout(e.timeout),e.timeout=setTimeout(function(){l(t)},e.options.delay||500)}function f(t,e){var n=e.target||e.srcElement
 o(e,s(t),n)}t.defineOption("lint",!1,function(n,o,a){if(a&&a!=t.Init&&(i(n),n.off("change",c),t.off(n.getWrapperElement(),"mouseover",n.state.lint.onMouseOver),delete n.state.lint),o){for(var s=n.getOption("gutters"),u=!1,f=0;f<s.length;++f)s[f]==e&&(u=!0)
 var m=n.state.lint=new r(n,function(e,n){if(n instanceof Function)return{getAnnotations:n}
