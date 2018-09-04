@@ -14,6 +14,9 @@ module.exports = function(defaults) {
       ],
       presets: ["es2015", "stage-0"]
     },
+    'ember-cli-babel': {
+      includePolyfill: true
+    },
     sassOptions: {
       includePaths: ['node_modules/bootstrap/scss']
     },

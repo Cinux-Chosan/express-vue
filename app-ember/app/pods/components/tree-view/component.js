@@ -1,5 +1,4 @@
 import Component from '@ember/component';
-import { on, observes } from 'app-ember/utils';
 import $ from 'jquery';
 
 export default Component.extend({
