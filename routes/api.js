@@ -250,7 +250,6 @@ new myMongo('posts').getDB().then(db => {
 
   router.post('/signup', async function (req, res, next) {
     if (!process.env.ALLOW_SIGNUP) return res[bk]('不允许注册!');
-    let db = await (new myMongo('posts')).getDB();
     let col = colUser;
 
     let doc = await col.findOne({name: req.body.name});
