@@ -29,8 +29,8 @@ var isServer = process.env.SERVER;
 
 if (isServer) {
   const options = {
-    cert: fs.readFileSync('/etc/letsencrypt/live/www.chosan.cn/fullchain.pem'),
-    key: fs.readFileSync('/etc/letsencrypt/live/www.chosan.cn/privkey.pem')
+    cert: fs.readFileSync('/etc/letsencrypt/live/chosan.cn/fullchain.pem'),
+    key: fs.readFileSync('/etc/letsencrypt/live/chosan.cn/privkey.pem')
   };
 
   server = spdy.createServer(options, app);  // https 服务器
