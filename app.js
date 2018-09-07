@@ -33,6 +33,13 @@ app.use(compression({
   filter: req => !req.url.match(/\.(png|jpeg|jpg|gif)$/)  // 一般图片等二进制文件压缩收益不高，因此不对图片等二进制文件进行压缩
 }));
 
+app.use((req, res, next) => {
+  if (req.url.match(/\.(css|js|jpg|png|jpeg|jpg|gif)$/)) {
+    res.setHeader('Cache-Control', 'public, max-age=30758400');
+  }
+  next();
+})
+
 app.use(express.static(path.join(__dirname, 'app-ember/dist'), { index: false }));
 app.use(express.static(path.join(__dirname, 'app-vue/dist'), { index: false }));
 app.use(express.static('/zhangjianjun/statics', { index: false }));
