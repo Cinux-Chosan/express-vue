@@ -20,7 +20,7 @@
   <script src="{{rootURL}}assets/vendor.js" defer></script>
   <script src="{{rootURL}}assets/app-ember.js" defer></script>
   <script>
-    var loadDeferredStyles = function () {
+    function loadDeferredStyles() {
       var lazyLoads = document.getElementsByTagName('link');
       [].forEach.call(lazyLoads, function (el) {
         el.setAttribute('href', el.getAttribute('data-href'));
@@ -28,8 +28,12 @@
     };
     var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
       window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-    if (raf) raf(function () { window.setTimeout(loadDeferredStyles, 0); });
-    else window.addEventListener('load', loadDeferredStyles);
+    if (raf) {
+      raf(function () { window.setTimeout(loadDeferredStyles, 0); });
+    }
+    else {
+      window.addEventListener('load', loadDeferredStyles);
+    }
   </script>
 
   {{content-for "body-footer"}}
