@@ -8,27 +8,21 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> {{content-for "head"}}
   <noscript id="deferred-styles">
-    <link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_551264_aczf826ys86ez5mi.css">
-    <link integrity="" type="text/css" rel="stylesheet" href="{{rootURL}}assets/vendor.css">
-    <link integrity="" type="text/css" rel="stylesheet" href="{{rootURL}}assets/app-ember.css">
   </noscript>
-  <style>
-    noscript {
-      display: none;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" data-href="//at.alicdn.com/t/font_551264_aczf826ys86ez5mi.css">
+  <link integrity="" type="text/css" rel="stylesheet" data-href="{{rootURL}}assets/vendor.css">
+  <link integrity="" type="text/css" rel="stylesheet" data-href="{{rootURL}}assets/app-ember.css">
   {{content-for "head-footer"}}
 </head>
 
 <body>
   {{content-for "body"}}
-  <div id="container-styles"></div>
   <script>
     var loadDeferredStyles = function () {
-      var addStylesNode = document.getElementById("deferred-styles");
-      var replacement = document.getElementById("container-styles");
-      replacement.innerHTML = addStylesNode.textContent;
-      addStylesNode.parentElement.removeChild(addStylesNode);
+      var lazyLoads = document.getElementsByTagName('link');
+      [].forEach.call(lazyLoads, function (el) {
+        el.setAttribute('href', el.getAttribute('data-href'));
+      })
     };
     var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
       window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
