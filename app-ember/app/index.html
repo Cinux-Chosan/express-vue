@@ -39,8 +39,8 @@
     else window.addEventListener('load', loadDeferredStyles);
   </script>
 
-  <script src="{{rootURL}}assets/vendor.js"></script>
-  <script src="{{rootURL}}assets/app-ember.js" async></script> 
+  <script src="{{rootURL}}assets/vendor.js" defer></script>
+  <script src="{{rootURL}}assets/app-ember.js" defer></script> 
   {{content-for "body-footer"}}
 </body>
 
