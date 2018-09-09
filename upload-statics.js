@@ -19,7 +19,7 @@ glob('app-ember/dist/+(assets|images)/**/*.*', { absolute: true }, (err, files) 
       Key: '/app-ember/' + path.relative('app-ember/dist', FilePath),
       FilePath
     };
-    if (FilePath.match(/.(js|css)$/)) {
+    if (FilePath.match(/\.(js|css)$/)) {
       options.ContentEncoding = 'gzip';
       writeFileSync(FilePath, zlib.gzipSync(readFileSync(FilePath)));
     }
